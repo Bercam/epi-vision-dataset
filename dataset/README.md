@@ -38,6 +38,16 @@ Revisão estrutural realizada em 2026-11-12:
 
 Essa validação não confirma visualmente se cada caixa representa corretamente o objeto nem resolve direitos de terceiros nas fotos. Os 31 registros estão com `annotation_status=in_review`; a aprovação visual ainda está pendente.
 
+### Validar novos exports do MakeSense
+
+Antes de importar um novo par CSV/ZIP, execute no diretório raiz do repositório:
+
+```bash
+python tools/dataset/validate_makesense_export.py --csv caminho/labels.csv --zip caminho/labels.zip
+```
+
+O validador confere as imagens e dimensões contra o COCO atual, as quatro classes, caixas positivas e dentro dos limites, duplicatas, arquivos esperados no ZIP e correspondência entre as caixas CSV/YOLO. Ele não altera os arquivos nem substitui a revisão visual.
+
 ## Critérios
 
 Consultar `../docs/criterios-de-anotacao.md`.

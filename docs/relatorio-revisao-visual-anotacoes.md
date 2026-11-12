@@ -40,6 +40,7 @@ Em 2026-11-12, o responsável enviou um novo CSV e ZIP do MakeSense após revisa
 - O ZIP contém 31 arquivos de rótulos e 271 caixas. Todas as caixas do ZIP correspondem às do CSV dentro da tolerância de arredondamento, e os IDs de classe correspondem às quatro classes.
 - Em relação ao CSV anterior, a contagem aumentou em 10: +7 na imagem Glenov, +2 na imagem Felix Schickel e +1 na imagem Nelson Axigoth. As outras imagens mantiveram suas contagens.
 - **Erro estrutural pendente:** a linha 95 do CSV tem uma anotação `pessoa` na imagem `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` com caixa `[1834, 2703, 6, 0]`. A altura zero também aparece no arquivo YOLO correspondente; a caixa não pode ser importada como anotação válida.
+- O validador reproduzível `tools/dataset/validate_makesense_export.py` aprovou estruturalmente o par anterior (261 caixas) e rejeitou este novo par por causa da caixa degenerada e das inconsistências derivadas dela.
 - Por causa dessa caixa, o novo export não foi convertido nem substituiu o COCO/YOLO atual. Nenhum rótulo foi aprovado automaticamente. Corrigir ou remover a caixa no MakeSense conforme a revisão visual e enviar novo CSV e ZIP.
 
 ### Fila adicional do cruzamento geométrico
