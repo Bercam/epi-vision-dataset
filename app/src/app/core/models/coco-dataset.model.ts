@@ -26,11 +26,6 @@ export interface CocoCategory {
   readonly supercategory?: string;
 }
 
-export const REQUIRED_CLASSES = [
-  'pessoa',
-  'capacete',
-  'colete',
-  'sem_capacete',
-] as const;
+export const REQUIRED_CLASSES = ['pessoa', 'capacete', 'colete', 'sem_capacete'] as const;
 
 export type DatasetClass = (typeof REQUIRED_CLASSES)[number];

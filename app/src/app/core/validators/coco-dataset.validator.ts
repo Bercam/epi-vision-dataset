@@ -25,14 +25,8 @@ function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
-function isBoundingBox(
-  value: unknown,
-): value is [number, number, number, number] {
-  return (
-    Array.isArray(value) &&
-    value.length === 4 &&
-    value.every(isFiniteNumber)
-  );
+function isBoundingBox(value: unknown): value is [number, number, number, number] {
+  return Array.isArray(value) && value.length === 4 && value.every(isFiniteNumber);
 }
 
 function hasUniqueIds<T extends { readonly id: number }>(items: readonly T[]): boolean {
@@ -50,7 +44,11 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
   const rawAnnotations: unknown = input['annotations'];
   const rawCategories: unknown = input['categories'];
 
-  if (!Array.isArray(rawImages) || !Array.isArray(rawAnnotations) || !Array.isArray(rawCategories)) {
+  if (
+    !Array.isArray(rawImages) ||
+    !Array.isArray(rawAnnotations) ||
+    !Array.isArray(rawCategories)
+  ) {
     return {
       dataset: null,
       errors: ['O JSON precisa conter listas de imagens, anotações e categorias.'],
@@ -132,7 +130,8 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
     return { dataset: null, errors };
   }
 
-  const isCompletelyEmpty = images.length === 0 && annotations.length === 0 && categories.length === 0;
+  const isCompletelyEmpty =
+    images.length === 0 && annotations.length === 0 && categories.length === 0;
 
   if (!hasUniqueIds(images)) errors.push('Há IDs de imagem duplicados.');
   if (!hasUniqueIds(annotations)) errors.push('Há IDs de anotação duplicados.');
@@ -153,7 +152,8 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
 
   if (!isCompletelyEmpty) {
     REQUIRED_CLASSES.forEach((className) => {
-      if (!categoryNames.has(className)) errors.push(`A classe obrigatória "${className}" não existe.`);
+      if (!categoryNames.has(className))
+        errors.push(`A classe obrigatória "${className}" não existe.`);
     });
   }
 

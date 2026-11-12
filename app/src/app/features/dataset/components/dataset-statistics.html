@@ -27,7 +27,11 @@
     @for (category of categories(); track category.id) {
       <div class="class-row">
         <span class="class-name">
-          <span class="class-dot" [style.backgroundColor]="color(category.name)" aria-hidden="true"></span>
+          <span
+            class="class-dot"
+            [style.backgroundColor]="color(category.name)"
+            aria-hidden="true"
+          ></span>
           {{ category.name }}
         </span>
         <span class="class-count">{{ annotationCounts().get(category.id) ?? 0 }}</span>

@@ -4,7 +4,14 @@
       <p class="eyebrow">FILTRO</p>
       <h2>Classe da anotação</h2>
     </div>
-    <span class="filter-hint">{{ selectedCategoryId() === null ? totalImageCount() : imageCounts().get(selectedCategoryId()!) ?? 0 }} imagens</span>
+    <span class="filter-hint"
+      >{{
+        selectedCategoryId() === null
+          ? totalImageCount()
+          : (imageCounts().get(selectedCategoryId()!) ?? 0)
+      }}
+      imagens</span
+    >
   </div>
   <div class="filter-options" role="group" aria-label="Classes">
     <button
@@ -24,7 +31,11 @@
         [attr.aria-pressed]="selectedCategoryId() === category.id"
         (click)="categorySelected.emit(category.id)"
       >
-        <span class="class-dot" [style.backgroundColor]="color(category.name)" aria-hidden="true"></span>
+        <span
+          class="class-dot"
+          [style.backgroundColor]="color(category.name)"
+          aria-hidden="true"
+        ></span>
         {{ category.name }} <span>{{ imageCounts().get(category.id) ?? 0 }}</span>
       </button>
     }

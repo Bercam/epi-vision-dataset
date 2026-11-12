@@ -51,7 +51,10 @@ h2 {
   border-radius: 12px;
   background: #fcfdfc;
   cursor: pointer;
-  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    transform 150ms ease;
 }
 
 .upload-card:hover {
