@@ -2,7 +2,12 @@
 
 ## Estado
 
-O responsável informou que revisou as anotações e enviou um novo export do MakeSense. O conjunto foi convertido e validado estruturalmente. **`annotation_status` continua `in_review`; a aprovação final permanece humana.**
+O responsável informou que revisou as anotações. Ao conferir os arquivos anexados em 2026-11-12, porém, os hashes SHA-256 coincidiram com o par bruto já arquivado no projeto; portanto, os anexos não representam um export alterado. O CSV/ZIP anexado contém 271 caixas e falha na validação estrutural por uma caixa degenerada na linha 95 do CSV, também sem correspondência no ZIP. O dataset derivado vigente contém 270 caixas após a exclusão documentada dessa caixa. **`annotation_status` continua `in_review`; a aprovação final permanece humana.**
+
+Hashes confirmados dos arquivos anexados (iguais às cópias brutas arquivadas):
+
+- ZIP `labels_my-project-name_2026-11-12-05-27-43.zip`: `2610b74f6f273502b4a3260e04da6df6421f1400ae4059ed06264d63c08c4685`.
+- CSV `labels_my-project-name_2026-11-12-05-28-02.csv`: `135ecc2ca7b5b285725600a21c7cb13381379e06fa717d39468989b27e3f4aa0`.
 
 ## Dataset atual
 
@@ -20,25 +25,25 @@ O responsável informou que revisou as anotações e enviou um novo export do Ma
 
 ## Conferências visuais pontuais
 
-| Imagem | Resultado da revisão | Estado |
-|---|---|---|
-| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | A exportação revisada acrescentou uma caixa `pessoa` que associa geometricamente o colete e o capacete do trabalhador central. A caixa degenerada do piso foi removida do derivado. | Melhoria aplicada; a aprovação final continua pendente. |
-| `pexels-felix-schickel-2151168240-36840576.jpg` | A caixa `sem_capacete` foi atualizada para `[2025, 4603, 904, 635]`, delimitando a cabeça do trabalhador que usa chapéu de tecido. | Revisada pelo responsável; sem erro estrutural encontrado. |
-| `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg` | O recorte mostra que a caixa `pessoa` `[117, 782, 2332, 3218]` começa abaixo do topo do cabelo. A caixa `sem_capacete` é `[820, 708, 545, 297]`. A caixa de pessoa corta parte visível da cabeça. | **Pendente:** ajustar o topo da caixa `pessoa` no MakeSense e enviar novo export. |
-| `angel-arcalle-Gz0gfUcCYsU-unsplash.jpg` e `mihaly-koles-Q-fhedM5m14-unsplash.jpg` | Pessoas pequenas ou distantes exigem atenção à identificabilidade e à regra de oclusão. A seleção das imagens já foi confirmada pelo responsável. | Conferência visual final recomendada. |
-| `pexels-rookey-pain-2688457-14053428.jpg` | Há marca/logotipo visível. A licença da fotografia não determina os direitos sobre marcas de terceiros. | Pendência do critério de fontes/direitos, separada da geometria das caixas. |
+| Imagem                                                                             | Resultado da revisão                                                                                                                                                                              | Estado                                                                            |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg`                                        | A exportação revisada acrescentou uma caixa `pessoa` que associa geometricamente o colete e o capacete do trabalhador central. A caixa degenerada do piso foi removida do derivado.               | Melhoria aplicada; a aprovação final continua pendente.                           |
+| `pexels-felix-schickel-2151168240-36840576.jpg`                                    | A caixa `sem_capacete` foi atualizada para `[2025, 4603, 904, 635]`, delimitando a cabeça do trabalhador que usa chapéu de tecido.                                                                | Revisada pelo responsável; sem erro estrutural encontrado.                        |
+| `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg`                                       | O recorte mostra que a caixa `pessoa` `[117, 782, 2332, 3218]` começa abaixo do topo do cabelo. A caixa `sem_capacete` é `[820, 708, 545, 297]`. A caixa de pessoa corta parte visível da cabeça. | **Pendente:** ajustar o topo da caixa `pessoa` no MakeSense e enviar novo export. |
+| `angel-arcalle-Gz0gfUcCYsU-unsplash.jpg` e `mihaly-koles-Q-fhedM5m14-unsplash.jpg` | Pessoas pequenas ou distantes exigem atenção à identificabilidade e à regra de oclusão. A seleção das imagens já foi confirmada pelo responsável.                                                 | Conferência visual final recomendada.                                             |
+| `pexels-rookey-pain-2688457-14053428.jpg`                                          | Há marca/logotipo visível. A licença da fotografia não determina os direitos sobre marcas de terceiros.                                                                                           | Pendência do critério de fontes/direitos, separada da geometria das caixas.       |
 
 ### Fila geométrica residual
 
 Seis caixas `pessoa` não têm o centro de uma caixa `capacete` ou `sem_capacete` dentro delas. Isso pode ocorrer por corte, tamanho ou oclusão; os casos abaixo são candidatos a revisão, não erros confirmados.
 
-| Imagem | Anotação COCO `pessoa` |
-|---|---:|
-| `acton-crawford-A4xwAcZOAyo-unsplash.jpg` | 47 |
-| `arron-choi-fYD54gVXFGM-unsplash.jpg` | 62 |
-| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | 78 |
-| `mark-potterton-sNVkn3507Oo-unsplash.jpg` | 119, 120 |
-| `pexels-bulat843-1243575272-38146879.jpg` | 152 |
+| Imagem                                      | Anotação COCO `pessoa` |
+| ------------------------------------------- | ---------------------: |
+| `acton-crawford-A4xwAcZOAyo-unsplash.jpg`   |                     47 |
+| `arron-choi-fYD54gVXFGM-unsplash.jpg`       |                     62 |
+| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` |                     78 |
+| `mark-potterton-sNVkn3507Oo-unsplash.jpg`   |               119, 120 |
+| `pexels-bulat843-1243575272-38146879.jpg`   |                    152 |
 
 ## Pontuação estimada do critério de anotações (25%)
 
@@ -46,4 +51,4 @@ Seis caixas `pessoa` não têm o centro de uma caixa `capacete` ou `sem_capacete
 
 ## Próximo passo
 
-Corrigir no MakeSense o topo da caixa `pessoa` na imagem 5; revisar os seis candidatos geométricos e as duas cenas com pessoas pequenas. Enviar CSV e ZIP novos para repetir a validação. Manter `annotation_status=in_review` até a aprovação humana final.
+Gerar e enviar um novo CSV/ZIP depois de salvar as alterações no MakeSense. Antes disso, não importar o par anexado novamente: a validação reproduz a falha da linha 95. No próximo export, corrigir o topo da caixa `pessoa` na imagem 5; revisar também os seis candidatos geométricos e as duas cenas com pessoas pequenas. Manter `annotation_status=in_review` até a aprovação humana final.
