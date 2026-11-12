@@ -132,9 +132,7 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
     return { dataset: null, errors };
   }
 
-  if (images.length === 0 || annotations.length === 0 || categories.length === 0) {
-    errors.push('O dataset precisa ter imagens, anotações e categorias.');
-  }
+  const isCompletelyEmpty = images.length === 0 && annotations.length === 0 && categories.length === 0;
 
   if (!hasUniqueIds(images)) errors.push('Há IDs de imagem duplicados.');
   if (!hasUniqueIds(annotations)) errors.push('Há IDs de anotação duplicados.');
@@ -145,7 +143,7 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
   if (new Set(categories.map((category) => category.name)).size !== categories.length) {
     errors.push('Há nomes de categoria duplicados.');
   }
-  if (categories.length !== REQUIRED_CLASSES.length) {
+  if (!isCompletelyEmpty && categories.length !== REQUIRED_CLASSES.length) {
     errors.push('O dataset precisa conter exatamente as quatro classes obrigatórias.');
   }
 
@@ -153,9 +151,11 @@ export function validateCocoDataset(input: unknown): CocoValidationResult {
   const categoryIds = new Set(categories.map((category) => category.id));
   const categoryNames = new Set(categories.map((category) => category.name));
 
-  REQUIRED_CLASSES.forEach((className) => {
-    if (!categoryNames.has(className)) errors.push(`A classe obrigatória "${className}" não existe.`);
-  });
+  if (!isCompletelyEmpty) {
+    REQUIRED_CLASSES.forEach((className) => {
+      if (!categoryNames.has(className)) errors.push(`A classe obrigatória "${className}" não existe.`);
+    });
+  }
 
   annotations.forEach((annotation) => {
     const image = imageById.get(annotation.image_id);

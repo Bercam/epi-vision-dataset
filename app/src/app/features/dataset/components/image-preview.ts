@@ -14,6 +14,7 @@ export class ImagePreview {
   readonly annotations = input<readonly CocoAnnotation[]>([]);
   readonly categories = input<readonly CocoCategory[]>([]);
   readonly annotationCount = input(0);
+  readonly datasetLoaded = input(false);
 
   protected readonly categoryById = computed(
     () => new Map(this.categories().map((category) => [category.id, category])),

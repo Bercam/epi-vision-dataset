@@ -70,8 +70,8 @@
   } @else {
     <div class="empty-preview">
       <span aria-hidden="true">▧</span>
-      <h2>Selecione uma imagem</h2>
-      <p>Escolha um cartão da galeria para abrir a pré-visualização.</p>
+      <h2>{{ datasetLoaded() ? 'Nenhuma imagem para exibir' : 'Selecione uma imagem' }}</h2>
+      <p>{{ datasetLoaded() ? 'Este dataset não contém imagens cadastradas.' : 'Escolha um cartão da galeria para abrir a pré-visualização.' }}</p>
     </div>
   }
 </aside>

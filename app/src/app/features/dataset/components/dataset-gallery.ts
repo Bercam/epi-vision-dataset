@@ -12,6 +12,7 @@ export class DatasetGallery {
   readonly imageUrls = input.required<ReadonlyMap<string, string>>();
   readonly annotationCounts = input.required<ReadonlyMap<number, number>>();
   readonly selectedImageId = input<number | null>(null);
+  readonly emptyMessage = input('Nenhuma imagem disponível para este filtro.');
   readonly imageSelected = output<CocoImage>();
 
   imageUrl(image: CocoImage): string | null {

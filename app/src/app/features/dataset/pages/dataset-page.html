@@ -71,6 +71,7 @@
         [imageUrls]="imageUrls()"
         [annotationCounts]="annotationCounts()"
         [selectedImageId]="selectedImageId()"
+        [emptyMessage]="galleryEmptyMessage()"
         (imageSelected)="selectImage($event)"
       />
       <app-image-preview
@@ -79,6 +80,7 @@
         [annotations]="selectedAnnotations()"
         [categories]="currentDataset.categories"
         [annotationCount]="annotationCounts().get(selectedImageId() ?? -1) ?? 0"
+        [datasetLoaded]="true"
       />
     </section>
   } @else {

@@ -54,6 +54,12 @@ export class DatasetPage implements OnDestroy {
     return dataset.annotations.length / dataset.images.length;
   });
 
+  protected readonly galleryEmptyMessage = computed(() =>
+    this.selectedCategoryId() === null
+      ? 'Este dataset não contém imagens cadastradas.'
+      : 'Nenhuma imagem possui anotações desta classe.',
+  );
+
   protected readonly imageCountsByCategory = computed(() => {
     const imageIdsByCategory = new Map<number, Set<number>>();
     for (const annotation of this.dataset()?.annotations ?? []) {
@@ -124,7 +130,7 @@ export class DatasetPage implements OnDestroy {
       this.selectedCategoryId.set(null);
       this.selectedImageId.set(null);
       this.errorMessage.set(
-        error instanceof Error
+        error instanceof Error && error.message
           ? error.message
           : 'Não foi possível carregar esse arquivo. Confira o JSON e tente novamente.',
       );
