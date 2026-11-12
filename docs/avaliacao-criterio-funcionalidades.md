@@ -2,14 +2,15 @@
 
 ## Resultado atual
 
-**Atende aos requisitos funcionais identificados; compilação de produção, suíte Angular e inicialização local foram verificadas.** `npm start` compilou e serviu a página com HTTP 200 e o elemento raiz Angular. O filtro atual foi verificado na página Angular.
+**Atende aos requisitos funcionais identificados; compilação de produção, suíte Angular, upload pelos inputs e inicialização local foram verificadas.** Testes de integração acionam os inputs reais do componente com arquivos sintéticos nas duas ordens; `npm start` serviu a página com HTTP 200 e o elemento raiz Angular. O filtro atual também foi verificado na página Angular.
 
 ## Conferência requisito por requisito
 
 | Requisito                                         | Evidência atual                                                                                                                                       | Estado               |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| Carregar JSON COCO por upload                     | `app/src/app/features/dataset/components/dataset-import-panel.html` oferece seletor JSON; `DatasetLoaderService.loadJsonFile` lê e valida o conteúdo. | Atendido             |
-| Carregar as imagens correspondentes               | O painel aceita seleção múltipla; `DatasetLoaderService` cria URLs temporárias e associa arquivos pelo nome normalizado.                              | Atendido             |
+| Carregar JSON COCO por upload                     | Seletor JSON visível; teste de integração envia um `File` pelo input, valida o COCO e confirma a galeria renderizada.                                  | Atendido             |
+| Carregar as imagens correspondentes               | Seletor múltiplo; teste envia arquivos pelo input e confirma miniatura, imagem de prévia e associação por nome.                                        | Atendido             |
+| Selecionar arquivos em qualquer ordem              | Testes de integração cobrem imagens antes do COCO e COCO antes das imagens.                                                                          | Verificado           |
 | Galeria com miniatura, nome e número de anotações | `DatasetGallery` exibe miniatura lazy, nome e contagem para cada imagem.                                                                              | Atendido             |
 | Selecionar imagem para visualização detalhada     | Cada cartão emite a imagem selecionada para `DatasetPage`.                                                                                            | Atendido             |
 | Exibir caixas com cores por classe                | `ImagePreview` usa SVG com `viewBox` nas dimensões COCO e cores por categoria.                                                                        | Atendido             |
@@ -26,7 +27,7 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 
 ## Limitações e validações pendentes
 
-- A seleção do JSON e das imagens locais pela UI ainda não foi verificada manualmente; a integração da página foi verificada com dataset controlado em teste. A resposta HTTP confirma a inicialização do app, não o fluxo de upload.
+- O fluxo dos inputs foi verificado com arquivos sintéticos em teste; ainda falta uma conferência manual no navegador selecionando o COCO e as imagens reais do dataset. A resposta HTTP confirma a inicialização, não essa conferência manual.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
 
