@@ -27,8 +27,6 @@ npm run build
 
 O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annotations/annotations_coco.json` e as imagens em `../dataset/images/`.
 
-## Etapas
-
 ## Usar a galeria
 
 1. Selecione `../dataset/annotations/annotations_coco.json`.
