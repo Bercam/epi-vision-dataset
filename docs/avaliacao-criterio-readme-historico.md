@@ -13,4 +13,4 @@
 
 ## Pendência
 
-- Confirmar que o repositório está público e que essa branch foi publicada no GitHub. A verificação remota não faz parte desta revisão local.
+- O remoto `origin` está configurado para `https://github.com/Bercam/epi-vision-dataset.git`; `git ls-remote --heads origin` não retornou branches. Portanto, esta branch e os commits atuais estão apenas no clone local e a visibilidade pública/estado do GitHub não pôde ser confirmada. Não publiquei alterações.
