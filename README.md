@@ -54,7 +54,7 @@ Com mais tempo, as próximas melhorias seriam concluir a revisão final do datas
 
 ## Testes e qualidade
 
-A compilação Angular de produção, ESLint, formatação Prettier e 12 testes unitários da aplicação passaram nesta revisão. A ferramenta de coleta passou em 81 testes; o validador do catálogo confirmou 31 imagens com dimensões, tamanhos e SHA-256 compatíveis e sem alterar os metadados. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para os testes Angular, `cd app` e `npm test`; para os testes da ferramenta, `cd tools/image-collector` e `npm test`; para conferir o catálogo, `cd tools/image-collector` e `npm run validate:manifest`; para lint, `cd app` e `npm run lint`.
+A compilação Angular de produção, ESLint, formatação Prettier e 12 testes unitários da aplicação passaram nesta revisão. `npm start` iniciou o servidor e a página respondeu HTTP 200 em `http://localhost:4200/`; a seleção real dos arquivos pelo formulário ainda não foi conferida manualmente. A ferramenta de coleta passou em 81 testes; o validador do catálogo confirmou 31 imagens com dimensões, tamanhos e SHA-256 compatíveis e sem alterar os metadados. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para os testes Angular, `cd app` e `npm test`; para os testes da ferramenta, `cd tools/image-collector` e `npm test`; para conferir o catálogo, `cd tools/image-collector` e `npm run validate:manifest`; para lint, `cd app` e `npm run lint`.
 
 ## Histórico de desenvolvimento
 

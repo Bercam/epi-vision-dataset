@@ -2,7 +2,7 @@
 
 ## Resultado atual
 
-**Atende aos requisitos funcionais identificados; compilação de produção e teste de integração Angular concluídos.** A interação principal já havia sido conferida manualmente; o filtro atual foi verificado na página Angular.
+**Atende aos requisitos funcionais identificados; compilação de produção, suíte Angular e inicialização local foram verificadas.** `npm start` compilou e serviu a página com HTTP 200 e o elemento raiz Angular. O filtro atual foi verificado na página Angular.
 
 ## Conferência requisito por requisito
 
@@ -18,6 +18,7 @@
 | Erros amigáveis de carregamento/JSON inválido     | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem exibida com `role=alert`.                                               | Atendido             |
 | Dataset vazio e imagem ausente                    | Há estados vazios para upload, galeria e prévia; imagens faltantes são contadas e informadas no painel.                                               | Atendido             |
 | Instruções `npm install` e `npm start`            | Presentes em `app/README.md` e no README principal.                                                                                                   | Atendido             |
+| Inicialização pelo comando `npm start`            | Servidor Angular compilou e respondeu HTTP 200 em `http://localhost:4200/`; o documento retornado contém `<app-root>`.                                 | Verificado           |
 
 ## Ajuste realizado nesta revisão
 
@@ -25,7 +26,7 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 
 ## Limitações e validações pendentes
 
-- A seleção do JSON e das imagens locais pela UI ainda aguarda autorização do usuário; a integração da página foi verificada com dataset controlado em teste.
+- A seleção do JSON e das imagens locais pela UI ainda não foi verificada manualmente; a integração da página foi verificada com dataset controlado em teste. A resposta HTTP confirma a inicialização do app, não o fluxo de upload.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
 
