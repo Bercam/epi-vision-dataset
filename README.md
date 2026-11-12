@@ -54,7 +54,7 @@ Com mais tempo, as próximas melhorias seriam concluir a revisão visual do data
 
 ## Testes e qualidade
 
-A compilação Angular de produção e a formatação Prettier foram verificadas nesta revisão. O projeto ainda não tem uma suíte de testes automatizados nem configuração de ESLint; essas pendências estão registradas nos relatórios de avaliação. Para compilar a aplicação, use `cd app` e `npm run build`.
+A compilação Angular de produção, a formatação Prettier e oito testes unitários foram verificados nesta revisão. O ESLint ainda não está configurado. Para compilar a aplicação, use `cd app` e `npm run build`; para executar os testes, use `cd app` e `npm test`.
 
 ## Histórico de desenvolvimento
 

@@ -2,7 +2,7 @@
 
 ## Resultado atual
 
-**Atende aos requisitos funcionais identificados; compilação de produção concluída.** A interação principal já havia sido conferida manualmente; a mudança do filtro foi compilada, embora ainda precise de uma conferência rápida em navegador.
+**Atende aos requisitos funcionais identificados; compilação de produção e testes unitários concluídos.** A interação principal já havia sido conferida manualmente; a mudança do filtro foi coberta por teste unitário e ainda precisa de uma conferência rápida em navegador.
 
 ## Conferência requisito por requisito
 
@@ -26,6 +26,7 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 ## Limitações e validações pendentes
 
 - Conferir em navegador o filtro após a alteração e observar que somente as caixas da classe escolhida permanecem na prévia.
+- A seleção do JSON e das imagens no app local pela UI ainda aguarda autorização do usuário; a aplicação já compilou, mas o servidor de desenvolvimento foi encerrado.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
 
