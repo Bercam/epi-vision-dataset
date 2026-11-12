@@ -82,6 +82,9 @@ Os cinco pares de autor/título inferidos, o handle `wal_` e o nome `Ali` foram 
 ### Datas de download
 - `download_date` permanece vazio: a ferramenta não consegue determinar a data histórica em que os arquivos originais foram baixados. Preencher somente se houver registro confiável.
 
+### URLs dos autores
+- O campo opcional `author_url` está preenchido nas 19 linhas Pexels e vazio nas 11 linhas Unsplash e na linha Wikimedia Commons. `source_url` permanece preenchido para as 31 imagens e identifica a página de origem; não inferir URLs de perfil a partir do nome do autor.
+
 ## Limitações da execução
 
 - A página pública do Pexels respondeu HTTP 403 para todos os 19 links deste dataset. O coletor não tentou contornar o bloqueio.
