@@ -7,7 +7,7 @@
 ## Evidências
 
 - Separação por `core/` (modelos, serviço, validador e utilitário) e `features/dataset/` (página e componentes).
-- Componentes standalone; contratos com `readonly` e entradas externas recebidas como `unknown` antes da validação.
+- Todos os sete componentes declaram `standalone: true` explicitamente; contratos usam `readonly` e entradas externas são recebidas como `unknown` antes da validação.
 - Não há uso de `any`, `console.log`, `TODO` ou `FIXME` em `app/src/`. `console.error` é usado apenas para informar uma falha fatal de bootstrap.
 - `strict: true` e `strictTemplates: true` foram habilitados em `app/tsconfig.json`; compilação de produção passou em 2026-11-12.
 - O Prettier já estava configurado, mas 17 arquivos estavam fora do padrão. A formatação foi aplicada e `npx prettier --check src tsconfig.json angular.json` passou.

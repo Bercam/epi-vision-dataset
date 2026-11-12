@@ -4,6 +4,7 @@ import { CocoImage } from '../../../core/models/coco-dataset.model';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-dataset-gallery',
+  standalone: true,
   templateUrl: './dataset-gallery.html',
   styleUrl: './dataset-gallery.scss',
 })

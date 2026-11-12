@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-dataset-import-panel',
+  standalone: true,
   templateUrl: './dataset-import-panel.html',
   styleUrl: './dataset-import-panel.scss',
 })

@@ -7,6 +7,7 @@ import { categoryColor } from '../../../core/utils/category-colors';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DecimalPipe],
   selector: 'app-dataset-statistics',
+  standalone: true,
   templateUrl: './dataset-statistics.html',
   styleUrl: './dataset-statistics.scss',
 })

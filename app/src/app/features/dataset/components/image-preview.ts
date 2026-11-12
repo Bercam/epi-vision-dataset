@@ -5,6 +5,7 @@ import { categoryColor } from '../../../core/utils/category-colors';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-image-preview',
+  standalone: true,
   templateUrl: './image-preview.html',
   styleUrl: './image-preview.scss',
 })

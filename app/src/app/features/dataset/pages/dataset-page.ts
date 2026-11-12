@@ -19,6 +19,7 @@ import { filterAnnotationsByCategory } from '../../../core/utils/filter-annotati
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatasetImportPanel, DatasetGallery, ImagePreview, ClassFilter, DatasetStatistics],
   selector: 'app-dataset-page',
+  standalone: true,
   templateUrl: './dataset-page.html',
   styleUrl: './dataset-page.scss',
 })
