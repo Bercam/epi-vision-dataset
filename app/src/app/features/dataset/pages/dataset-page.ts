@@ -13,6 +13,7 @@ import { DatasetGallery } from '../components/dataset-gallery';
 import { ImagePreview } from '../components/image-preview';
 import { ClassFilter } from '../components/class-filter';
 import { DatasetStatistics } from '../components/dataset-statistics';
+import { filterAnnotationsByCategory } from '../../../core/utils/filter-annotations';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -110,11 +111,10 @@ export class DatasetPage implements OnDestroy {
     const id = this.selectedImageId();
     if (id === null) return [];
 
-    const annotations = this.annotationsByImage().get(id) ?? [];
-    const categoryId = this.selectedCategoryId();
-    return categoryId === null
-      ? annotations
-      : annotations.filter((annotation) => annotation.category_id === categoryId);
+    return filterAnnotationsByCategory(
+      this.annotationsByImage().get(id) ?? [],
+      this.selectedCategoryId(),
+    );
   });
 
   protected readonly missingImageCount = computed(() => {
