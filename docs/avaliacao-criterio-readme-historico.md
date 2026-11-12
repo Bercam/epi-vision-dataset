@@ -2,7 +2,7 @@
 
 ## Resultado atual
 
-**Estimativa: 85–90% do critério.** O README principal agora cobre os tópicos pedidos no desafio e o histórico existente usa commits pequenos com prefixos Conventional Commits. Não é uma nota oficial do avaliador.
+**Estimativa local: 85–90% do critério; cumprimento integral ainda não comprovado.** O README principal cobre os tópicos pedidos no desafio e o histórico local usa commits pequenos com prefixos Conventional Commits. Como a entrega exige um repositório público e o remoto não anunciou referências, essa estimativa local não demonstra que o critério completo atingiu 80%. Não é uma nota oficial do avaliador.
 
 ## Evidências
 
@@ -16,4 +16,4 @@
 
 ## Pendência
 
-- O remoto `origin` está configurado para `https://github.com/Bercam/epi-vision-dataset.git`; `git ls-remote --heads origin` não retornou branches. Portanto, esta branch e os commits atuais estão apenas no clone local e a visibilidade pública/estado do GitHub não pôde ser confirmada. Não publiquei alterações.
+- O remoto `origin` está configurado para `https://github.com/Bercam/epi-vision-dataset.git`; a leitura de `git ls-remote --heads origin` terminou com código zero e não retornou referências. Portanto, esta branch e os commits atuais estão apenas no clone local; a existência de uma branch pública com a entrega não foi comprovada. Nenhuma alteração foi publicada.
