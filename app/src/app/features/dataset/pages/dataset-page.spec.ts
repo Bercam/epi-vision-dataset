@@ -153,4 +153,64 @@ describe('DatasetPage class filter', () => {
     expect(root.querySelector('.thumbnail img')?.getAttribute('src')).toBe('blob:uploaded-scene');
     expect(root.querySelector('.warning-notice')).toBeNull();
   });
+
+  it('shows a friendly alert when an invalid COCO file is selected', async () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const jsonInput = root.querySelector<HTMLInputElement>('#coco-file');
+    if (!jsonInput) throw new Error('O campo de upload COCO não foi renderizado.');
+
+    const invalidJson = new File(['{invalid'], 'annotations.json', { type: 'application/json' });
+    Object.defineProperty(jsonInput, 'files', {
+      configurable: true,
+      value: toFileList([invalidJson]),
+    });
+    jsonInput.dispatchEvent(new Event('change', { bubbles: true }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain(
+      'Não foi possível ler o arquivo. Confira se ele contém um JSON válido.',
+    );
+    expect(root.querySelector('.dataset-summary')).toBeNull();
+  });
+
+  it('warns when a selected image does not match a COCO filename', async () => {
+    vi.stubGlobal('URL', {
+      createObjectURL: vi.fn(() => 'blob:unmatched-image'),
+      revokeObjectURL: vi.fn(),
+    });
+
+    const root = fixture.nativeElement as HTMLElement;
+    const jsonInput = root.querySelector<HTMLInputElement>('#coco-file');
+    const imagesInput = root.querySelector<HTMLInputElement>('#image-files');
+    if (!jsonInput || !imagesInput) throw new Error('Os campos de upload não foram renderizados.');
+
+    const coco = {
+      images: [{ id: 1, file_name: 'expected.jpg', width: 100, height: 80 }],
+      annotations: [],
+      categories: [
+        { id: 1, name: 'pessoa' },
+        { id: 2, name: 'capacete' },
+        { id: 3, name: 'colete' },
+        { id: 4, name: 'sem_capacete' },
+      ],
+    };
+    const json = new File([JSON.stringify(coco)], 'annotations.json', { type: 'application/json' });
+    Object.defineProperty(jsonInput, 'files', { configurable: true, value: toFileList([json]) });
+    jsonInput.dispatchEvent(new Event('change', { bubbles: true }));
+    await fixture.whenStable();
+
+    const wrongImage = new File(['image-bytes'], 'different.jpg', { type: 'image/jpeg' });
+    Object.defineProperty(imagesInput, 'files', {
+      configurable: true,
+      value: toFileList([wrongImage]),
+    });
+    imagesInput.dispatchEvent(new Event('change', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(root.querySelector('.warning-notice')?.textContent).toContain(
+      'Não encontrei 1 imagem(ns)',
+    );
+    expect(root.querySelector('.thumbnail img')).toBeNull();
+  });
 });

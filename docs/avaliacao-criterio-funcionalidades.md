@@ -16,8 +16,8 @@
 | Exibir caixas com cores por classe                | `ImagePreview` usa SVG com `viewBox` nas dimensões COCO e cores por categoria.                                                                        | Atendido             |
 | Filtrar por classe                                | `ClassFilter` filtra imagens; a prévia agora mostra somente as caixas da classe selecionada, e a contagem da prévia acompanha as caixas visíveis.     | Atendido após ajuste |
 | Estatísticas gerais e por classe                  | `DatasetPage` calcula totais, médias e contagens derivadas; `DatasetStatistics` apresenta os valores.                                                 | Atendido             |
-| Erros amigáveis de carregamento/JSON inválido     | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem exibida com `role=alert`.                                               | Atendido             |
-| Dataset vazio e imagem ausente                    | Há estados vazios para upload, galeria e prévia; imagens faltantes são contadas e informadas no painel.                                               | Atendido             |
+| Erros amigáveis de carregamento/JSON inválido     | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem `role=alert`; teste de página confirma a mensagem para JSON inválido.      | Atendido             |
+| Dataset vazio e imagem ausente                    | Há estados vazios para upload, galeria e prévia; teste de página confirma aviso quando o nome do arquivo não corresponde ao COCO.                       | Atendido             |
 | Instruções `npm install` e `npm start`            | Presentes em `app/README.md` e no README principal.                                                                                                   | Atendido             |
 | Inicialização pelo comando `npm start`            | Servidor Angular compilou e respondeu HTTP 200 em `http://localhost:4200/`; o documento retornado contém `<app-root>`.                                 | Verificado           |
 
