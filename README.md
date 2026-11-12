@@ -54,7 +54,7 @@ Com mais tempo, as próximas melhorias seriam concluir a revisão visual do data
 
 ## Testes e qualidade
 
-A compilação Angular de produção, ESLint, formatação Prettier e nove testes unitários passaram nesta revisão. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para executar os testes, `cd app` e `npm test`; para lint, `cd app` e `npm run lint`.
+A compilação Angular de produção, ESLint, formatação Prettier e 12 testes unitários passaram nesta revisão. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para executar os testes, `cd app` e `npm test`; para lint, `cd app` e `npm run lint`.
 
 ## Histórico de desenvolvimento
 

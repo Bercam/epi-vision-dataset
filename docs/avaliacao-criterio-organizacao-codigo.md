@@ -11,7 +11,7 @@
 - Não há uso de `any`, `console.log`, `TODO` ou `FIXME` em `app/src/`. `console.error` é usado apenas para informar uma falha fatal de bootstrap.
 - `strict: true` e `strictTemplates: true` foram habilitados em `app/tsconfig.json`; compilação de produção passou em 2026-11-12.
 - O Prettier já estava configurado, mas 17 arquivos estavam fora do padrão. A formatação foi aplicada e `npx prettier --check src tsconfig.json angular.json` passou.
-- O runner oficial `@angular/build:unit-test` foi configurado com Vitest; `npm test` passou com 9 testes em 3 arquivos, cobrindo validação COCO, filtragem pura e interação da página Angular.
+- O runner oficial `@angular/build:unit-test` foi configurado com Vitest; `npm test` passou com 12 testes em 4 arquivos, cobrindo validação COCO, leitura do JSON, ciclo de vida das URLs de imagem, filtragem pura e interação da página Angular.
 - `angular-eslint` 22, ESLint 10 e regras recomendadas para TypeScript, templates e acessibilidade estão configurados; `npm run lint` passou.
 - `npm audit` reportou zero vulnerabilidades após atualização para ESLint 10 e override restrito da dependência `minimatch` vulnerável; build, lint e testes passaram com essa resolução.
 

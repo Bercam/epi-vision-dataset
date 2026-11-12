@@ -11,6 +11,7 @@
 - Todos os loops `@for` encontrados usam `track` por ID estável.
 - Miniaturas usam `loading="lazy"`.
 - Imagens locais usam object URLs temporárias; a troca da seleção revoga URLs anteriores e `DatasetPage.ngOnDestroy` libera as URLs restantes.
+- Quando arquivos selecionados têm o mesmo nome normalizado, a URL substituída é revogada antes de atualizar o mapa. Um teste do serviço confirma a liberação da URL substituída e da URL final.
 - Não há subscriptions, timers nem listeners manuais no código da aplicação que exijam limpeza adicional.
 - A compilação de produção gerou um bundle inicial de aproximadamente 254 kB, abaixo do limite de erro de 1 MB configurado no Angular.
 
