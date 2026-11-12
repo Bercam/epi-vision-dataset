@@ -60,6 +60,8 @@
       <app-image-preview
         [image]="selectedImage()"
         [imageUrl]="selectedImageUrl()"
+        [annotations]="selectedAnnotations()"
+        [categories]="currentDataset.categories"
         [annotationCount]="annotationCounts().get(selectedImageId() ?? -1) ?? 0"
       />
     </section>

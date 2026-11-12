@@ -9,7 +9,38 @@
     </div>
     <div class="preview-canvas">
       @if (imageUrl(); as previewUrl) {
-        <img [src]="previewUrl" [alt]="selectedImage.file_name" />
+        <svg
+          class="annotation-layer"
+          [attr.viewBox]="'0 0 ' + selectedImage.width + ' ' + selectedImage.height"
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          [attr.aria-label]="'Imagem com ' + annotationCount() + ' caixas de anotação'"
+        >
+          <image
+            [attr.href]="previewUrl"
+            x="0"
+            y="0"
+            [attr.width]="selectedImage.width"
+            [attr.height]="selectedImage.height"
+            preserveAspectRatio="xMidYMid meet"
+          />
+          @for (annotation of annotations(); track annotation.id) {
+            @if (categoryById().get(annotation.category_id); as category) {
+              <g [attr.aria-label]="category.name">
+                <title>{{ category.name }}</title>
+                <rect
+                  class="bounding-box"
+                  [attr.x]="annotation.bbox[0]"
+                  [attr.y]="annotation.bbox[1]"
+                  [attr.width]="annotation.bbox[2]"
+                  [attr.height]="annotation.bbox[3]"
+                  [attr.stroke]="categoryColor(category.name)"
+                  [attr.fill]="categoryColor(category.name)"
+                />
+              </g>
+            }
+          }
+        </svg>
       } @else {
         <div class="preview-placeholder">
           <span aria-hidden="true">▧</span>
@@ -21,7 +52,21 @@
       <strong [title]="selectedImage.file_name">{{ selectedImage.file_name }}</strong>
       <span>{{ selectedImage.width }} × {{ selectedImage.height }} px</span>
     </div>
-    <p class="preview-footnote">A sobreposição das caixas será adicionada na próxima etapa.</p>
+    @if (visibleCategories().length > 0) {
+      <div class="annotation-legend" aria-label="Legenda das classes nesta imagem">
+        @for (category of visibleCategories(); track category.id) {
+          <span class="legend-item">
+            <span
+              class="legend-swatch"
+              [style.backgroundColor]="categoryColor(category.name)"
+              aria-hidden="true"
+            ></span>
+            {{ category.name }}
+          </span>
+        }
+      </div>
+    }
+    <p class="preview-footnote">Caixas e cores correspondem às classes do arquivo COCO.</p>
   } @else {
     <div class="empty-preview">
       <span aria-hidden="true">▧</span>

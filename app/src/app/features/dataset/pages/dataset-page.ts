@@ -6,7 +6,7 @@ import {
   OnDestroy,
   signal,
 } from '@angular/core';
-import { CocoDataset, CocoImage } from '../../../core/models/coco-dataset.model';
+import { CocoAnnotation, CocoDataset, CocoImage } from '../../../core/models/coco-dataset.model';
 import { DatasetLoaderService } from '../../../core/services/dataset-loader.service';
 import { DatasetImportPanel } from '../components/dataset-import-panel';
 import { DatasetGallery } from '../components/dataset-gallery';
@@ -37,6 +37,16 @@ export class DatasetPage implements OnDestroy {
     return counts;
   });
 
+  protected readonly annotationsByImage = computed(() => {
+    const grouped = new Map<number, CocoAnnotation[]>();
+    for (const annotation of this.dataset()?.annotations ?? []) {
+      const annotations = grouped.get(annotation.image_id) ?? [];
+      annotations.push(annotation);
+      grouped.set(annotation.image_id, annotations);
+    }
+    return grouped;
+  });
+
   protected readonly selectedImage = computed(() => {
     const id = this.selectedImageId();
     return this.dataset()?.images.find((image) => image.id === id) ?? null;
@@ -45,6 +55,11 @@ export class DatasetPage implements OnDestroy {
   protected readonly selectedImageUrl = computed(() => {
     const image = this.selectedImage();
     return image ? this.imageUrls().get(this.loader.normalizeFileName(image.file_name)) ?? null : null;
+  });
+
+  protected readonly selectedAnnotations = computed(() => {
+    const id = this.selectedImageId();
+    return id === null ? [] : this.annotationsByImage().get(id) ?? [];
   });
 
   protected readonly missingImageCount = computed(() => {
