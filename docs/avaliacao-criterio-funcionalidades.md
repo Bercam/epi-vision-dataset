@@ -6,20 +6,20 @@
 
 ## Conferência requisito por requisito
 
-| Requisito                                         | Evidência atual                                                                                                                                       | Estado               |
-| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| Carregar JSON COCO por upload                     | Seletor JSON visível; teste de integração envia um `File` pelo input, valida o COCO e confirma a galeria renderizada.                                  | Atendido             |
-| Carregar as imagens correspondentes               | Seletor múltiplo; teste envia arquivos pelo input e confirma miniatura, imagem de prévia e associação por nome.                                        | Atendido             |
-| Selecionar arquivos em qualquer ordem              | Testes de integração cobrem imagens antes do COCO e COCO antes das imagens.                                                                          | Verificado           |
-| Galeria com miniatura, nome e número de anotações | `DatasetGallery` exibe miniatura lazy, nome e contagem para cada imagem.                                                                              | Atendido             |
-| Selecionar imagem para visualização detalhada     | Cada cartão emite a imagem selecionada para `DatasetPage`.                                                                                            | Atendido             |
-| Exibir caixas com cores por classe                | `ImagePreview` usa SVG com `viewBox` nas dimensões COCO e cores por categoria.                                                                        | Atendido             |
-| Filtrar por classe                                | `ClassFilter` filtra imagens; a prévia agora mostra somente as caixas da classe selecionada, e a contagem da prévia acompanha as caixas visíveis.     | Atendido após ajuste |
-| Estatísticas gerais e por classe                  | `DatasetPage` calcula totais, médias e contagens derivadas; `DatasetStatistics` apresenta os valores.                                                 | Atendido             |
-| Erros amigáveis de carregamento/JSON inválido     | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem `role=alert`; teste de página confirma a mensagem para JSON inválido.      | Atendido             |
-| Dataset vazio e imagem ausente                    | Há estados vazios para upload, galeria e prévia; teste de página confirma aviso quando o nome do arquivo não corresponde ao COCO.                       | Atendido             |
-| Instalação e inicialização `npm install` / `npm start` | Instruções presentes; `npm install` sem opções terminou com sucesso, e `npm start` compilou e serviu a página local.                                       | Verificado           |
-| Inicialização pelo comando `npm start`            | Servidor Angular compilou e respondeu HTTP 200 em `http://localhost:4200/`; o documento retornado contém `<app-root>`.                                 | Verificado           |
+| Requisito                                              | Evidência atual                                                                                                                                              | Estado               |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| Carregar JSON COCO por upload                          | Seletor JSON visível; teste de integração envia um `File` pelo input, valida o COCO e confirma a galeria renderizada.                                        | Atendido             |
+| Carregar as imagens correspondentes                    | Seletor múltiplo; teste envia arquivos pelo input e confirma miniatura, imagem de prévia e associação por nome.                                              | Atendido             |
+| Selecionar arquivos em qualquer ordem                  | Testes de integração cobrem imagens antes do COCO e COCO antes das imagens.                                                                                  | Verificado           |
+| Galeria com miniatura, nome e número de anotações      | `DatasetGallery` exibe miniatura lazy, nome e contagem para cada imagem.                                                                                     | Atendido             |
+| Selecionar imagem para visualização detalhada          | Cada cartão emite a imagem selecionada para `DatasetPage`.                                                                                                   | Atendido             |
+| Exibir caixas com cores por classe                     | `ImagePreview` usa SVG com `viewBox` nas dimensões COCO e cores por categoria.                                                                               | Atendido             |
+| Filtrar por classe                                     | `ClassFilter` filtra imagens; a prévia agora mostra somente as caixas da classe selecionada, e a contagem da prévia acompanha as caixas visíveis.            | Atendido após ajuste |
+| Estatísticas gerais e por classe                       | `DatasetPage` calcula totais, média e contagens; teste de página confirma no DOM 2 imagens, 3 anotações, média 1,5 e contagens `2/1/0/0` nas quatro classes. | Verificado           |
+| Erros amigáveis de carregamento/JSON inválido          | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem `role=alert`; teste de página confirma a mensagem para JSON inválido.          | Atendido             |
+| Dataset vazio e imagem ausente                         | Há estados vazios para upload, galeria e prévia; teste de página confirma aviso quando o nome do arquivo não corresponde ao COCO.                            | Atendido             |
+| Instalação e inicialização `npm install` / `npm start` | Instruções presentes; `npm install` sem opções terminou com sucesso, e `npm start` compilou e serviu a página local.                                         | Verificado           |
+| Inicialização pelo comando `npm start`                 | Servidor Angular compilou e respondeu HTTP 200 em `http://localhost:4200/`; o documento retornado contém `<app-root>`.                                       | Verificado           |
 
 ## Ajuste realizado nesta revisão
 
@@ -30,6 +30,7 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 - O fluxo dos inputs foi verificado com arquivos sintéticos em teste; ainda falta uma conferência manual no navegador selecionando o COCO e as imagens reais do dataset. A resposta HTTP confirma a inicialização, não essa conferência manual.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
+- O teste das estatísticas cobre uma fixture de integração pequena; ainda não existe uma conferência manual das estatísticas com os 31 registros do dataset real.
 
 ## Estimativa de pontuação
 

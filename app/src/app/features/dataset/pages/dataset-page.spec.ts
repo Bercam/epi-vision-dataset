@@ -65,6 +65,29 @@ describe('DatasetPage class filter', () => {
     expect(root.querySelectorAll('.bounding-box')).toHaveLength(1);
   });
 
+  it('renders dataset totals, average, and annotation counts by class', () => {
+    const component = fixture.componentInstance as unknown as DatasetPageHarness;
+    component.dataset.set(dataset);
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+    const statisticCards = [...root.querySelectorAll<HTMLElement>('.statistics-grid .stat-card')];
+    expect(statisticCards.map((card) => card.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
+      expect.stringContaining('2'),
+      expect.stringContaining('3'),
+      expect.stringContaining('1.5'),
+    ]);
+
+    const classRows = [...root.querySelectorAll<HTMLElement>('.class-breakdown .class-row')];
+    expect(classRows).toHaveLength(4);
+    expect(classRows.map((row) => row.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
+      expect.stringContaining('pessoa 2'),
+      expect.stringContaining('capacete 1'),
+      expect.stringContaining('colete 0'),
+      expect.stringContaining('sem_capacete 0'),
+    ]);
+  });
+
   it('loads COCO and image files through visible inputs when images are selected first', async () => {
     const createObjectURL = vi.fn(() => 'blob:uploaded-scene');
     const revokeObjectURL = vi.fn();
