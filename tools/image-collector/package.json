@@ -11,6 +11,7 @@
     "start": "node --env-file-if-exists=.env src/server.js",
     "dev": "node --watch --env-file-if-exists=.env src/server.js",
     "test": "node --test",
+    "validate:manifest": "node src/validateManifest.js",
     "test:watch": "node --test --watch"
   }
 }

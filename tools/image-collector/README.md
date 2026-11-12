@@ -78,13 +78,23 @@ dataset/
   sources/
     image_sources.csv            # required provenance catalog
     records/                     # sidecar JSON per image
-  annotations/
-    annotations_coco.json        # NOT created by this tool
-    yolo/                        # empty directory only; no annotation files are written
+  annotations_coco.json         # not created by this tool
+  annotations_yolo/             # not created by this tool
+  annotations/makesense_source/ # preserved MakeSense exports
   .tmp/                          # short-lived preview files
 ```
 
 The tool creates the directories it needs. It does **not** create placeholder annotation files, because annotation is a separate human task.
+
+### Validate the image manifest
+
+From this directory, run:
+
+```bash
+npm run validate:manifest
+```
+
+The read-only validator compares the source catalog with the image files and COCO image records. It checks required provenance fields, unique filenames, file format, dimensions, byte size, and SHA-256. An empty historical `download_date` is reported but is not inferred. Passing this check does not approve image sources, licenses, third-party rights, or annotations.
 
 ### CSV columns
 

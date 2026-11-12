@@ -95,3 +95,5 @@ Os cinco pares de autor/título inferidos, o handle `wal_` e o nome `Ali` foram 
 ## Estado atual do catálogo
 
 Na revisão do dataset em 2026-11-12, os 31 registros ativos tinham autor e licença preenchidos, e todos os SHA-256 correspondiam aos arquivos de `dataset/images/`. `download_date` continua vazio nos 31 registros porque não há um registro histórico confiável para preencher esse campo. O responsável revisou as anotações, mas a aprovação final continua pendente; por isso, `annotation_status` permanece `in_review` nos 31 registros.
+
+Essa conferência agora pode ser repetida sem alterar dados com `cd tools/image-collector` e `npm run validate:manifest`. A verificação atual confirmou 31 registros, 31 imagens e dimensões, tamanhos e SHA-256 compatíveis com os arquivos e o COCO. Os campos obrigatórios de origem estão preenchidos e não há nomes duplicados, arquivos ausentes ou imagens sem registro. O comando preserva os status existentes e não valida juridicamente licenças ou direitos de terceiros.
