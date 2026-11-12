@@ -18,7 +18,7 @@
 | Estatísticas gerais e por classe                  | `DatasetPage` calcula totais, médias e contagens derivadas; `DatasetStatistics` apresenta os valores.                                                 | Atendido             |
 | Erros amigáveis de carregamento/JSON inválido     | `DatasetLoaderService` converte erro de leitura/parse e validação em mensagem `role=alert`; teste de página confirma a mensagem para JSON inválido.      | Atendido             |
 | Dataset vazio e imagem ausente                    | Há estados vazios para upload, galeria e prévia; teste de página confirma aviso quando o nome do arquivo não corresponde ao COCO.                       | Atendido             |
-| Instruções `npm install` e `npm start`            | Presentes em `app/README.md` e no README principal.                                                                                                   | Atendido             |
+| Instalação e inicialização `npm install` / `npm start` | Instruções presentes; `npm install` sem opções terminou com sucesso, e `npm start` compilou e serviu a página local.                                       | Verificado           |
 | Inicialização pelo comando `npm start`            | Servidor Angular compilou e respondeu HTTP 200 em `http://localhost:4200/`; o documento retornado contém `<app-root>`.                                 | Verificado           |
 
 ## Ajuste realizado nesta revisão
