@@ -23,7 +23,7 @@ Inspeção da pasta `images/` e preparação de `dataset/images/` e do catálogo
 ## Inconsistências e pendências
 
 1. Há um duplicado exato: `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` e `glenov-brankovic-DWp5nUqTn6E-unsplash (1).jpg` têm o mesmo SHA-256 e dimensões (4000 × 3000 px). Nenhum arquivo foi removido.
-2. O CSV legado usava seis colunas e dois registros vazios (`image_001.jpg` e `image_002.jpg`). Foi preservada uma cópia em `dataset/sources/image_sources.csv.bak-2026-11-12`; o catálogo ativo agora usa as 16 colunas documentadas pela ferramenta.
+2. O CSV legado usava seis colunas e dois registros vazios (`image_001.jpg` e `image_002.jpg`). Foi preservada uma cópia em `dataset/sources/image_sources.csv.bak-2026-11-12`; o catálogo ativo usa as 16 colunas padrão da ferramenta e a coluna adicional `author_url`.
 3. As 31 imagens únicas foram copiadas para `dataset/images/`. Os arquivos originais em `images/` permanecem intactos.
 4. As URLs de origem foram associadas aos arquivos por seus identificadores de Unsplash/Pexels ou pelo nome exato do arquivo da Wikimedia, usando `ListaDeLinks.txt`. Autor, título, licença, URL direta e data de download permanecem vazios e marcados para verificação manual.
 5. A adequação foi confirmada pelo responsável. A triagem visual preliminar continua registrada como observação, não como exclusão automática.

@@ -5,7 +5,7 @@
 - `images/`: 31 imagens utilizadas no dataset.
 - `sources/image_sources.csv`: procedência das imagens.
 - `annotations/annotations_coco.json`: anotações no formato COCO.
-- `annotations/yolo/`: arquivos YOLO, um por imagem, e `dataset.yaml`.
+- `annotations/yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`.
 - `annotations/makesense_source/`: exports originais recebidos do MakeSense (CSV e ZIP), preservados para rastreabilidade.
 
 ## Classes e mapeamento YOLO
@@ -26,6 +26,17 @@ Os IDs do ZIP original do MakeSense foram mapeados comparando as 261 caixas com 
 - As classes e as coordenadas do CSV correspondem às caixas YOLO do ZIP; todas as 261 caixas foram correspondidas.
 - Bounding boxes têm largura/altura positivas e ficam dentro das dimensões indicadas no CSV.
 - Esta conferência verificou consistência estrutural e correspondência entre exports; não substitui a revisão visual final das anotações.
+
+## Validação técnica
+
+Revisão estrutural realizada em 2026-11-12:
+
+- Os 31 nomes de imagem do COCO existem em `images/` e cada um possui um `.txt` YOLO correspondente.
+- As 261 anotações COCO correspondem às 261 linhas YOLO; classes e caixas normalizadas foram conferidas, considerando até 1,01 px de diferença por arredondamento entre os formatos.
+- Não foram encontrados referências de imagem inválidas, caixas fora dos limites, labels ausentes, labels extras ou valores YOLO fora de `[0, 1]`.
+- Os 31 hashes SHA-256 do catálogo de fontes correspondem aos arquivos em `images/`.
+
+Essa validação não confirma visualmente se cada caixa representa corretamente o objeto nem resolve direitos de terceiros nas fotos. Os 31 registros estão com `annotation_status=in_review`; a aprovação visual ainda está pendente.
 
 ## Critérios
 

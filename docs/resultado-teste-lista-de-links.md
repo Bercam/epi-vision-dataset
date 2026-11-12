@@ -44,7 +44,7 @@ incluindo os links do Pexels que falharam nas execuções em lote.
 - A linha 2 foi confirmada (`201`) e gerou:
   - `dataset/images/image_001.jpg` (bytes originais, sem recodificação);
   - `dataset/sources/records/image_001.json` (sidecar);
-  - uma linha no CSV com o cabeçalho exato de 16 colunas.
+  - uma linha no CSV com o cabeçalho padrão de 16 colunas.
 - O `PATCH` em `image_001.jpg` atualizou `annotation_status` para `in_review` e as observações,
   retornando `200`.
 - `GET /api/records` retornou `200` com 1 registro e miniatura.
@@ -84,7 +84,7 @@ A ferramenta não tenta contornar o bloqueio. Para uso em lote, configure `PEXEL
 - Servidor local com `DATASET_ROOT` temporário: health, config, UI (`/`), extração, confirmação,
   duplicata, PATCH, listagem e limpeza de previews.
 - Nenhuma escrita no `dataset/` real: `dataset/images/` continua vazio e o CSV legado segue
-  intacto (o cabeçalho de 16 colunas é aplicado na primeira confirmação).
+  intacto (o cabeçalho padrão de 16 colunas é aplicado na primeira confirmação; `author_url` foi adicionado posteriormente ao catálogo ativo).
 
 ## Não executado
 

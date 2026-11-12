@@ -88,3 +88,7 @@ Os cinco pares de autor/título inferidos, o handle `wal_` e o nome `Ali` foram 
 - Uma URL da Unsplash atingiu o limite local temporário do coletor no primeiro passe; após o intervalo, a repetição funcionou e encontrou autor e título.
 - Os estados `duplicate` retornados pelo coletor significam que o SHA-256 já existia no dataset; são extrações bem-sucedidas e nenhum arquivo foi gravado.
 - O campo de licença vazio não significa que a imagem não tenha licença; significa que a ferramenta não conseguiu identificá-la com segurança.
+
+## Estado atual do catálogo
+
+Na revisão do dataset em 2026-11-12, os 31 registros ativos tinham autor e licença preenchidos, e todos os SHA-256 correspondiam aos arquivos de `dataset/images/`. `download_date` continua vazio nos 31 registros porque não há um registro histórico confiável para preencher esse campo. Como as imagens agora possuem anotações e a revisão visual final ainda não foi registrada, `annotation_status` foi atualizado de `pending` para `in_review` em todos os registros. Isso não significa que as anotações foram aprovadas.

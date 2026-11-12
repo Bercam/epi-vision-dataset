@@ -4,7 +4,7 @@ Projeto de anotação e exploração visual de imagens de ambientes de construç
 
 ## Estado atual
 
-- Dataset em `dataset/`: 31 imagens, 261 anotações COCO e exports YOLO. Os totais e a conferência entre os exports estão descritos em [`dataset/README.md`](dataset/README.md).
+- Dataset em `dataset/`: 31 imagens, 261 anotações COCO e exports YOLO. Os totais e a conferência estrutural entre os exports estão descritos em [`dataset/README.md`](dataset/README.md); a revisão visual segue pendente.
 - Fontes e metadados das imagens: [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv). Os registros incluem pendências de verificação manual; a licença da plataforma não substitui a verificação de direitos de terceiros visíveis nas fotos.
 - Aplicação Angular em `app/`: upload do JSON COCO e das imagens, galeria com filtro por classe, pré-visualização com bounding boxes, estatísticas e estados para erros e datasets vazios.
 - Os critérios de anotação estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md). A consistência estrutural das anotações foi conferida, mas isso não equivale a uma revisão visual final.

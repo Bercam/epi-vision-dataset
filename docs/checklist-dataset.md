@@ -32,34 +32,34 @@
 
 ## 4. Validação COCO
 
-- [ ] JSON pode ser interpretado.
-- [ ] Existem as listas `images`, `annotations` e `categories`.
-- [ ] IDs de imagens são únicos.
-- [ ] IDs de anotações são únicos.
-- [ ] IDs de categorias são únicos.
-- [ ] Toda anotação referencia uma imagem existente.
-- [ ] Toda anotação referencia uma categoria existente.
-- [ ] `bbox` possui quatro números.
-- [ ] Largura e altura da caixa são positivas.
-- [ ] Caixas estão dentro dos limites da imagem.
-- [ ] Área é coerente com a caixa.
-- [ ] Arquivos referenciados existem.
+- [x] JSON pode ser interpretado.
+- [x] Existem as listas `images`, `annotations` e `categories`.
+- [x] IDs de imagens são únicos.
+- [x] IDs de anotações são únicos.
+- [x] IDs de categorias são únicos.
+- [x] Toda anotação referencia uma imagem existente.
+- [x] Toda anotação referencia uma categoria existente.
+- [x] `bbox` possui quatro números.
+- [x] Largura e altura da caixa são positivas.
+- [x] Caixas estão dentro dos limites da imagem.
+- [x] Área é coerente com a caixa.
+- [x] Arquivos referenciados existem.
 
 ## 5. Validação YOLO
 
-- [ ] Mapeamento de classes documentado.
-- [ ] IDs de classe são zero-based.
-- [ ] Coordenadas estão normalizadas.
-- [ ] Valores estão dentro do intervalo esperado.
-- [ ] Cada imagem possui arquivo de anotação correspondente, inclusive arquivo vazio quando não houver objetos, se essa for a convenção adotada.
-- [ ] Conversão foi comparada com as anotações COCO originais.
+- [x] Mapeamento de classes documentado.
+- [x] IDs de classe são zero-based.
+- [x] Coordenadas estão normalizadas.
+- [x] Valores estão dentro do intervalo esperado.
+- [x] Cada imagem possui arquivo de anotação correspondente; as 31 imagens têm anotações.
+- [x] Conversão foi comparada com as anotações COCO originais.
 
 ## 6. Revisão final
 
-- [ ] Quantidade mínima de imagens atingida.
-- [ ] Todas as fontes registradas.
-- [ ] Todas as classes obrigatórias presentes no esquema.
+- [x] Quantidade mínima de imagens atingida (31 arquivos; revisar adequação visual individual ainda pendente).
+- [x] Todas as fontes registradas no catálogo (metadados e direitos de terceiros ainda requerem revisão).
+- [x] Todas as classes obrigatórias presentes no esquema.
 - [ ] Anotações revisadas visualmente.
 - [ ] Ambiguidades e limitações documentadas.
-- [ ] COCO e YOLO validados.
+- [x] COCO e YOLO validados estruturalmente e comparados.
 - [ ] Nenhum arquivo temporário ou duplicado desnecessário.
