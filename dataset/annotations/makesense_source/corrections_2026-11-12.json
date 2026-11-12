@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "source_csv": "labels_my-project-name_2026-11-12-05-28-02.csv",
+  "source_zip": "labels_my-project-name_2026-11-12-05-27-43.zip",
+  "derived_csv": "makesense_annotations_reviewed_2026-11-12.csv",
+  "derived_zip": "makesense_yolo_export_reviewed_2026-11-12.zip",
+  "change": {
+    "action": "remove_invalid_annotation",
+    "csv_line": 95,
+    "image_name": "glenov-brankovic-DWp5nUqTn6E-unsplash.jpg",
+    "class": "pessoa",
+    "bbox": [
+      1834,
+      2703,
+      6,
+      0
+    ],
+    "reason": "A caixa tinha altura zero; o recorte visual mostra o ponto marcado sobre o piso de concreto, sem pessoa visível.",
+    "raw_exports_preserved": true,
+    "final_dataset_approval": "pending"
+  }
+}
