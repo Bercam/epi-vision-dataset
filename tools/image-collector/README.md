@@ -209,6 +209,8 @@ Status on 2026-11-11: **81 automated tests passed, 0 failed** (`node --test`). C
 - Safe HTTP client: redirects, gzip, size limits, private-address blocking, DNS validation, retry/backoff on transient failures, per-host request spacing.
 - HTML/Open Graph/Twitter/JSON-LD metadata extraction, including rejection of generic "License"/"Free" anchor labels as license names.
 - Platform extractors with fake HTTP responses, including rejection of Pexels search/collection pages.
+
+Status on 2026-11-12: **83 automated tests passed, 0 failed**. Two integration tests cover the read-only manifest validator on matching data and a SHA-256 mismatch, asserting that source files and review status are preserved.
 - Storage naming, placeholder reuse, no-overwrite behavior.
 - Preview store TTL and cleanup.
 - Duplicate index.

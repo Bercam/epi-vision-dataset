@@ -12,7 +12,7 @@
 - `CONTRIBUTING.md` documenta os padrões de commits e branches.
 - O histórico em `feat/angular-dataset-explorer` inclui commits separados como `feat(gallery)`, `feat(viewer)`, `feat(gallery): filter`, `feat(dataset)`, `docs(adr)` e `data(dataset)`, sem commits artificiais adicionados nesta revisão.
 - O README informa claramente que a revisão visual das anotações continua pendente. Também apresenta os comandos e o resultado registrado para build, ESLint, Prettier, 12 testes unitários e auditoria de dependências; os detalhes estão em `docs/avaliacao-criterio-organizacao-codigo.md`.
-- A ferramenta de coleta tem 81 testes aprovados; a validação do catálogo encontrou 31 registros de origem correspondentes às imagens e ao COCO, mantendo todos os rótulos `in_review`.
+- A ferramenta de coleta tem 83 testes aprovados; dois novos casos cobrem o validador de procedência e confirmam que falhas de hash não alteram os arquivos. A validação do catálogo encontrou 31 registros de origem correspondentes às imagens e ao COCO, mantendo todos os rótulos `in_review`.
 
 ## Pendência
 
