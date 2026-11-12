@@ -1,0 +1,57 @@
+.statistics-panel {
+  margin-top: 13px;
+  padding: 17px;
+  border: 1px solid #e2e9e3;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgb(36 57 47 / 3%);
+}
+
+.statistics-heading { margin-bottom: 13px; }
+.eyebrow {
+  margin: 0 0 5px;
+  color: #71837b;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+}
+h2 { margin: 0; font-size: 14px; }
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.stat-card {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid #edf0ed;
+  border-radius: 10px;
+  background: #fafcfb;
+}
+.stat-label { color: #78877f; font-size: 9px; font-weight: 750; letter-spacing: 0.08em; }
+.stat-card strong { color: #244d39; font-size: 23px; letter-spacing: -0.04em; }
+.stat-caption { color: #89968f; font-size: 10px; }
+
+.class-breakdown { margin-top: 17px; }
+h3 { margin: 0 0 7px; color: #50645a; font-size: 11px; }
+.class-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 1px;
+  border-top: 1px solid #eff2ef;
+  font-size: 11px;
+}
+.class-name { display: inline-flex; align-items: center; gap: 8px; color: #5c6d64; }
+.class-dot { width: 8px; height: 8px; border-radius: 50%; }
+.class-count { color: #304c3d; font-weight: 700; }
+.no-classes { margin: 0; padding-top: 8px; color: #87948c; font-size: 11px; }
+
+@media (max-width: 560px) {
+  .statistics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .average-card { grid-column: span 2; }
+}

@@ -12,10 +12,11 @@ import { DatasetImportPanel } from '../components/dataset-import-panel';
 import { DatasetGallery } from '../components/dataset-gallery';
 import { ImagePreview } from '../components/image-preview';
 import { ClassFilter } from '../components/class-filter';
+import { DatasetStatistics } from '../components/dataset-statistics';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatasetImportPanel, DatasetGallery, ImagePreview, ClassFilter],
+  imports: [DatasetImportPanel, DatasetGallery, ImagePreview, ClassFilter, DatasetStatistics],
   selector: 'app-dataset-page',
   templateUrl: './dataset-page.html',
   styleUrl: './dataset-page.scss',
@@ -37,6 +38,20 @@ export class DatasetPage implements OnDestroy {
       counts.set(annotation.image_id, (counts.get(annotation.image_id) ?? 0) + 1);
     }
     return counts;
+  });
+
+  protected readonly annotationCountsByCategory = computed(() => {
+    const counts = new Map<number, number>();
+    for (const annotation of this.dataset()?.annotations ?? []) {
+      counts.set(annotation.category_id, (counts.get(annotation.category_id) ?? 0) + 1);
+    }
+    return counts;
+  });
+
+  protected readonly averageAnnotationsPerImage = computed(() => {
+    const dataset = this.dataset();
+    if (!dataset || dataset.images.length === 0) return 0;
+    return dataset.annotations.length / dataset.images.length;
   });
 
   protected readonly imageCountsByCategory = computed(() => {

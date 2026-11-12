@@ -1,0 +1,39 @@
+<section class="statistics-panel" aria-label="Estatísticas do dataset">
+  <div class="statistics-heading">
+    <div>
+      <p class="eyebrow">ANÁLISE</p>
+      <h2>Estatísticas do dataset</h2>
+    </div>
+  </div>
+  <div class="statistics-grid">
+    <article class="stat-card">
+      <span class="stat-label">IMAGENS</span>
+      <strong>{{ imageCount() }}</strong>
+      <span class="stat-caption">no dataset</span>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">ANOTAÇÕES</span>
+      <strong>{{ annotationCount() }}</strong>
+      <span class="stat-caption">no total</span>
+    </article>
+    <article class="stat-card average-card">
+      <span class="stat-label">MÉDIA POR IMAGEM</span>
+      <strong>{{ averagePerImage() | number: '1.1-2' }}</strong>
+      <span class="stat-caption">anotações por imagem</span>
+    </article>
+  </div>
+  <div class="class-breakdown">
+    <h3>Anotações por classe</h3>
+    @for (category of categories(); track category.id) {
+      <div class="class-row">
+        <span class="class-name">
+          <span class="class-dot" [style.backgroundColor]="color(category.name)" aria-hidden="true"></span>
+          {{ category.name }}
+        </span>
+        <span class="class-count">{{ annotationCounts().get(category.id) ?? 0 }}</span>
+      </div>
+    } @empty {
+      <p class="no-classes">O dataset não possui classes.</p>
+    }
+  </div>
+</section>

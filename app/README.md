@@ -35,4 +35,4 @@ O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annot
 2. Selecione todas as imagens da pasta `../dataset/images/`.
 3. A galeria relaciona cada imagem pelo nome do arquivo registrado no COCO; selecione um cartão para abrir a pré-visualização.
 
-A versão atual mostra a quantidade de anotações por imagem, o resumo do dataset e as caixas COCO coloridas na pré-visualização. Filtros por classe e estatísticas detalhadas entram nas próximas etapas.
+A versão atual mostra o resumo do dataset, estatísticas gerais e por classe, filtro por classe, quantidade de anotações por imagem e caixas COCO coloridas na pré-visualização.

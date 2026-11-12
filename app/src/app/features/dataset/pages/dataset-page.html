@@ -49,6 +49,14 @@
       </div>
     </section>
 
+    <app-dataset-statistics
+      [categories]="currentDataset.categories"
+      [annotationCounts]="annotationCountsByCategory()"
+      [imageCount]="currentDataset.images.length"
+      [annotationCount]="currentDataset.annotations.length"
+      [averagePerImage]="averageAnnotationsPerImage()"
+    />
+
     <app-class-filter
       [categories]="currentDataset.categories"
       [imageCounts]="imageCountsByCategory()"
