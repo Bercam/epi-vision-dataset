@@ -2,71 +2,76 @@
 
 ## 1. Objetivo
 
-Registrar decisões de arquitetura, implementação, organização e tratamento de dados que não estejam totalmente determinadas pelo documento original do teste.
+Registrar decisões de arquitetura, implementação, organização e tratamento de dados. Os registros abaixo descrevem o que já está implementado; não alteram os requisitos originais do teste.
 
-Este arquivo deve evoluir junto com o projeto. Não apagar decisões relevantes sem registrar a alteração.
+## 2. Decisões implementadas
 
-## 2. Como registrar uma decisão
+### ADR-001 — Dataset separado do código da aplicação
 
-Para cada decisão, preencher:
+- **Status:** Implementada
+- **Contexto:** Dataset e aplicação precisam permanecer organizados e verificáveis separadamente.
+- **Decisão:** Manter o conjunto oficial em `dataset/` e o app Angular em `app/`. O app não mantém uma cópia das imagens em `src/assets/`.
+- **Consequências:** Evita cópias divergentes. Para explorar o dataset, a pessoa seleciona o COCO JSON e as imagens no navegador.
+- **Evidência:** Estrutura do repositório e fluxo de upload atual.
 
-- **ID:** identificador sequencial, por exemplo `ADR-001`.
-- **Status:** proposta, aprovada, rejeitada ou substituída.
-- **Contexto:** problema ou necessidade.
-- **Decisão:** solução escolhida.
-- **Alternativas:** opções consideradas, quando relevante.
-- **Consequências:** impactos, limitações e benefícios.
-- **Responsável e data:** quem aprovou e quando.
+### ADR-002 — Upload conjunto de COCO e imagens
 
-## 3. Decisões iniciais propostas
+- **Status:** Implementada
+- **Contexto:** O JSON COCO contém nomes e dimensões, mas não disponibiliza os arquivos de imagem.
+- **Decisão:** Permitir selecionar o JSON e, separadamente, múltiplas imagens locais; podem ser selecionados em qualquer ordem.
+- **Consequências:** O app funciona sem copiar imagens para os assets. A seleção das imagens precisa ser feita novamente após recarregar a página; as imagens ausentes são informadas pela interface.
+- **Evidência:** `DatasetImportPanel` e `DatasetLoaderService`.
 
-As propostas abaixo são recomendações de organização do projeto, não exigências literais do teste. Devem ser confirmadas pelo responsável.
+### ADR-003 — Validação do COCO em runtime
 
-### ADR-001 — Separação entre dataset e aplicação
+- **Status:** Implementada
+- **Contexto:** O arquivo carregado é entrada externa e interfaces TypeScript não validam dados em runtime.
+- **Decisão:** Ler o JSON como `unknown`, validar estrutura, campos, IDs, classes obrigatórias, referências e dimensões das caixas antes de disponibilizar o dataset para a interface.
+- **Consequências:** Entradas inválidas são recusadas com mensagens de validação. Um COCO completamente vazio é aceito para que a interface mostre os estados vazios.
+- **Evidência:** `validateCocoDataset` e `DatasetLoaderService`.
 
-- **Status:** Proposta
-- **Contexto:** O dataset e a aplicação possuem ciclos de validação diferentes.
-- **Decisão proposta:** Manter os arquivos do dataset fora do código-fonte da aplicação, com uma estratégia explícita para disponibilizar os arquivos necessários em runtime.
-- **Consequências:** Facilita validar e revisar os dados independentemente da aplicação. É necessário evitar cópias divergentes do dataset.
+### ADR-004 — Associação de imagens pelo nome do arquivo
 
-### ADR-002 — Fonte oficial das imagens
+- **Status:** Implementada
+- **Contexto:** A imagem escolhida precisa corresponder ao `file_name` registrado no COCO.
+- **Decisão:** Associar usando o nome base do arquivo, ignorando diferenças entre maiúsculas e minúsculas e removendo diretórios do caminho COCO.
+- **Consequências:** A seleção funciona mesmo quando o COCO contém caminho relativo. Arquivos com nomes diferentes não são associados automaticamente; a interface informa imagens ausentes.
+- **Limitação conhecida:** Nomes base iguais em diretórios diferentes podem ser ambíguos, pois o caminho é descartado.
+- **Evidência:** `DatasetLoaderService.normalizeFileName` e registro de imagens selecionadas.
 
-- **Status:** Proposta
-- **Contexto:** A aplicação precisa localizar imagens referenciadas pelo COCO JSON.
-- **Decisão proposta:** Manter `dataset/images/` como fonte oficial dos arquivos originais. Se a aplicação exigir cópia em `app/src/assets/`, documentar um processo de sincronização.
-- **Consequências:** Evita divergência entre dataset entregue e imagens exibidas na aplicação.
+### ADR-005 — URLs temporárias para imagens selecionadas
 
-### ADR-003 — Carregamento e validação do COCO JSON
+- **Status:** Implementada
+- **Contexto:** As imagens locais precisam ser mostradas no navegador sem serem copiadas para o projeto.
+- **Decisão:** Criar URLs temporárias com `URL.createObjectURL` para exibição e liberá-las quando novas imagens são registradas ou a página é destruída.
+- **Consequências:** Evita cópias persistentes no app; URLs e imagens são locais à sessão do navegador.
+- **Evidência:** `DatasetLoaderService.registerImageFiles`, `releaseImageUrls` e `DatasetPage.ngOnDestroy`.
 
-- **Status:** Proposta
-- **Contexto:** O JSON é uma entrada externa e pode estar inválido ou incompleto.
-- **Decisão proposta:** Receber o conteúdo inicialmente como `unknown`, validar estrutura e referências em runtime e só então convertê-lo para os modelos internos.
-- **Consequências:** Reduz risco de erros em tempo de execução e evita depender apenas de interfaces TypeScript.
+### ADR-006 — SVG para caixas de anotação
 
-### ADR-004 — Visualização das bounding boxes
+- **Status:** Implementada
+- **Contexto:** As caixas COCO devem permanecer relacionadas às dimensões originais da imagem.
+- **Decisão:** Renderizar a imagem e as caixas em SVG, usando `viewBox` definido por largura e altura do COCO.
+- **Consequências:** As coordenadas COCO são usadas diretamente no mesmo sistema de referência da imagem.
+- **Evidência:** `ImagePreview`.
 
-- **Status:** Proposta
-- **Contexto:** As caixas precisam permanecer alinhadas à imagem em diferentes dimensões de tela.
-- **Decisão proposta:** Avaliar SVG sobreposto à imagem, utilizando um `viewBox` baseado nas dimensões originais da imagem.
-- **Consequências:** Permite manter as coordenadas COCO no mesmo sistema de referência visual. A implementação deve testar redimensionamento e proporção.
+### ADR-007 — Signals e valores derivados
 
-### ADR-005 — Estado e valores derivados no Angular
+- **Status:** Implementada
+- **Contexto:** Galeria, filtro e estatísticas dependem do dataset ativo e precisam atualizar juntas.
+- **Decisão:** Usar Signals para estado da página e `computed` para contagens, filtro, seleção e estatísticas; componentes usam `OnPush`.
+- **Consequências:** Os valores são recalculados quando o estado relacionado muda, sem executar agregações em métodos chamados pelo template.
+- **Evidência:** `DatasetPage` e componentes standalone do recurso dataset.
 
-- **Status:** Proposta
-- **Contexto:** A galeria, os filtros e as estatísticas dependem do dataset carregado.
-- **Decisão proposta:** Utilizar Signals para estado local e `computed` para valores derivados, quando adequado.
-- **Consequências:** Evita cálculos repetidos em templates e facilita rastrear atualizações.
+## 3. Decisões pendentes
 
-## 4. Decisões pendentes
-
-| ID | Assunto | Pergunta | Status |
-|---|---|---|---|
-| ADR-006 | Upload | O upload será apenas do JSON ou também das imagens? | Pendente |
-| ADR-007 | Imagens | Como será resolvido o caminho de cada imagem no Angular? | Pendente |
-| ADR-008 | Testes E2E | Qual ferramenta será adotada, se houver tempo? | Pendente |
-
-## 5. Histórico
-
-| Data | ID | Alteração |
+| ID | Assunto | Pendente |
 |---|---|---|
-| A preencher | — | Criação do documento |
+| ADR-008 | Estratégia de testes E2E | Definir ferramenta e escopo, caso os testes E2E sejam implementados. |
+| ADR-009 | Colisões de nomes | Decidir se nomes base duplicados serão rejeitados ou se a resolução futura usará caminhos relativos completos. |
+
+## 4. Histórico
+
+| Data | Alteração |
+|---|---|
+| 2026-11-12 | Decisões atuais documentadas após implementação do upload, validação, galeria e pré-visualização. |
