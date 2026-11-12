@@ -11,10 +11,11 @@ import { DatasetLoaderService } from '../../../core/services/dataset-loader.serv
 import { DatasetImportPanel } from '../components/dataset-import-panel';
 import { DatasetGallery } from '../components/dataset-gallery';
 import { ImagePreview } from '../components/image-preview';
+import { ClassFilter } from '../components/class-filter';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatasetImportPanel, DatasetGallery, ImagePreview],
+  imports: [DatasetImportPanel, DatasetGallery, ImagePreview, ClassFilter],
   selector: 'app-dataset-page',
   templateUrl: './dataset-page.html',
   styleUrl: './dataset-page.scss',
@@ -25,6 +26,7 @@ export class DatasetPage implements OnDestroy {
   protected readonly dataset = signal<CocoDataset | null>(null);
   protected readonly imageUrls = signal<ReadonlyMap<string, string>>(new Map());
   protected readonly selectedImageId = signal<number | null>(null);
+  protected readonly selectedCategoryId = signal<number | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly hasImageSelection = signal(false);
@@ -35,6 +37,28 @@ export class DatasetPage implements OnDestroy {
       counts.set(annotation.image_id, (counts.get(annotation.image_id) ?? 0) + 1);
     }
     return counts;
+  });
+
+  protected readonly imageCountsByCategory = computed(() => {
+    const imageIdsByCategory = new Map<number, Set<number>>();
+    for (const annotation of this.dataset()?.annotations ?? []) {
+      const imageIds = imageIdsByCategory.get(annotation.category_id) ?? new Set<number>();
+      imageIds.add(annotation.image_id);
+      imageIdsByCategory.set(annotation.category_id, imageIds);
+    }
+    return new Map([...imageIdsByCategory].map(([categoryId, imageIds]) => [categoryId, imageIds.size]));
+  });
+
+  protected readonly filteredImages = computed(() => {
+    const dataset = this.dataset();
+    const categoryId = this.selectedCategoryId();
+    if (!dataset || categoryId === null) return dataset?.images ?? [];
+    const imageIds = new Set(
+      dataset.annotations
+        .filter((annotation) => annotation.category_id === categoryId)
+        .map((annotation) => annotation.image_id),
+    );
+    return dataset.images.filter((image) => imageIds.has(image.id));
   });
 
   protected readonly annotationsByImage = computed(() => {
@@ -78,9 +102,11 @@ export class DatasetPage implements OnDestroy {
     try {
       const dataset = await this.loader.loadJsonFile(file);
       this.dataset.set(dataset);
+      this.selectedCategoryId.set(null);
       this.selectedImageId.set(dataset.images[0]?.id ?? null);
     } catch (error: unknown) {
       this.dataset.set(null);
+      this.selectedCategoryId.set(null);
       this.selectedImageId.set(null);
       this.errorMessage.set(
         error instanceof Error
@@ -99,6 +125,14 @@ export class DatasetPage implements OnDestroy {
 
   protected selectImage(image: CocoImage): void {
     this.selectedImageId.set(image.id);
+  }
+
+  protected selectCategory(categoryId: number | null): void {
+    this.selectedCategoryId.set(categoryId);
+    const visibleImages = this.filteredImages();
+    if (!visibleImages.some((image) => image.id === this.selectedImageId())) {
+      this.selectedImageId.set(visibleImages[0]?.id ?? null);
+    }
   }
 
   protected imageUrl(image: CocoImage): string | null {

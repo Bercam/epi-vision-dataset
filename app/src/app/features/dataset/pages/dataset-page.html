@@ -49,9 +49,17 @@
       </div>
     </section>
 
+    <app-class-filter
+      [categories]="currentDataset.categories"
+      [imageCounts]="imageCountsByCategory()"
+      [totalImageCount]="currentDataset.images.length"
+      [selectedCategoryId]="selectedCategoryId()"
+      (categorySelected)="selectCategory($event)"
+    />
+
     <section class="workspace" aria-label="Galeria e pré-visualização">
       <app-dataset-gallery
-        [images]="currentDataset.images"
+        [images]="filteredImages()"
         [imageUrls]="imageUrls()"
         [annotationCounts]="annotationCounts()"
         [selectedImageId]="selectedImageId()"

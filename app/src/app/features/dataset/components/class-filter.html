@@ -1,0 +1,32 @@
+<section class="filter-panel" aria-label="Filtrar galeria por classe">
+  <div class="filter-heading">
+    <div>
+      <p class="eyebrow">FILTRO</p>
+      <h2>Classe da anotação</h2>
+    </div>
+    <span class="filter-hint">{{ selectedCategoryId() === null ? totalImageCount() : imageCounts().get(selectedCategoryId()!) ?? 0 }} imagens</span>
+  </div>
+  <div class="filter-options" role="group" aria-label="Classes">
+    <button
+      type="button"
+      class="filter-option"
+      [class.active]="selectedCategoryId() === null"
+      [attr.aria-pressed]="selectedCategoryId() === null"
+      (click)="categorySelected.emit(null)"
+    >
+      Todas <span>{{ totalImageCount() }}</span>
+    </button>
+    @for (category of categories(); track category.id) {
+      <button
+        type="button"
+        class="filter-option"
+        [class.active]="selectedCategoryId() === category.id"
+        [attr.aria-pressed]="selectedCategoryId() === category.id"
+        (click)="categorySelected.emit(category.id)"
+      >
+        <span class="class-dot" [style.backgroundColor]="color(category.name)" aria-hidden="true"></span>
+        {{ category.name }} <span>{{ imageCounts().get(category.id) ?? 0 }}</span>
+      </button>
+    }
+  </div>
+</section>

@@ -64,6 +64,17 @@ h2 {
   gap: 10px;
 }
 
+.gallery-empty {
+  display: grid;
+  min-height: 150px;
+  place-items: center;
+  border: 1px dashed #dce5de;
+  border-radius: 10px;
+  color: #77877e;
+  font-size: 12px;
+  text-align: center;
+}
+
 .image-card {
   min-width: 0;
   padding: 0;
