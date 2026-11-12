@@ -210,7 +210,7 @@ Status on 2026-11-11: **81 automated tests passed, 0 failed** (`node --test`). C
 - HTML/Open Graph/Twitter/JSON-LD metadata extraction, including rejection of generic "License"/"Free" anchor labels as license names.
 - Platform extractors with fake HTTP responses, including rejection of Pexels search/collection pages.
 
-Status on 2026-11-12: **83 automated tests passed, 0 failed**. Two integration tests cover the read-only manifest validator on matching data and a SHA-256 mismatch, asserting that source files and review status are preserved.
+Status on 2026-11-12: **85 automated tests passed, 0 failed**. Four integration tests cover the read-only manifest validator on matching data, SHA-256 mismatch, incorrect extension, and duplicate COCO filenames. They assert that source files and review status are preserved where applicable.
 - Storage naming, placeholder reuse, no-overwrite behavior.
 - Preview store TTL and cleanup.
 - Duplicate index.
