@@ -19,7 +19,7 @@ npm install
 npm start
 ```
 
-Abra `http://localhost:4200/`. Na tela, selecione `dataset/annotations/annotations_coco.json` e todos os arquivos de `dataset/images/`. Para compilar a versão de produção, execute `npm run build` dentro de `app/`.
+Abra `http://localhost:4200/`. Na tela, selecione `dataset/annotations_coco.json` e todos os arquivos de `dataset/images/`. Para compilar a versão de produção, execute `npm run build` dentro de `app/`.
 
 ## Documentação
 

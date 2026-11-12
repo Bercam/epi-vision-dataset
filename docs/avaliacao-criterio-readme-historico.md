@@ -7,6 +7,7 @@
 ## Evidências
 
 - `README.md` descreve objetivo/estado, instalação e execução, tecnologias, estrutura documental, classes e critérios, dificuldades/ambiguidades, origem das imagens, decisões técnicas e melhorias futuras.
+- Os artefatos principais agora seguem a estrutura de entrega do PDF: `dataset/annotations_coco.json` e `dataset/annotations_yolo/`; exports brutos do MakeSense ficam separados em `dataset/annotations/makesense_source/`.
 - `CONTRIBUTING.md` documenta os padrões de commits e branches.
 - O histórico em `feat/angular-dataset-explorer` inclui commits separados como `feat(gallery)`, `feat(viewer)`, `feat(gallery): filter`, `feat(dataset)`, `docs(adr)` e `data(dataset)`, sem commits artificiais adicionados nesta revisão.
 - O README informa claramente que a revisão visual das anotações continua pendente. Também apresenta os comandos e o resultado registrado para build, ESLint, Prettier, 12 testes unitários e auditoria de dependências; os detalhes estão em `docs/avaliacao-criterio-organizacao-codigo.md`.

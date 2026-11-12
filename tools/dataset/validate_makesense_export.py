@@ -40,7 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--coco",
         type=Path,
-        default=ROOT / "dataset/annotations/annotations_coco.json",
+        default=ROOT / "dataset/annotations_coco.json",
         help="COCO de referência para o conjunto de imagens e dimensões",
     )
     return parser.parse_args()

@@ -1,4 +1,4 @@
-path: ../../images
+path: ../images
 train: .
 val: .
 names:

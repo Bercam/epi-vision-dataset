@@ -8,9 +8,10 @@ teste-tecnico/
 │   ├── images/
 │   ├── sources/
 │   │   └── image_sources.csv
-│   ├── annotations/
-│   │   ├── annotations_coco.json
-│   │   └── yolo/
+│   ├── annotations_coco.json
+│   ├── annotations_yolo/
+│   └── annotations/
+│       └── makesense_source/
 │   └── README.md
 ├── app/
 ├── docs/

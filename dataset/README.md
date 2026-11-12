@@ -4,8 +4,8 @@
 
 - `images/`: 31 imagens utilizadas no dataset.
 - `sources/image_sources.csv`: procedência das imagens.
-- `annotations/annotations_coco.json`: anotações no formato COCO.
-- `annotations/yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`.
+- `annotations_coco.json`: anotações no formato COCO, no caminho solicitado pelo desafio.
+- `annotations_yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`, no caminho solicitado pelo desafio.
 - `annotations/makesense_source/`: exports brutos e derivados do MakeSense preservados para rastreabilidade. O par bruto recebido em 2026-11-12 tinha uma caixa degenerada; ela foi removida do derivado de trabalho após conferência visual do local. O registro está em `corrections_2026-11-12.json` e os detalhes em `../docs/relatorio-revisao-visual-anotacoes.md`.
 
 ## Classes e mapeamento YOLO

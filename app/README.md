@@ -37,11 +37,11 @@ npm run lint
 - `src/app/features/dataset/pages/`: estado da página de exploração.
 - `src/app/features/dataset/components/`: importação, galeria e pré-visualização.
 
-O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annotations/annotations_coco.json` e as imagens em `../dataset/images/`.
+O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annotations_coco.json` e as imagens em `../dataset/images/`.
 
 ## Usar a galeria
 
-1. Selecione `../dataset/annotations/annotations_coco.json`.
+1. Selecione `../dataset/annotations_coco.json`.
 2. Selecione todas as imagens da pasta `../dataset/images/`.
 3. A galeria relaciona cada imagem pelo nome do arquivo registrado no COCO; selecione um cartão para abrir a pré-visualização.
 
