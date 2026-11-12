@@ -2,7 +2,7 @@
 
 ## Resultado atual
 
-**Atende aos requisitos funcionais identificados; compilação de produção e testes unitários concluídos.** A interação principal já havia sido conferida manualmente; a mudança do filtro foi coberta por teste unitário e ainda precisa de uma conferência rápida em navegador.
+**Atende aos requisitos funcionais identificados; compilação de produção e teste de integração Angular concluídos.** A interação principal já havia sido conferida manualmente; o filtro atual foi verificado na página Angular.
 
 ## Conferência requisito por requisito
 
@@ -25,11 +25,10 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 
 ## Limitações e validações pendentes
 
-- Conferir em navegador o filtro após a alteração e observar que somente as caixas da classe escolhida permanecem na prévia.
-- A seleção do JSON e das imagens no app local pela UI ainda aguarda autorização do usuário; a aplicação já compilou, mas o servidor de desenvolvimento foi encerrado.
+- A seleção do JSON e das imagens locais pela UI ainda aguarda autorização do usuário; a integração da página foi verificada com dataset controlado em teste.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
 
 ## Estimativa de pontuação
 
-Pela cobertura do código, compilação de produção e conferência manual anterior do fluxo principal, a estimativa deste critério é **80–90% dos 25 pontos**. O ajuste de filtro foi compilado, mas sua interação específica ainda aguarda conferência manual em navegador. Não é uma nota oficial do avaliador.
+Pela cobertura dos requisitos, compilação de produção, conferência manual anterior do fluxo principal e teste de integração do filtro/caixas, a estimativa deste critério é **85–90% dos 25 pontos**. A carga dos arquivos do dataset no navegador ainda aguarda autorização. Não é uma nota oficial do avaliador.

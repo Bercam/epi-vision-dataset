@@ -49,4 +49,4 @@ A versão atual mostra o resumo do dataset, estatísticas gerais e por classe, f
 
 Se o JSON estiver inválido, a aplicação apresenta uma mensagem de validação. Um COCO totalmente vazio (listas de imagens, anotações e categorias vazias) é aceito e mostra estados vazios claros na galeria e na pré-visualização; erros de leitura de arquivo também são informados na tela.
 
-Os testes cobrem regras essenciais do validador COCO e o filtro de anotações por classe.
+Os testes cobrem regras essenciais do validador COCO, o filtro de anotações e o comportamento da página ao filtrar a galeria e as caixas da prévia.
