@@ -79,7 +79,7 @@
         [imageUrl]="selectedImageUrl()"
         [annotations]="selectedAnnotations()"
         [categories]="currentDataset.categories"
-        [annotationCount]="annotationCounts().get(selectedImageId() ?? -1) ?? 0"
+        [annotationCount]="selectedAnnotations().length"
         [datasetLoaded]="true"
       />
     </section>

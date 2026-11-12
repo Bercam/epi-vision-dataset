@@ -33,6 +33,6 @@ O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annot
 2. Selecione todas as imagens da pasta `../dataset/images/`.
 3. A galeria relaciona cada imagem pelo nome do arquivo registrado no COCO; selecione um cartão para abrir a pré-visualização.
 
-A versão atual mostra o resumo do dataset, estatísticas gerais e por classe, filtro por classe, quantidade de anotações por imagem e caixas COCO coloridas na pré-visualização.
+A versão atual mostra o resumo do dataset, estatísticas gerais e por classe, filtro por classe, quantidade de anotações por imagem e caixas COCO coloridas na pré-visualização. Quando uma classe é selecionada, a galeria lista imagens que contêm a classe e a pré-visualização mostra apenas as caixas dessa classe; as estatísticas continuam considerando o dataset inteiro.
 
 Se o JSON estiver inválido, a aplicação apresenta uma mensagem de validação. Um COCO totalmente vazio (listas de imagens, anotações e categorias vazias) é aceito e mostra estados vazios claros na galeria e na pré-visualização; erros de leitura de arquivo também são informados na tela.

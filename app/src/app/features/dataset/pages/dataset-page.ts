@@ -67,7 +67,9 @@ export class DatasetPage implements OnDestroy {
       imageIds.add(annotation.image_id);
       imageIdsByCategory.set(annotation.category_id, imageIds);
     }
-    return new Map([...imageIdsByCategory].map(([categoryId, imageIds]) => [categoryId, imageIds.size]));
+    return new Map(
+      [...imageIdsByCategory].map(([categoryId, imageIds]) => [categoryId, imageIds.size]),
+    );
   });
 
   protected readonly filteredImages = computed(() => {
@@ -99,12 +101,20 @@ export class DatasetPage implements OnDestroy {
 
   protected readonly selectedImageUrl = computed(() => {
     const image = this.selectedImage();
-    return image ? this.imageUrls().get(this.loader.normalizeFileName(image.file_name)) ?? null : null;
+    return image
+      ? (this.imageUrls().get(this.loader.normalizeFileName(image.file_name)) ?? null)
+      : null;
   });
 
   protected readonly selectedAnnotations = computed(() => {
     const id = this.selectedImageId();
-    return id === null ? [] : this.annotationsByImage().get(id) ?? [];
+    if (id === null) return [];
+
+    const annotations = this.annotationsByImage().get(id) ?? [];
+    const categoryId = this.selectedCategoryId();
+    return categoryId === null
+      ? annotations
+      : annotations.filter((annotation) => annotation.category_id === categoryId);
   });
 
   protected readonly missingImageCount = computed(() => {
