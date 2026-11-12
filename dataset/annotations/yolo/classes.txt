@@ -1,0 +1,4 @@
+pessoa
+capacete
+colete
+sem_capacete

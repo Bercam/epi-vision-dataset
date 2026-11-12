@@ -1,0 +1,17 @@
+# Node and Angular generated files
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+npm-debug.log*
+
+# Local source material and temporary MakeSense bundle
+/images/
+/labels_my-project-name_*.zip
+/labels_my-project-name_*.csv
+/dataset/makesense_images.zip
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

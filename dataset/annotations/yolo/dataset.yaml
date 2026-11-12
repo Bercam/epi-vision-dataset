@@ -1,0 +1,8 @@
+path: ../../images
+train: .
+val: .
+names:
+  0: pessoa
+  1: capacete
+  2: colete
+  3: sem_capacete

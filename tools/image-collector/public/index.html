@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Coletor de Imagens — Dataset EPI</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header__content">
+        <div>
+          <p class="eyebrow">Dataset de EPIs · coleta assistida</p>
+          <h1>Coletor de imagens e metadados</h1>
+          <p class="subtitle">
+            Cole uma URL de imagem ou de página (Pexels, Unsplash, Wikimedia Commons). O sistema baixa o arquivo,
+            valida o conteúdo, calcula o SHA-256 e registra a procedência no catálogo.
+          </p>
+        </div>
+        <div class="header-badges">
+          <span class="badge badge--neutral" id="api-status">Verificando API…</span>
+          <span class="badge badge--warning">Revisão humana obrigatória</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" aria-labelledby="extract-title">
+        <div class="panel__heading">
+          <div>
+            <p class="step">Etapa 1</p>
+            <h2 id="extract-title">Adicionar uma imagem</h2>
+          </div>
+          <span class="hint">A imagem original não é cortada, redimensionada ou recodificada.</span>
+        </div>
+
+        <form id="extract-form" class="url-form" novalidate>
+          <label class="field field--grow">
+            <span class="field__label">URL da imagem ou da página</span>
+            <input
+              id="url-input"
+              name="url"
+              type="url"
+              inputmode="url"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="https://www.pexels.com/photo/… ou https://images.pexels.com/photos/…"
+              required
+            />
+          </label>
+          <button class="button button--primary" id="extract-button" type="submit">
+            Extrair metadados
+          </button>
+        </form>
+
+        <div class="support-note">
+          <strong>Plataformas com extração específica:</strong> Pexels, Unsplash e Wikimedia Commons.
+          URLs diretas de imagens também são aceitas. Chaves oficiais das APIs podem ser configuradas em
+          <code>.env</code>; sem chave, o sistema tenta metadados públicos da página.
+        </div>
+
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <section class="panel" id="review-panel" aria-labelledby="review-title" hidden>
+        <div class="panel__heading">
+          <div>
+            <p class="step">Etapa 2</p>
+            <h2 id="review-title">Revisar metadados e confirmar</h2>
+          </div>
+          <span class="hint">Campos vazios exigem verificação manual. Nada é inventado.</span>
+        </div>
+
+        <div id="duplicate-alert" class="alert alert--warning" role="alert" hidden></div>
+
+        <div class="review-grid">
+          <div class="preview-column">
+            <figure class="preview-card">
+              <img id="preview-image" alt="Pré-visualização da imagem extraída" />
+              <figcaption id="preview-caption" class="preview-caption"></figcaption>
+            </figure>
+            <dl class="facts" id="image-facts"></dl>
+            <div id="warning-list" class="warning-list" aria-live="polite"></div>
+          </div>
+
+          <form id="confirm-form" class="metadata-form" novalidate>
+            <div class="form-grid">
+              <label class="field">
+                <span class="field__label">Plataforma de origem</span>
+                <input id="meta-source-name" type="text" readonly />
+              </label>
+              <label class="field">
+                <span class="field__label">Data de extração</span>
+                <input id="meta-extracted-at" type="text" readonly />
+              </label>
+
+              <label class="field field--wide">
+                <span class="field__label">Página original (URL)</span>
+                <input id="meta-source-url" type="url" maxlength="2048" placeholder="https://… (deixe vazio se desconhecida)" />
+                <span class="field__missing" data-missing-for="source_url" hidden>Página de origem ausente</span>
+              </label>
+              <label class="field field--wide">
+                <span class="field__label">URL direta da imagem</span>
+                <span class="field__value" id="meta-direct-url"></span>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Autor / fotógrafo</span>
+                <input id="meta-author" type="text" maxlength="300" placeholder="Não identificado" />
+                <span class="field__missing" data-missing-for="author" hidden>Requer verificação manual</span>
+              </label>
+              <label class="field">
+                <span class="field__label">Licença / termos de uso</span>
+                <input id="meta-license" type="text" maxlength="300" placeholder="Não identificada" />
+                <span class="field__missing" data-missing-for="license" hidden>Licença requer verificação manual</span>
+              </label>
+
+              <label class="field field--wide">
+                <span class="field__label">Título ou descrição</span>
+                <input id="meta-title" type="text" maxlength="500" placeholder="Não identificado" />
+                <span class="field__missing" data-missing-for="title" hidden>Requer verificação manual</span>
+              </label>
+
+              <label class="field field--wide">
+                <span class="field__label">URL da licença</span>
+                <input id="meta-license-url" type="url" maxlength="2048" placeholder="https://…" />
+                <span class="field__missing" data-missing-for="license_url" hidden>URL da licença ausente</span>
+              </label>
+
+              <label class="field field--wide">
+                <span class="field__label">Observações da revisão</span>
+                <textarea id="meta-notes" rows="3" maxlength="2000" placeholder="Anote decisões, dúvidas ou pendências de licença."></textarea>
+              </label>
+            </div>
+
+            <fieldset class="classification">
+              <legend>Características visuais sugeridas</legend>
+              <p class="classification__note">
+                Sugestões para organização do dataset. Não são anotações aprovadas nem ground truth; a revisão
+                humana e a anotação de bounding boxes continuam obrigatórias.
+              </p>
+              <div class="classification-grid" id="classification-fields"></div>
+            </fieldset>
+
+            <div class="form-actions">
+              <button class="button button--primary" id="confirm-button" type="submit">
+                Confirmar download e registro
+              </button>
+              <button class="button button--ghost" id="cancel-button" type="button">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="catalog-title">
+        <div class="panel__heading">
+          <div>
+            <p class="step">Etapa 3</p>
+            <h2 id="catalog-title">Imagens coletadas</h2>
+          </div>
+          <button class="button button--ghost" id="refresh-button" type="button">Atualizar lista</button>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="filters">
+          <label class="field">
+            <span class="field__label">Buscar</span>
+            <input id="catalog-search" type="search" placeholder="Arquivo, autor, título ou licença" />
+          </label>
+          <label class="field">
+            <span class="field__label">Status da anotação</span>
+            <select id="annotation-filter">
+              <option value="">Todos</option>
+              <option value="pending">Pendente</option>
+              <option value="in_review">Em revisão</option>
+              <option value="approved">Aprovado</option>
+              <option value="rejected">Rejeitado</option>
+            </select>
+          </label>
+          <label class="checkbox-field">
+            <input id="license-filter" type="checkbox" />
+            <span>Somente com licença pendente</span>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table class="catalog-table">
+            <thead>
+              <tr>
+                <th scope="col">Imagem</th>
+                <th scope="col">Arquivo / origem</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Licença</th>
+                <th scope="col">Dimensões</th>
+                <th scope="col">Download</th>
+                <th scope="col">Anotação</th>
+                <th scope="col"><span class="sr-only">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody id="catalog-body"></tbody>
+          </table>
+        </div>
+        <p id="catalog-empty" class="empty-state" hidden>Nenhuma imagem registrada ainda. Extraia uma URL para começar.</p>
+      </section>
+    </main>
+
+    <dialog id="details-dialog" class="details-dialog">
+      <form method="dialog" class="details-dialog__inner">
+        <div class="panel__heading">
+          <div>
+            <p class="step">Detalhes</p>
+            <h2 id="details-title">Registro</h2>
+          </div>
+          <button class="button button--ghost" id="details-close" type="button">Fechar</button>
+        </div>
+        <div id="details-content" class="details-content"></div>
+        <div class="form-actions">
+          <button class="button button--primary" id="details-save" value="save" type="submit">Salvar alterações</button>
+        </div>
+      </form>
+    </dialog>
+
+    <footer class="app-footer">
+      <p>
+        Ferramenta de coleta e catalogação. A seleção de imagens, a verificação de licenças e a anotação de
+        bounding boxes são responsabilidades humanas.
+      </p>
+      <p class="app-footer__meta">Servidor local · sem autenticação · use HOST=127.0.0.1</p>
+    </footer>
+
+    <noscript>Esta interface requer JavaScript para extrair e registrar as imagens.</noscript>
+  </body>
+</html>
