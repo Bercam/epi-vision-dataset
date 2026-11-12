@@ -30,6 +30,8 @@ export class DatasetLoaderService {
       if (!file.type.startsWith('image/')) continue;
 
       const key = this.normalizeFileName(file.name);
+      const previousUrl = this.imageUrls.get(key);
+      if (previousUrl) URL.revokeObjectURL(previousUrl);
       this.imageUrls.set(key, URL.createObjectURL(file));
     }
 
