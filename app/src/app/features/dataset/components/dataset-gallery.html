@@ -1,0 +1,33 @@
+<section class="gallery-panel" aria-label="Galeria de imagens">
+  <div class="section-heading gallery-heading">
+    <div>
+      <p class="eyebrow">NAVEGAÇÃO</p>
+      <h2>Imagens <span class="count-badge">{{ images().length }}</span></h2>
+    </div>
+    <span class="gallery-help">Selecione uma imagem para visualizar</span>
+  </div>
+
+  <div class="gallery-grid">
+    @for (image of images(); track image.id) {
+      <button
+        class="image-card"
+        [class.selected]="selectedImageId() === image.id"
+        [attr.aria-pressed]="selectedImageId() === image.id"
+        (click)="imageSelected.emit(image)"
+      >
+        <span class="thumbnail">
+          @if (imageUrl(image); as thumbnailUrl) {
+            <img [src]="thumbnailUrl" [alt]="image.file_name" loading="lazy" />
+          } @else {
+            <span class="thumbnail-placeholder" aria-label="Imagem não carregada">▧</span>
+          }
+          <span class="annotation-pill">
+            {{ annotationCounts().get(image.id) ?? 0 }}
+            <span>anot.</span>
+          </span>
+        </span>
+        <span class="image-card-name" [title]="image.file_name">{{ image.file_name }}</span>
+      </button>
+    }
+  </div>
+</section>

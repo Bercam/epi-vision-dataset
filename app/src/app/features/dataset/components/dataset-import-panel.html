@@ -1,0 +1,60 @@
+<section class="import-panel" aria-labelledby="import-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">COMECE POR AQUI</p>
+      <h2 id="import-title">Carregue seus arquivos</h2>
+    </div>
+    <span class="step-label">01 / 03</span>
+  </div>
+
+  <div class="import-options">
+    <label class="upload-card" for="coco-file">
+      <span class="upload-icon json-icon" aria-hidden="true">&#123; &#125;</span>
+      <span class="upload-copy">
+        <strong>Arquivo de anotações</strong>
+        <span>Selecione o JSON COCO do dataset</span>
+      </span>
+      <span class="upload-action">Escolher JSON</span>
+      <input
+        id="coco-file"
+        type="file"
+        accept=".json,application/json"
+        (change)="onCocoSelected($event)"
+      />
+    </label>
+
+    <label class="upload-card" for="image-files">
+      <span class="upload-icon image-icon" aria-hidden="true">▧</span>
+      <span class="upload-copy">
+        <strong>Imagens do dataset</strong>
+        <span>Selecione os JPGs correspondentes</span>
+      </span>
+      <span class="upload-action secondary-action">Escolher imagens</span>
+      <input
+        id="image-files"
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="onImagesSelected($event)"
+      />
+    </label>
+  </div>
+
+  <p class="import-hint">
+    Você pode carregar os arquivos em qualquer ordem. As imagens são relacionadas pelo nome do
+    arquivo presente no COCO.
+  </p>
+
+  @if (isLoading()) {
+    <p class="notice loading-notice" role="status">Validando o dataset…</p>
+  }
+  @if (errorMessage(); as error) {
+    <p class="notice error-notice" role="alert">{{ error }}</p>
+  }
+  @if (missingImageCount() > 0) {
+    <p class="notice warning-notice" role="status">
+      Não encontrei {{ missingImageCount() }} imagem(ns) com os nomes esperados. Selecione os
+      arquivos da pasta <code>dataset/images</code>.
+    </p>
+  }
+</section>

@@ -21,11 +21,18 @@ npm run build
 
 - `src/app/core/models/`: contratos tipados do formato COCO.
 - `src/app/core/validators/`: validação estrutural e semântica do JSON.
-- `src/app/core/services/`: leitura do JSON enviado e validação antes do uso.
-- `src/app/features/dataset/`: próxima etapa, com galeria e visualização.
+- `src/app/core/services/`: leitura do JSON, validação e associação das imagens carregadas.
+- `src/app/features/dataset/pages/`: estado da página de exploração.
+- `src/app/features/dataset/components/`: importação, galeria e pré-visualização.
 
 O dataset oficial fica em `../dataset/`; o COCO atual está em `../dataset/annotations/annotations_coco.json` e as imagens em `../dataset/images/`.
 
 ## Etapas
 
-A base Angular e a arquitetura inicial estão prontas. A etapa seguinte implementará o carregamento interativo do dataset, a resolução das imagens, a galeria, os filtros, as estatísticas e a sobreposição das caixas.
+## Usar a galeria
+
+1. Selecione `../dataset/annotations/annotations_coco.json`.
+2. Selecione todas as imagens da pasta `../dataset/images/`.
+3. A galeria relaciona cada imagem pelo nome do arquivo registrado no COCO; selecione um cartão para abrir a pré-visualização.
+
+A versão atual mostra a quantidade de anotações por imagem e o resumo do dataset. Filtros por classe, estatísticas detalhadas e caixas sobrepostas entram nas próximas etapas.

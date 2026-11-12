@@ -4,6 +4,8 @@ import { validateCocoDataset } from '../validators/coco-dataset.validator';
 
 @Injectable({ providedIn: 'root' })
 export class DatasetLoaderService {
+  private readonly imageUrls = new Map<string, string>();
+
   async loadJsonFile(file: File): Promise<CocoDataset> {
     let parsed: unknown;
 
@@ -19,5 +21,27 @@ export class DatasetLoaderService {
     }
 
     return result.dataset;
+  }
+
+  registerImageFiles(files: readonly File[]): ReadonlyMap<string, string> {
+    this.releaseImageUrls();
+
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) continue;
+
+      const key = this.normalizeFileName(file.name);
+      this.imageUrls.set(key, URL.createObjectURL(file));
+    }
+
+    return new Map(this.imageUrls);
+  }
+
+  releaseImageUrls(): void {
+    this.imageUrls.forEach((url) => URL.revokeObjectURL(url));
+    this.imageUrls.clear();
+  }
+
+  normalizeFileName(fileName: string): string {
+    return fileName.split(/[\\/]/).pop()?.toLocaleLowerCase() ?? fileName.toLocaleLowerCase();
   }
 }

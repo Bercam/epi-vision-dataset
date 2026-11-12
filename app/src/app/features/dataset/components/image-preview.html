@@ -1,0 +1,32 @@
+<aside class="preview-panel" aria-label="Imagem selecionada">
+  @if (image(); as selectedImage) {
+    <div class="preview-heading">
+      <div>
+        <p class="eyebrow">PRÉ-VISUALIZAÇÃO</p>
+        <h2>Imagem selecionada</h2>
+      </div>
+      <span class="preview-counter">{{ annotationCount() }} anot.</span>
+    </div>
+    <div class="preview-canvas">
+      @if (imageUrl(); as previewUrl) {
+        <img [src]="previewUrl" [alt]="selectedImage.file_name" />
+      } @else {
+        <div class="preview-placeholder">
+          <span aria-hidden="true">▧</span>
+          <p>Carregue as imagens para visualizar esta cena.</p>
+        </div>
+      }
+    </div>
+    <div class="preview-meta">
+      <strong [title]="selectedImage.file_name">{{ selectedImage.file_name }}</strong>
+      <span>{{ selectedImage.width }} × {{ selectedImage.height }} px</span>
+    </div>
+    <p class="preview-footnote">A sobreposição das caixas será adicionada na próxima etapa.</p>
+  } @else {
+    <div class="empty-preview">
+      <span aria-hidden="true">▧</span>
+      <h2>Selecione uma imagem</h2>
+      <p>Escolha um cartão da galeria para abrir a pré-visualização.</p>
+    </div>
+  }
+</aside>
