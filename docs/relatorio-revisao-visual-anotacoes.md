@@ -29,8 +29,18 @@
 - **Estrutural:** 261 caixas correspondem entre COCO e YOLO; as referências e limites já foram conferidos na validação registrada em `dataset/README.md`.
 - **Visual/geométrico:** não há base suficiente para declarar as 31 imagens aprovadas. Há 1 caixa `sem_capacete` claramente inadequada à região da cabeça, 2 caixas EPI sem correspondência geométrica com uma caixa `pessoa` na imagem 7, e pelo menos 3 imagens que exigem decisão sobre adequação/identificabilidade.
 - **Heurística de cobertura:** 10 caixas `pessoa` não têm uma caixa `capacete` ou `sem_capacete` associada pelo centro da caixa. Isso pode ser correto por corte, tamanho ou oclusão; cada caso precisa de revisão visual e não foi convertido em erro automaticamente.
-- **Alterações nos rótulos:** nenhuma realizada nesta revisão. Os arquivos originais COCO, YOLO e MakeSense foram preservados.
+- **Alterações no COCO/YOLO canônicos:** nenhuma realizada durante a triagem visual preliminar. Os exports recebidos depois da revisão humana estão registrados separadamente abaixo.
 - **Nota de consistência:** a imagem 16 também contém outros trabalhadores ao fundo. Conferir se os critérios locais de tamanho/oclusão foram aplicados de maneira consistente; objetos minúsculos não devem ser incluídos automaticamente.
+
+## Export recebido após revisão do responsável
+
+Em 2026-11-12, o responsável enviou um novo CSV e ZIP do MakeSense após revisar as anotações. Os arquivos foram preservados em `dataset/annotations/makesense_source/` com os nomes `labels_my-project-name_2026-11-12-05-28-02.csv` e `labels_my-project-name_2026-11-12-05-27-43.zip`.
+
+- O CSV contém 271 caixas em 31 imagens: `pessoa` 108, `capacete` 70, `colete` 63 e `sem_capacete` 30.
+- O ZIP contém 31 arquivos de rótulos e 271 caixas. Todas as caixas do ZIP correspondem às do CSV dentro da tolerância de arredondamento, e os IDs de classe correspondem às quatro classes.
+- Em relação ao CSV anterior, a contagem aumentou em 10: +7 na imagem Glenov, +2 na imagem Felix Schickel e +1 na imagem Nelson Axigoth. As outras imagens mantiveram suas contagens.
+- **Erro estrutural pendente:** a linha 95 do CSV tem uma anotação `pessoa` na imagem `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` com caixa `[1834, 2703, 6, 0]`. A altura zero também aparece no arquivo YOLO correspondente; a caixa não pode ser importada como anotação válida.
+- Por causa dessa caixa, o novo export não foi convertido nem substituiu o COCO/YOLO atual. Nenhum rótulo foi aprovado automaticamente. Corrigir ou remover a caixa no MakeSense conforme a revisão visual e enviar novo CSV e ZIP.
 
 ### Fila adicional do cruzamento geométrico
 

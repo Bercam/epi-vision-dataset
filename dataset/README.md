@@ -6,7 +6,7 @@
 - `sources/image_sources.csv`: procedência das imagens.
 - `annotations/annotations_coco.json`: anotações no formato COCO.
 - `annotations/yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`.
-- `annotations/makesense_source/`: exports originais recebidos do MakeSense (CSV e ZIP), preservados para rastreabilidade.
+- `annotations/makesense_source/`: exports do MakeSense preservados para rastreabilidade. O par recebido em 2026-11-12 após revisão está arquivado, mas ainda não foi importado porque contém uma caixa com altura zero; veja `../docs/relatorio-revisao-visual-anotacoes.md`. O COCO e o YOLO listados abaixo ainda representam o export anterior.
 
 ## Classes e mapeamento YOLO
 
