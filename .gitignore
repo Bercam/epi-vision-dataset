@@ -3,6 +3,7 @@
 **/dist/
 **/.angular/
 **/coverage/
+__pycache__/
 npm-debug.log*
 
 # Local source material and temporary MakeSense bundle

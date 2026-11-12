@@ -4,10 +4,10 @@ Projeto de anotação e exploração visual de imagens de ambientes de construç
 
 ## Estado atual
 
-- Dataset em `dataset/`: 31 imagens, 261 anotações COCO e exports YOLO. Os totais e a conferência estrutural entre os exports estão descritos em [`dataset/README.md`](dataset/README.md); a revisão visual segue pendente.
+- Dataset em `dataset/`: 31 imagens e 270 anotações COCO/YOLO derivadas do export revisado pelo responsável. Os totais e a conferência estrutural estão em [`dataset/README.md`](dataset/README.md); a aprovação visual final segue pendente.
 - Fontes e metadados das imagens: [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv). Os registros incluem pendências de verificação manual; a licença da plataforma não substitui a verificação de direitos de terceiros visíveis nas fotos.
 - Aplicação Angular em `app/`: upload do JSON COCO e das imagens, galeria com filtro por classe, pré-visualização com bounding boxes, estatísticas e estados para erros e datasets vazios.
-- Os critérios de anotação estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md). A consistência estrutural das anotações foi conferida, mas isso não equivale a uma revisão visual final.
+- Os critérios de anotação estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md). O responsável revisou as anotações; ainda há pendências visuais pontuais e a aprovação final permanece aberta.
 
 ## Executar a aplicação
 
@@ -40,7 +40,7 @@ Abra `http://localhost:4200/`. Na tela, selecione `dataset/annotations/annotatio
 
 O dataset usa as classes `pessoa`, `capacete`, `colete` e `sem_capacete`. As caixas devem delimitar o objeto visível; `sem_capacete` delimita a cabeça, e bonés/chapéus comuns não são capacetes de segurança. Pessoas/objetos muito pequenos ou com mais de 80% de oclusão podem ser omitidos, desde que o critério seja aplicado de forma consistente. As decisões detalhadas estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md).
 
-As principais dificuldades são pessoas pequenas ou parcialmente encobertas, identificação de EPI em cenas ao fundo e distinção entre capacete de segurança e chapéu comum. A consistência estrutural de COCO/YOLO foi conferida, mas a revisão visual e a aprovação humana das anotações permanecem pendentes. Consulte [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md) antes de tratar os rótulos como finais.
+As principais dificuldades são pessoas pequenas ou parcialmente encobertas, identificação de EPI em cenas ao fundo e distinção entre capacete de segurança e chapéu comum. O responsável revisou o dataset, e COCO/YOLO passaram pela conferência estrutural. Uma caixa de pessoa na imagem 5 ainda precisa de ajuste; os rótulos seguem em revisão e sem aprovação final. Consulte [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md) antes de tratar os rótulos como finais.
 
 ## Origem das imagens
 
@@ -50,7 +50,7 @@ O catálogo por arquivo, com URL de origem, autor, licença, dimensões e hash, 
 
 O app mantém dataset e código separados, carrega COCO e imagens por upload e associa arquivos pelo nome, valida o JSON em runtime e desenha as caixas em SVG usando o `viewBox` original. Os detalhes e limitações estão em [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md).
 
-Com mais tempo, as próximas melhorias seriam concluir a revisão visual do dataset, ampliar a cobertura de testes e adicionar testes E2E, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
+Com mais tempo, as próximas melhorias seriam concluir a revisão final do dataset, ampliar a cobertura de testes e adicionar testes E2E, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
 
 ## Testes e qualidade
 

@@ -56,10 +56,11 @@
 
 ## 6. Revisão final
 
-- [x] Quantidade mínima de imagens atingida (31 arquivos; revisar adequação visual individual ainda pendente).
+- [x] Quantidade mínima de imagens atingida (31 imagens únicas; seleção confirmada pelo responsável).
 - [x] Todas as fontes registradas no catálogo (metadados e direitos de terceiros ainda requerem revisão).
 - [x] Todas as classes obrigatórias presentes no esquema.
-- [ ] Anotações revisadas visualmente.
-- [ ] Ambiguidades e limitações documentadas.
+- [x] Anotações revisadas visualmente pelo responsável; uma correção estrutural foi incorporada.
+- [x] Ambiguidades e limitações documentadas em `relatorio-revisao-visual-anotacoes.md`.
 - [x] COCO e YOLO validados estruturalmente e comparados.
+- [ ] Aprovação humana final registrada (`annotation_status=approved`).
 - [ ] Nenhum arquivo temporário ou duplicado desnecessário.

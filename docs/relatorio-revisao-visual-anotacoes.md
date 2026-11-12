@@ -1,61 +1,49 @@
-# Relatório de revisão visual das anotações
+# Relatório de revisão das anotações
 
 ## Estado
 
-**Em revisão humana — não aprovado.** Esta inspeção é uma triagem visual e geométrica; não substitui a validação do responsável pelas anotações.
+O responsável informou que revisou as anotações e enviou um novo export do MakeSense. O conjunto foi convertido e validado estruturalmente. **`annotation_status` continua `in_review`; a aprovação final permanece humana.**
 
-## Escopo e método
+## Dataset atual
 
-- Foram comparadas as 31 imagens anotadas nas quatro folhas de contato com a legenda das classes e as caixas COCO.
-- Foram ampliados recortes das imagens 2, 7, 10 e 16 para conferir caixas pequenas, pessoas parcialmente ocultas e a classe `sem_capacete`.
-- Foi cruzada a geometria das caixas de EPI/cabeça com as caixas `pessoa`; os casos sem pessoa contendo a caixa foram encaminhados para revisão, sem serem tratados como erro automático.
-- A conferência estrutural anterior encontrou correspondência entre 261 caixas COCO e YOLO, mas isso não prova que os rótulos estejam semanticamente corretos.
-- Regras de referência: `docs/criterios-de-anotacao.md` e os critérios do teste técnico. `sem_capacete` deve delimitar a cabeça; `capacete` significa capacete de segurança em uso; objetos pequenos/ocluídos podem ser omitidos; pessoas identificáveis devem ser consideradas.
+- 31 imagens e 270 anotações: `pessoa` 107, `capacete` 70, `colete` 63 e `sem_capacete` 30.
+- Os exports brutos recebidos foram preservados em `dataset/annotations/makesense_source/`.
+- A caixa `pessoa` da linha 95 do CSV bruto tinha dimensão `[1834, 2703, 6, 0]` na imagem `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg`. O recorte ampliado mostra o ponto sobre o piso de concreto, sem pessoa visível. Essa caixa degenerada foi removida apenas dos exports derivados; a decisão está registrada em `dataset/annotations/makesense_source/corrections_2026-11-12.json`.
+- O par derivado usado para gerar o dataset é `makesense_annotations_reviewed_2026-11-12.csv` e `makesense_yolo_export_reviewed_2026-11-12.zip`.
 
-## Casos para decisão/revisão humana
+## Evidências estruturais
 
-| Prioridade | Imagem                                                                             | Achado observado                                                                                                                                                                                                                                                                                                | Revisão sugerida                                                                                                                                                                        |
-| ---------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Alta       | `pexels-felix-schickel-2151168240-36840576.jpg` (imagem COCO 16, anotação 151)     | A caixa `sem_capacete` é 882 × 647 px e cobre grande parte da cabeça e áreas próximas. O trabalhador usa chapéu/boné de tecido; a regra não classifica esse item como capacete de segurança.                                                                                                                    | Confirmar que a classe é `sem_capacete` e ajustar a caixa para a cabeça inteira visível, se aprovada.                                                                                   |
-| Alta       | `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` (imagem COCO 7, anotações 75, 78 e 86) | As caixas `colete` 75 (`[1985, 1597, 297, 175]`) e `capacete` 86 (`[1877, 1626, 97, 152]`) não estão contidas em nenhuma caixa `pessoa`. No recorte ampliado, o trabalhador com colete ao centro/direita parece não ter uma caixa `pessoa` completa; a caixa 86 também parece mais alta que o capacete visível. | Decidir se esses trabalhadores são identificáveis e precisam de caixas `pessoa`, aplicar a exceção de oclusão de forma consistente e conferir se a caixa 86 envolve somente o capacete. |
-| Média      | `angel-arcalle-Gz0gfUcCYsU-unsplash.jpg` (imagem COCO 3)                           | A folha mostra principalmente um edifício e uma pessoa minúscula/silhueta no topo.                                                                                                                                                                                                                              | Abrir em tamanho original e confirmar se a pessoa é identificável e se a cena atende ao requisito de pessoas em obra/ambiente similar. Se não, reconsiderar a imagem e suas anotações.  |
-| Média      | `mihaly-koles-Q-fhedM5m14-unsplash.jpg` (imagem COCO 11)                           | Pessoa pequena em parede de escalada/estrutura; a identificação de EPIs pode ser difícil.                                                                                                                                                                                                                       | Confirmar se a pessoa e o capacete são visualmente identificáveis com confiança; registrar eventual exclusão por tamanho/oclusão.                                                       |
-| Média      | `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg` (imagem COCO 5)                       | Cena interna, pessoa segurando um capacete; a adequação ao contexto de obra e a interpretação de `sem_capacete` merecem conferência.                                                                                                                                                                            | Confirmar que a cabeça está visível sem capacete e que o capacete não está sendo usado; conferir caixa da pessoa e da cabeça.                                                           |
-| Baixa      | `mark-potterton-sNVkn3507Oo-unsplash.jpg` (imagem COCO 10)                         | Capacetes de trabalhadores ao fundo têm caixas pequenas, mas parecem distinguíveis na folha e no recorte ampliado.                                                                                                                                                                                              | Conferir se as caixas abrangem cada capacete inteiro e se a pessoa correspondente foi anotada segundo o limite mínimo de visibilidade adotado.                                          |
-| Baixa      | `pexels-rookey-pain-2688457-14053428.jpg` (imagem COCO 26)                         | A imagem contém marca/logotipo visível em equipamento/roupa. Isso não invalida por si só as caixas, mas é pendência de direitos de terceiros no catálogo de fontes.                                                                                                                                             | Revisar marca/logotipo para a conformidade de uso, separadamente da qualidade das anotações.                                                                                            |
+- `tools/dataset/validate_makesense_export.py` validou o par derivado: 270 caixas, 31 imagens, quatro classes, dimensões compatíveis, caixas positivas e dentro dos limites, sem duplicatas e com correspondência completa entre CSV e ZIP.
+- `tools/dataset/import_makesense_export.py` gerou o COCO e os 31 arquivos YOLO a partir do CSV validado.
+- A comparação independente encontrou 270 caixas no CSV e COCO, e 270 linhas YOLO. A multiconjunto de imagem, classe e coordenadas COCO corresponde exatamente ao CSV. A diferença máxima entre coordenadas em pixels e a conversão YOLO, por arredondamento, foi 0,005728 px.
+- IDs, áreas e limites das caixas COCO foram conferidos. Todos os arquivos YOLO têm rótulos normalizados dentro do intervalo válido.
 
-## Resultado da triagem
+## Conferências visuais pontuais
 
-- **Estrutural:** 261 caixas correspondem entre COCO e YOLO; as referências e limites já foram conferidos na validação registrada em `dataset/README.md`.
-- **Visual/geométrico:** não há base suficiente para declarar as 31 imagens aprovadas. Há 1 caixa `sem_capacete` claramente inadequada à região da cabeça, 2 caixas EPI sem correspondência geométrica com uma caixa `pessoa` na imagem 7, e pelo menos 3 imagens que exigem decisão sobre adequação/identificabilidade.
-- **Heurística de cobertura:** 10 caixas `pessoa` não têm uma caixa `capacete` ou `sem_capacete` associada pelo centro da caixa. Isso pode ser correto por corte, tamanho ou oclusão; cada caso precisa de revisão visual e não foi convertido em erro automaticamente.
-- **Alterações no COCO/YOLO canônicos:** nenhuma realizada durante a triagem visual preliminar. Os exports recebidos depois da revisão humana estão registrados separadamente abaixo.
-- **Nota de consistência:** a imagem 16 também contém outros trabalhadores ao fundo. Conferir se os critérios locais de tamanho/oclusão foram aplicados de maneira consistente; objetos minúsculos não devem ser incluídos automaticamente.
+| Imagem | Resultado da revisão | Estado |
+|---|---|---|
+| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | A exportação revisada acrescentou uma caixa `pessoa` que associa geometricamente o colete e o capacete do trabalhador central. A caixa degenerada do piso foi removida do derivado. | Melhoria aplicada; a aprovação final continua pendente. |
+| `pexels-felix-schickel-2151168240-36840576.jpg` | A caixa `sem_capacete` foi atualizada para `[2025, 4603, 904, 635]`, delimitando a cabeça do trabalhador que usa chapéu de tecido. | Revisada pelo responsável; sem erro estrutural encontrado. |
+| `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg` | O recorte mostra que a caixa `pessoa` `[117, 782, 2332, 3218]` começa abaixo do topo do cabelo. A caixa `sem_capacete` é `[820, 708, 545, 297]`. A caixa de pessoa corta parte visível da cabeça. | **Pendente:** ajustar o topo da caixa `pessoa` no MakeSense e enviar novo export. |
+| `angel-arcalle-Gz0gfUcCYsU-unsplash.jpg` e `mihaly-koles-Q-fhedM5m14-unsplash.jpg` | Pessoas pequenas ou distantes exigem atenção à identificabilidade e à regra de oclusão. A seleção das imagens já foi confirmada pelo responsável. | Conferência visual final recomendada. |
+| `pexels-rookey-pain-2688457-14053428.jpg` | Há marca/logotipo visível. A licença da fotografia não determina os direitos sobre marcas de terceiros. | Pendência do critério de fontes/direitos, separada da geometria das caixas. |
 
-## Export recebido após revisão do responsável
+### Fila geométrica residual
 
-Em 2026-11-12, o responsável enviou um novo CSV e ZIP do MakeSense após revisar as anotações. Os arquivos foram preservados em `dataset/annotations/makesense_source/` com os nomes `labels_my-project-name_2026-11-12-05-28-02.csv` e `labels_my-project-name_2026-11-12-05-27-43.zip`.
+Seis caixas `pessoa` não têm o centro de uma caixa `capacete` ou `sem_capacete` dentro delas. Isso pode ocorrer por corte, tamanho ou oclusão; os casos abaixo são candidatos a revisão, não erros confirmados.
 
-- O CSV contém 271 caixas em 31 imagens: `pessoa` 108, `capacete` 70, `colete` 63 e `sem_capacete` 30.
-- O ZIP contém 31 arquivos de rótulos e 271 caixas. Todas as caixas do ZIP correspondem às do CSV dentro da tolerância de arredondamento, e os IDs de classe correspondem às quatro classes.
-- Em relação ao CSV anterior, a contagem aumentou em 10: +7 na imagem Glenov, +2 na imagem Felix Schickel e +1 na imagem Nelson Axigoth. As outras imagens mantiveram suas contagens.
-- **Erro estrutural pendente:** a linha 95 do CSV tem uma anotação `pessoa` na imagem `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` com caixa `[1834, 2703, 6, 0]`. A altura zero também aparece no arquivo YOLO correspondente; a caixa não pode ser importada como anotação válida.
-- O validador reproduzível `tools/dataset/validate_makesense_export.py` aprovou estruturalmente o par anterior (261 caixas) e rejeitou este novo par por causa da caixa degenerada e das inconsistências derivadas dela.
-- Por causa dessa caixa, o novo export não foi convertido nem substituiu o COCO/YOLO atual. Nenhum rótulo foi aprovado automaticamente. Corrigir ou remover a caixa no MakeSense conforme a revisão visual e enviar novo CSV e ZIP.
-
-### Fila adicional do cruzamento geométrico
-
-Estes IDs são apenas candidatos a revisão porque a caixa do centro da cabeça não ficou dentro da caixa `pessoa`; cortes da imagem, pessoas pequenas ou oclusões podem justificar a ausência:
-
-| Imagem | Anotação `pessoa` |
+| Imagem | Anotação COCO `pessoa` |
 |---|---:|
 | `acton-crawford-A4xwAcZOAyo-unsplash.jpg` | 47 |
 | `arron-choi-fYD54gVXFGM-unsplash.jpg` | 62 |
-| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | 79, 81, 82, 83 |
-| `mark-potterton-sNVkn3507Oo-unsplash.jpg` | 113, 114 |
-| `pexels-bulat843-1243575272-38146879.jpg` | 146 |
-| `pexels-felix-schickel-2151168240-36840576.jpg` | 150 |
+| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | 78 |
+| `mark-potterton-sNVkn3507Oo-unsplash.jpg` | 119, 120 |
+| `pexels-bulat843-1243575272-38146879.jpg` | 152 |
 
-## Próxima ação
+## Pontuação estimada do critério de anotações (25%)
 
-Revisar as imagens listadas em tamanho original e aplicar as decisões aprovadas no export do MakeSense/COCO; depois regenerar YOLO e repetir a comparação estrutural. Até lá, manter `annotation_status=in_review`.
+**Estimativa atual: 80–85% do critério; não é nota oficial.** A estimativa considera a revisão humana declarada, mais de 30 imagens, 270 caixas estruturalmente válidas e correspondência verificável entre COCO e YOLO. O limite inferior considera a caixa `pessoa` que ainda corta o cabelo na imagem 5 e os seis candidatos de cobertura geométrica. A aprovação final não foi marcada.
+
+## Próximo passo
+
+Corrigir no MakeSense o topo da caixa `pessoa` na imagem 5; revisar os seis candidatos geométricos e as duas cenas com pessoas pequenas. Enviar CSV e ZIP novos para repetir a validação. Manter `annotation_status=in_review` até a aprovação humana final.

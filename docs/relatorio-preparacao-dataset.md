@@ -44,4 +44,4 @@ Os demais itens ainda precisam de revisão em tamanho original, especialmente pa
 
 A etapa de organização está **concluída**: 31 imagens únicas foram colocadas em `dataset/images/`, e há um registro correspondente por arquivo com nome, origem, URL, dimensões, tamanho e SHA-256. A validação confirmou que os nomes e hashes do CSV correspondem aos arquivos.
 
-Permanecem pendentes a revisão dos metadados de autor/licença e a anotação. A procedência tem URL rastreável, mas campos de licença não devem ser tratados como verificados até serem preenchidos e revisados.
+Este relatório documenta a preparação inicial. Os metadados foram complementados posteriormente e estão descritos em `relatorio-metadados-origens.md`. O responsável confirmou a seleção das imagens e revisou as anotações; pendências visuais e a aprovação final estão registradas em `relatorio-revisao-visual-anotacoes.md`.
