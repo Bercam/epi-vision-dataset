@@ -30,6 +30,31 @@ Abra `http://localhost:4200/`. Na tela, selecione `dataset/annotations/annotatio
 - [Relatório de preparação do dataset](docs/relatorio-preparacao-dataset.md)
 - [Fontes e metadados](docs/relatorio-metadados-origens.md)
 - [Instruções da aplicação](app/README.md)
+- [Revisão visual das anotações](docs/relatorio-revisao-visual-anotacoes.md)
+- [Avaliação das funcionalidades](docs/avaliacao-criterio-funcionalidades.md)
+- [Avaliação da organização do código](docs/avaliacao-criterio-organizacao-codigo.md)
+- [Avaliação de performance Angular](docs/avaliacao-criterio-performance-angular.md)
+- [Avaliação do README e histórico](docs/avaliacao-criterio-readme-historico.md)
+
+## Critérios de anotação e limitações
+
+O dataset usa as classes `pessoa`, `capacete`, `colete` e `sem_capacete`. As caixas devem delimitar o objeto visível; `sem_capacete` delimita a cabeça, e bonés/chapéus comuns não são capacetes de segurança. Pessoas/objetos muito pequenos ou com mais de 80% de oclusão podem ser omitidos, desde que o critério seja aplicado de forma consistente. As decisões detalhadas estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md).
+
+As principais dificuldades são pessoas pequenas ou parcialmente encobertas, identificação de EPI em cenas ao fundo e distinção entre capacete de segurança e chapéu comum. A consistência estrutural de COCO/YOLO foi conferida, mas a revisão visual e a aprovação humana das anotações permanecem pendentes. Consulte [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md) antes de tratar os rótulos como finais.
+
+## Origem das imagens
+
+O catálogo por arquivo, com URL de origem, autor, licença, dimensões e hash, está em [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv). As imagens vieram de Unsplash, Pexels e Wikimedia Commons. A licença da plataforma não substitui a revisão de marcas, obras ou pessoas reconhecíveis que possam aparecer nas fotos; pendências estão descritas em [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md).
+
+## Decisões técnicas e melhorias futuras
+
+O app mantém dataset e código separados, carrega COCO e imagens por upload e associa arquivos pelo nome, valida o JSON em runtime e desenha as caixas em SVG usando o `viewBox` original. Os detalhes e limitações estão em [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md).
+
+Com mais tempo, as próximas melhorias seriam concluir a revisão visual do dataset, adicionar testes automatizados e lint, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
+
+## Testes e qualidade
+
+A compilação Angular de produção e a formatação Prettier foram verificadas nesta revisão. O projeto ainda não tem uma suíte de testes automatizados nem configuração de ESLint; essas pendências estão registradas nos relatórios de avaliação. Para compilar a aplicação, use `cd app` e `npm run build`.
 
 ## Histórico de desenvolvimento
 
