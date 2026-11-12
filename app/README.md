@@ -23,6 +23,12 @@ Para executar os testes unitários sem modo de observação:
 npm test
 ```
 
+Para analisar o código TypeScript e os templates Angular com ESLint:
+
+```bash
+npm run lint
+```
+
 ## Estrutura atual
 
 - `src/app/core/models/`: contratos tipados do formato COCO.

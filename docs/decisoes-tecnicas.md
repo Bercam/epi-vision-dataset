@@ -63,15 +63,25 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 - **Consequências:** Os valores são recalculados quando o estado relacionado muda, sem executar agregações em métodos chamados pelo template.
 - **Evidência:** `DatasetPage` e componentes standalone do recurso dataset.
 
+### ADR-010 — ESLint flat config e análise de templates
+
+- **Status:** Implementada
+- **Contexto:** O projeto precisava de lint para TypeScript e templates, mantendo compatibilidade com Angular 22.
+- **Decisão:** Usar `angular-eslint` 22, ESLint 10, configuração flat e os conjuntos recomendados para TypeScript, templates e acessibilidade.
+- **Consequências:** `npm run lint` aplica as regras Angular ao app; Prettier continua responsável pela formatação.
+- **Segurança de dependências:** O audit identificou `minimatch` vulnerável nas árvores do ESLint e TypeScript-ESLint. O override está limitado a essas dependências e resolve para `minimatch` 11.0.8; `npm audit` fica sem vulnerabilidades. Build, lint e testes passaram com essa resolução.
+- **Evidência:** `eslint.config.js`, alvo `lint` em `angular.json`, `package.json` e `package-lock.json`.
+
 ## 3. Decisões pendentes
 
-| ID | Assunto | Pendente |
-|---|---|---|
-| ADR-008 | Estratégia de testes E2E | Definir ferramenta e escopo, caso os testes E2E sejam implementados. |
-| ADR-009 | Colisões de nomes | Decidir se nomes base duplicados serão rejeitados ou se a resolução futura usará caminhos relativos completos. |
+| ID      | Assunto                  | Pendente                                                                                                       |
+| ------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| ADR-008 | Estratégia de testes E2E | Definir ferramenta e escopo, caso os testes E2E sejam implementados.                                           |
+| ADR-009 | Colisões de nomes        | Decidir se nomes base duplicados serão rejeitados ou se a resolução futura usará caminhos relativos completos. |
 
 ## 4. Histórico
 
-| Data | Alteração |
-|---|---|
-| 2026-11-12 | Decisões atuais documentadas após implementação do upload, validação, galeria e pré-visualização. |
+| Data       | Alteração                                                                                                   |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| 2026-11-12 | Decisões atuais documentadas após implementação do upload, validação, galeria e pré-visualização.           |
+| 2026-11-12 | ESLint flat config adicionado; os overrides de segurança foram verificados com audit, build, lint e testes. |

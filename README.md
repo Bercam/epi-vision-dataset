@@ -50,12 +50,12 @@ O catálogo por arquivo, com URL de origem, autor, licença, dimensões e hash, 
 
 O app mantém dataset e código separados, carrega COCO e imagens por upload e associa arquivos pelo nome, valida o JSON em runtime e desenha as caixas em SVG usando o `viewBox` original. Os detalhes e limitações estão em [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md).
 
-Com mais tempo, as próximas melhorias seriam concluir a revisão visual do dataset, adicionar testes automatizados e lint, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
+Com mais tempo, as próximas melhorias seriam concluir a revisão visual do dataset, ampliar a cobertura de testes e adicionar testes E2E, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
 
 ## Testes e qualidade
 
-A compilação Angular de produção, a formatação Prettier e oito testes unitários foram verificados nesta revisão. O ESLint ainda não está configurado. Para compilar a aplicação, use `cd app` e `npm run build`; para executar os testes, use `cd app` e `npm test`.
+A compilação Angular de produção, ESLint, formatação Prettier e oito testes unitários passaram nesta revisão. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para executar os testes, `cd app` e `npm test`; para lint, `cd app` e `npm run lint`.
 
 ## Histórico de desenvolvimento
 
-As alterações são organizadas em branches de funcionalidade e commits Conventional Commits, conforme [`CONTRIBUTING.md`](CONTRIBUTING.md). A aplicação foi compilada após as etapas implementadas; testes automatizados ainda não foram executados.
+As alterações são organizadas em branches de funcionalidade e commits Conventional Commits, conforme [`CONTRIBUTING.md`](CONTRIBUTING.md). Consulte a seção [Testes e qualidade](#testes-e-qualidade) para os resultados mais recentes.
