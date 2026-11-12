@@ -32,6 +32,19 @@
 - **Alterações nos rótulos:** nenhuma realizada nesta revisão. Os arquivos originais COCO, YOLO e MakeSense foram preservados.
 - **Nota de consistência:** a imagem 16 também contém outros trabalhadores ao fundo. Conferir se os critérios locais de tamanho/oclusão foram aplicados de maneira consistente; objetos minúsculos não devem ser incluídos automaticamente.
 
+### Fila adicional do cruzamento geométrico
+
+Estes IDs são apenas candidatos a revisão porque a caixa do centro da cabeça não ficou dentro da caixa `pessoa`; cortes da imagem, pessoas pequenas ou oclusões podem justificar a ausência:
+
+| Imagem | Anotação `pessoa` |
+|---|---:|
+| `acton-crawford-A4xwAcZOAyo-unsplash.jpg` | 47 |
+| `arron-choi-fYD54gVXFGM-unsplash.jpg` | 62 |
+| `glenov-brankovic-DWp5nUqTn6E-unsplash.jpg` | 79, 81, 82, 83 |
+| `mark-potterton-sNVkn3507Oo-unsplash.jpg` | 113, 114 |
+| `pexels-bulat843-1243575272-38146879.jpg` | 146 |
+| `pexels-felix-schickel-2151168240-36840576.jpg` | 150 |
+
 ## Próxima ação
 
 Revisar as imagens listadas em tamanho original e aplicar as decisões aprovadas no export do MakeSense/COCO; depois regenerar YOLO e repetir a comparação estrutural. Até lá, manter `annotation_status=in_review`.
