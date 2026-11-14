@@ -7,19 +7,19 @@
 ## Evidências
 
 - Separação por `core/` (modelos, serviço, validador e utilitário) e `features/dataset/` (página e componentes).
-- Todos os sete componentes declaram `standalone: true` explicitamente; contratos usam `readonly` e entradas externas são recebidas como `unknown` antes da validação.
+- Todos os oito componentes (`App`, `DatasetPage`, importação, estatísticas, filtro, galeria, prévia e tela cheia) declaram `standalone: true` explicitamente; contratos usam `readonly` e entradas externas são recebidas como `unknown` antes da validação.
 - Não há uso de `any`, `console.log`, `TODO` ou `FIXME` em `app/src/`. `console.error` é usado apenas para informar uma falha fatal de bootstrap.
-- `strict: true` e `strictTemplates: true` foram habilitados em `app/tsconfig.json`; compilação de produção passou em 2026-11-12.
-- O Prettier já estava configurado, mas 17 arquivos estavam fora do padrão. A formatação foi aplicada e `npx prettier --check src tsconfig.json angular.json` passou.
-- O runner oficial `@angular/build:unit-test` foi configurado com Vitest; `npm test` passou com 17 testes em 4 arquivos, cobrindo validação COCO, leitura do JSON, ciclo de vida das URLs de imagem, filtragem pura, inputs de upload em ambas as ordens, erros amigáveis, imagens ausentes e estatísticas renderizadas na página Angular.
+- `strict: true` e `strictTemplates: true` foram habilitados em `app/tsconfig.json`; compilação de produção passou em 2026-11-13.
+- O Prettier já estava configurado, mas 17 arquivos estavam fora do padrão. A formatação foi aplicada e `npx prettier --check "src/**/*.{ts,html,scss}"` passou.
+- O runner oficial `@angular/build:unit-test` foi configurado com Vitest; `npm test` passou com **35 testes em 5 arquivos**, cobrindo validação COCO, leitura do JSON, ciclo de vida das URLs de imagem, filtragem pura, inputs de upload em ambas as ordens, confirmação visual, erros amigáveis, imagens ausentes, estatísticas, filtro de classe na página e a tela cheia (teclado, foco, rolagem, duplo clique, wrap-around e visibilidade por classe).
 - `angular-eslint` 22, ESLint 10 e regras recomendadas para TypeScript, templates e acessibilidade estão configurados; `npm run lint` passou.
 - `npm audit` reportou zero vulnerabilidades após atualização para ESLint 10 e override restrito da dependência `minimatch` vulnerável; build, lint e testes passaram com essa resolução.
 
 ## Lacunas
 
-- A suíte ainda é inicial e não cobre todos os estados Angular/fluxos de upload; ampliar a cobertura do validador, galeria e estados de erro continua necessário.
+- A suíte cobre os fluxos principais, mas ainda não há testes E2E em navegador real nem verificação visual automatizada de layout.
 - A página concentra cálculos e filtros do dataset. Para o tamanho atual, o estado derivado permanece local e tipado; se a lógica crescer, deve migrar para funções/serviço de domínio.
 
 ## Próximo ajuste recomendado
 
-Ampliar a cobertura automatizada para estados adicionais do Angular, upload, erros e galeria.
+Adicionar testes E2E dos fluxos principais em navegador real, sem substituir a suíte unitária atual.

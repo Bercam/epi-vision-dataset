@@ -1,17 +1,110 @@
 # EPI Vision Dataset
 
-Projeto de anotação e exploração visual de imagens de ambientes de construção, com quatro classes de EPI: `pessoa`, `capacete`, `colete` e `sem_capacete`.
+Dataset de detecção de Equipamentos de Proteção Individual (EPIs) em cenas de construção, indústria e ambientes similares, acompanhado de uma aplicação Angular standalone para carregar, visualizar, filtrar e analisar as anotações.
 
-## Estado atual
+> **Status:** aplicação funcional e validada por testes automatizados. A revisão visual final das anotações ainda está pendente; os 31 registros permanecem com `annotation_status=in_review`.
 
-- Dataset em `dataset/`: 31 imagens e 270 anotações COCO/YOLO derivadas do export revisado pelo responsável. Os totais e a conferência estrutural estão em [`dataset/README.md`](dataset/README.md); a aprovação visual final segue pendente.
-- Fontes e metadados das imagens: [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv). Os registros incluem pendências de verificação manual; a licença da plataforma não substitui a verificação de direitos de terceiros visíveis nas fotos.
-- Aplicação Angular em `app/`: upload do JSON COCO e das imagens, galeria com filtro por classe, pré-visualização com bounding boxes, estatísticas e estados para erros e datasets vazios.
-- Os critérios de anotação estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md). O responsável revisou as anotações; ainda há pendências visuais pontuais e a aprovação final permanece aberta.
+## Índice
 
-## Executar a aplicação
+- [Visão geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Stack](#stack)
+- [Estrutura do repositório](#estrutura-do-repositório)
+- [Começando](#começando)
+- [Como usar a aplicação](#como-usar-a-aplicação)
+- [Scripts](#scripts)
+- [Dataset](#dataset)
+- [Arquitetura](#arquitetura)
+- [Qualidade e testes](#qualidade-e-testes)
+- [Documentação](#documentação)
+- [Limitações e próximos passos](#limitações-e-próximos-passos)
+- [Direitos e uso](#direitos-e-uso)
+- [Contribuição](#contribuição)
+- [Changelog](#changelog)
 
-Requer Node.js compatível com a versão Angular declarada em `app/package.json`.
+## Visão geral
+
+O projeto tem duas entregas complementares:
+
+1. **Dataset** — 31 imagens anotadas com quatro classes (`pessoa`, `capacete`, `colete`, `sem_capacete`), exportadas em COCO JSON e YOLO, com procedência registrada por arquivo.
+2. **Aplicação Angular** — explorador que valida o COCO em runtime, associa as imagens carregadas pelo nome do arquivo, desenha as caixas em SVG, oferece filtros e estatísticas e trata erros e estados vazios.
+
+O dataset e o código ficam separados: a aplicação não embute os dados e recebe o COCO e as imagens por upload no navegador. Nenhum arquivo é enviado a um servidor.
+
+## Funcionalidades
+
+### Dataset
+
+- 31 imagens de obras, indústrias e contextos equivalentes.
+- 269 anotações COCO/YOLO correspondentes entre si.
+- Quatro classes com mapeamento YOLO documentado.
+- Catálogo de origem com URL, autor, licença, dimensões, tamanho e SHA-256.
+- Exports brutos e derivados do MakeSense preservados para rastreabilidade.
+- Validadores read-only para o catálogo de fontes e para pares CSV/ZIP do MakeSense.
+
+### Aplicação
+
+- Upload do COCO JSON com validação estrutural e semântica antes de usar os dados.
+- Upload múltiplo de imagens com associação por nome normalizado e confirmação visual do arquivo e da quantidade selecionados.
+- Galeria com miniatura lazy, nome e número de anotações por imagem.
+- Filtro por classe na galeria, na pré-visualização e nas estatísticas de apoio.
+- Pré-visualização com bounding boxes coloridas por classe, usando o `viewBox` original da imagem.
+- Pré-visualização sticky em telas largas, acompanhando a rolagem da galeria.
+- Visualização em tela cheia por botão, duplo clique na prévia ou duplo clique em um cartão.
+- Navegação em tela cheia com ←/→, wrap-around, Esc, foco preso ao diálogo e restauração do foco.
+- Filtro de visibilidade por classe na tela cheia, com checkbox por classe presente na imagem e ações **Marcar tudo** / **Tirar tudo**.
+- Estatísticas gerais e por classe: imagens, anotações, média por imagem e distribuição.
+- Mensagens amigáveis para JSON inválido, falha de leitura e imagens ausentes.
+- Estados vazios para dataset vazio, galeria sem resultados e imagem não carregada.
+- Layout responsivo e suporte a teclado, mouse e toque nos controles principais.
+
+## Stack
+
+| Camada           | Tecnologia                                                          |
+| ---------------- | ------------------------------------------------------------------- |
+| Frontend         | Angular 22.2 standalone, Signals, `OnPush`, templates estritos      |
+| Linguagem        | TypeScript 6 em modo `strict`                                       |
+| Testes do app    | Vitest 5 + jsdom via `@angular/build:unit-test`                     |
+| Qualidade        | ESLint 10 + angular-eslint 22, Prettier 3                           |
+| Build            | Angular CLI 22 / `@angular/build`                                   |
+| Ferramenta local | Node.js 24 com `node:test` e servidor HTTP nativo                   |
+| Dataset          | COCO JSON, YOLO, CSV/ZIP do MakeSense e scripts Python (stdlib)     |
+
+**Node.js:** o Angular 22 exige `^22.22.3 || ^24.15.0 || >=26.0.0`. O projeto foi validado com Node.js 24.20.0 e npm 11.19.0. A ferramenta `tools/image-collector` aceita Node.js 20.11+.
+
+## Estrutura do repositório
+
+```text
+.
+├── app/                         # Aplicação Angular standalone
+│   ├── src/app/core/            # Modelos COCO, validador, loader e utilitários
+│   ├── src/app/features/dataset # Página e componentes de exploração
+│   └── README.md                # Guia operacional da aplicação
+├── dataset/
+│   ├── images/                  # 31 imagens originais
+│   ├── annotations_coco.json    # Anotações COCO
+│   ├── annotations_yolo/        # Um .txt por imagem + classes.txt + dataset.yaml
+│   ├── annotations/             # Exports brutos e derivados do MakeSense
+│   ├── sources/                 # Catálogo de origem e sidecars de metadados
+│   └── README.md                # Conteúdo, validação e pipeline de importação
+├── docs/                        # Arquitetura, critérios, decisões e relatórios
+├── tools/
+│   ├── dataset/                 # Validadores/importador MakeSense em Python
+│   └── image-collector/         # Coleta e catálogo de imagens (Node.js)
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── README.md
+```
+
+## Começando
+
+### Pré-requisitos
+
+- Node.js compatível com o Angular 22 (ver [Stack](#stack)).
+- npm.
+- Python 3 para validar/importar exports do MakeSense (testado com Python 3.14.7; usa apenas a biblioteca padrão).
+
+### Instalação e execução
 
 ```bash
 cd app
@@ -19,43 +112,135 @@ npm install
 npm start
 ```
 
-Abra `http://localhost:4200/`. Na tela, selecione `dataset/annotations_coco.json` e todos os arquivos de `dataset/images/`. Para compilar a versão de produção, execute `npm run build` dentro de `app/`.
+Abra `http://localhost:4200/`.
+
+### Build de produção
+
+```bash
+cd app
+npm run build
+```
+
+A saída é gerada em `app/dist/app/`.
+
+## Como usar a aplicação
+
+1. Selecione `dataset/annotations_coco.json`. Após a validação, o cartão confirma o arquivo com ✓ e o nome escolhido, e o botão passa a **Trocar JSON**.
+2. Selecione todas as imagens de `dataset/images/`. O cartão confirma a quantidade selecionada e o botão passa a **Trocar imagens**.
+3. Escolha um cartão da galeria para abrir a pré-visualização. Em telas largas, a prévia acompanha a rolagem enquanto houver espaço ao lado da galeria.
+4. Use o filtro de classe para restringir a galeria e as caixas da prévia; as estatísticas continuam considerando o dataset inteiro.
+5. Abra a tela cheia pelo botão ⛶, por duplo clique na prévia ou por duplo clique em um cartão. Navegue com ←/→, feche com Esc e use a barra **Classes** para mostrar ou esconder classes daquela imagem.
+
+## Scripts
+
+### Aplicação (`app/`)
+
+| Comando                                                            | Descrição                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------ |
+| `npm start`                                                        | Servidor de desenvolvimento em `localhost:4200`. |
+| `npm run build`                                                    | Build de produção em `dist/app/`.                |
+| `npm test`                                                         | Testes unitários/integrados com Vitest, sem watch. |
+| `npm run lint`                                                     | ESLint para TypeScript e templates Angular.      |
+| `npx prettier --check "src/**/*.{ts,html,scss}"`                   | Verifica a formatação.                           |
+| `npx prettier --write "src/**/*.{ts,html,scss}"`                   | Aplica a formatação.                             |
+
+### Ferramenta de coleta (`tools/image-collector/`)
+
+| Comando                  | Descrição                                             |
+| ------------------------ | ----------------------------------------------------- |
+| `npm start`              | Interface local em `http://127.0.0.1:3000`.           |
+| `npm test`               | 85 testes com `node:test`.                            |
+| `npm run validate:manifest` | Confere catálogo, imagens e referências COCO (read-only). |
+
+### Dataset (`tools/dataset/`)
+
+```bash
+# Validar um par CSV/ZIP do MakeSense contra o COCO atual (não altera arquivos)
+python tools/dataset/validate_makesense_export.py --csv caminho/labels.csv --zip caminho/labels.zip
+
+# Importar após revisão humana e validação OK
+python tools/dataset/import_makesense_export.py --csv caminho/labels.csv --zip caminho/labels.zip
+```
+
+Consulte [`dataset/README.md`](dataset/README.md) para o fluxo completo e as garantias de cada etapa.
+
+## Dataset
+
+| Item               | Valor                                                                 |
+| ------------------ | --------------------------------------------------------------------- |
+| Imagens            | 31                                                                    |
+| Anotações          | 269                                                                   |
+| `pessoa`           | 107                                                                   |
+| `capacete`         | 70                                                                    |
+| `colete`           | 62                                                                    |
+| `sem_capacete`     | 30                                                                    |
+| Formatos           | COCO JSON e YOLO                                                      |
+| Origem             | Unsplash, Pexels e Wikimedia Commons, registrada por arquivo          |
+| Status das labels  | `in_review` em 31/31 registros                                        |
+
+As imagens vieram de bancos públicos gratuitos e cada linha de [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv) registra URL, autor, licença declarada, dimensões, tamanho e SHA-256. A licença da plataforma não substitui a verificação de marcas, obras ou pessoas reconhecíveis nas fotos; as pendências estão em [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md).
+
+A revisão estrutural confirma que nomes, dimensões, hashes, caixas e mapeamento de classes são coerentes. Ela **não** aprova visualmente cada caixa. Uma caixa falsa de `colete` foi removida em 2026-11-13 e o par derivado foi regerado pelo pipeline do MakeSense; a aprovação visual final e um ajuste pendente de `pessoa` continuam abertos em [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md).
+
+## Arquitetura
+
+A aplicação é 100% client-side. `DatasetPage` concentra o estado da exploração com Signals, deriva estatísticas e listas com `computed` e delega a apresentação a componentes standalone com `OnPush`. O carregamento passa por `DatasetLoaderService`, que lê o JSON como `unknown`, valida com `coco-dataset.validator` e mantém um mapa de object URLs para as imagens selecionadas. As caixas são desenhadas em SVG com o `viewBox` original, o que mantém o alinhamento em qualquer tamanho de tela.
+
+O detalhamento de camadas, fluxo de dados, estado, decisões de performance, acessibilidade e estratégia de testes está em [`docs/arquitetura.md`](docs/arquitetura.md). As decisões pontuais e suas consequências estão em [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md) (ADRs).
+
+## Qualidade e testes
+
+Resultados executados em 2026-11-13 neste ambiente:
+
+| Verificação                          | Comando                                              | Resultado                          |
+| ------------------------------------ | ---------------------------------------------------- | ---------------------------------- |
+| Testes da aplicação                  | `cd app && npm test`                                 | **35 testes / 5 arquivos passando** |
+| Lint                                 | `cd app && npm run lint`                             | Sem erros                          |
+| Formatação                           | `cd app && npx prettier --check "src/**/*.{ts,html,scss}"` | Sem diferenças               |
+| Build de produção                    | `cd app && npm run build`                            | Concluído                          |
+| Auditoria npm                        | `cd app && npm audit`                                | 0 vulnerabilidades                 |
+| Testes da ferramenta de coleta       | `cd tools/image-collector && npm test`               | 85 testes passando                 |
+| Catálogo de fontes                   | `cd tools/image-collector && npm run validate:manifest` | OK: 31/31 correspondem          |
+| Par derivado do MakeSense            | `python tools/dataset/validate_makesense_export.py ...` | OK: 269 anotações correspondem  |
+
+A suíte da aplicação cobre o validador COCO, leitura de JSON, ciclo de vida das object URLs, filtro puro, inputs de upload nas duas ordens, confirmação visual, erros amigáveis, imagens ausentes, estatísticas, filtro de classe na página, tela cheia (teclado, foco, rolagem, duplo clique, wrap-around) e visibilidade por classe.
+
+**Não executado:** testes E2E em navegador real, teste manual multi-cliente e conferência visual do layout em dispositivos físicos. A aprovação visual das anotações também segue pendente. Nenhum desses pontos é apresentado como concluído.
 
 ## Documentação
 
-- [Critérios de anotação](docs/criterios-de-anotacao.md)
-- [Guia de desenvolvimento](docs/guia-de-Desenvolvimento.md)
-- [Especificações técnicas](docs/especificacoes-tecnicas.md)
-- [Decisões técnicas](docs/decisoes-tecnicas.md)
-- [Relatório de preparação do dataset](docs/relatorio-preparacao-dataset.md)
-- [Fontes e metadados](docs/relatorio-metadados-origens.md)
-- [Instruções da aplicação](app/README.md)
-- [Revisão visual das anotações](docs/relatorio-revisao-visual-anotacoes.md)
-- [Avaliação das funcionalidades](docs/avaliacao-criterio-funcionalidades.md)
-- [Avaliação da organização do código](docs/avaliacao-criterio-organizacao-codigo.md)
-- [Avaliação de performance Angular](docs/avaliacao-criterio-performance-angular.md)
-- [Avaliação do README e histórico](docs/avaliacao-criterio-readme-historico.md)
+| Documento                                                            | Conteúdo                                                        |
+| -------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [`docs/README.md`](docs/README.md)                                   | Índice e status de toda a documentação.                         |
+| [`docs/arquitetura.md`](docs/arquitetura.md)                         | Camadas, fluxo de dados, estado, performance e testes.          |
+| [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md)             | ADRs e histórico de decisões.                                   |
+| [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md)     | Regras das classes, caixas, oclusão e revisão humana.           |
+| [`dataset/README.md`](dataset/README.md)                             | Conteúdo do dataset, validação e pipeline MakeSense.            |
+| [`app/README.md`](app/README.md)                                     | Guia operacional da aplicação.                                  |
+| [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md) | Pendências da revisão visual.        |
+| [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md) | Fontes, metadados e limitações de licença.            |
+| [`docs/avaliacao-criterio-funcionalidades.md`](docs/avaliacao-criterio-funcionalidades.md) | Avaliação dos requisitos funcionais. |
+| [`docs/avaliacao-criterio-organizacao-codigo.md`](docs/avaliacao-criterio-organizacao-codigo.md) | Organização e padrões de código. |
+| [`docs/avaliacao-criterio-performance-angular.md`](docs/avaliacao-criterio-performance-angular.md) | Performance e boas práticas Angular. |
+| [`docs/avaliacao-criterio-readme-historico.md`](docs/avaliacao-criterio-readme-historico.md) | README e histórico de commits. |
 
-## Critérios de anotação e limitações
+## Limitações e próximos passos
 
-O dataset usa as classes `pessoa`, `capacete`, `colete` e `sem_capacete`. As caixas devem delimitar o objeto visível; `sem_capacete` delimita a cabeça, e bonés/chapéus comuns não são capacetes de segurança. Pessoas/objetos muito pequenos ou com mais de 80% de oclusão podem ser omitidos, desde que o critério seja aplicado de forma consistente. As decisões detalhadas estão em [`docs/criterios-de-anotacao.md`](docs/criterios-de-anotacao.md).
+- A revisão visual final das anotações e o ajuste pendente de uma caixa de `pessoa` na imagem 5 continuam abertos.
+- O upload exige selecionar COCO e imagens separadamente; arquivos homônimos podem ser ambíguos porque a associação usa o nome base.
+- Tudo roda no navegador: datasets muito maiores podem exigir thumbnails e paginação.
+- Não há testes E2E nem medição automatizada de performance.
+- A conferência visual do layout em navegadores/dispositivos reais ainda não foi registrada.
+- Próximos passos recomendados: concluir a revisão do dataset, adicionar E2E para os fluxos principais e evoluir a associação de imagens para caminhos relativos.
 
-As principais dificuldades são pessoas pequenas ou parcialmente encobertas, identificação de EPI em cenas ao fundo e distinção entre capacete de segurança e chapéu comum. O responsável revisou o dataset, e COCO/YOLO passaram pela conferência estrutural. Uma caixa de pessoa na imagem 5 ainda precisa de ajuste; os rótulos seguem em revisão e sem aprovação final. Consulte [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md) antes de tratar os rótulos como finais.
+## Direitos e uso
 
-## Origem das imagens
+Este repositório não declara um arquivo `LICENSE`. O código e a documentação são de autoria do responsável pelo projeto; antes de reutilização por terceiros, uma licença deve ser definida explicitamente. As imagens do dataset pertencem aos autores originais e mantêm as licenças declaradas em [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv); a inclusão neste repositório não transfere direitos nem concede licença sobre elas.
 
-O catálogo por arquivo, com URL de origem, autor, licença, dimensões e hash, está em [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv). As imagens vieram de Unsplash, Pexels e Wikimedia Commons. A licença da plataforma não substitui a revisão de marcas, obras ou pessoas reconhecíveis que possam aparecer nas fotos; pendências estão descritas em [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md).
+## Contribuição
 
-## Decisões técnicas e melhorias futuras
+O fluxo de branches, o padrão de commits, os gates de qualidade e a política para alterações de anotações estão em [`CONTRIBUTING.md`](CONTRIBUTING.md). Alterações de anotações devem passar pelo pipeline CSV/ZIP do MakeSense → validador → importador; não edite COCO/YOLO manualmente.
 
-O app mantém dataset e código separados, carrega COCO e imagens por upload e associa arquivos pelo nome, valida o JSON em runtime e desenha as caixas em SVG usando o `viewBox` original. Os detalhes e limitações estão em [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md).
+## Changelog
 
-Com mais tempo, as próximas melhorias seriam concluir a revisão final do dataset, ampliar a cobertura de testes e adicionar testes E2E, criar thumbnails para coleções maiores e tratar colisões de nomes usando caminhos relativos completos.
-
-## Testes e qualidade
-
-A instalação exata `npm install`, a compilação Angular de produção, ESLint, formatação Prettier e 17 testes unitários da aplicação passaram nesta revisão. Os testes exercitam os inputs de upload nas duas ordens, mensagens para JSON inválido e imagens ausentes, usando arquivos sintéticos; ainda falta a seleção manual do dataset real pelo navegador. `npm start` iniciou o servidor e a página respondeu HTTP 200 em `http://localhost:4200/`. A ferramenta de coleta passou em 85 testes; quatro cobrem o validador do catálogo, incluindo preservação dos arquivos, do status `in_review`, extensão coerente e rejeição de imagens duplicadas no COCO. O validador confirmou 31 imagens com dimensões, tamanhos e SHA-256 compatíveis, sem alterar os metadados. O audit do npm reportou zero vulnerabilidades após a atualização das dependências de lint. Para compilar, use `cd app` e `npm run build`; para os testes Angular, `cd app` e `npm test`; para os testes da ferramenta, `cd tools/image-collector` e `npm test`; para conferir o catálogo, `cd tools/image-collector` e `npm run validate:manifest`; para lint, `cd app` e `npm run lint`.
-
-## Histórico de desenvolvimento
-
-As alterações são organizadas em branches de funcionalidade e commits Conventional Commits, conforme [`CONTRIBUTING.md`](CONTRIBUTING.md). Consulte a seção [Testes e qualidade](#testes-e-qualidade) para os resultados mais recentes.
+As mudanças relevantes estão em [`CHANGELOG.md`](CHANGELOG.md), no formato Keep a Changelog. O histórico detalhado pode ser consultado com `git log`.

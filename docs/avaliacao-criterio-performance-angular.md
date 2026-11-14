@@ -7,13 +7,13 @@
 ## Evidências
 
 - Componentes Angular usam `ChangeDetectionStrategy.OnPush`.
-- Estado local usa Signals e os valores derivados (estatísticas, filtro e seleção) usam `computed`.
+- Estado local usa Signals e os valores derivados (estatísticas, filtro e seleção) usam `computed`; a visibilidade de classes na tela cheia usa `linkedSignal` para preservar a seleção ao navegar.
 - Todos os loops `@for` encontrados usam `track` por ID estável.
 - Miniaturas usam `loading="lazy"`.
 - Imagens locais usam object URLs temporárias; a troca da seleção revoga URLs anteriores e `DatasetPage.ngOnDestroy` libera as URLs restantes.
 - Quando arquivos selecionados têm o mesmo nome normalizado, a URL substituída é revogada antes de atualizar o mapa. Um teste do serviço confirma a liberação da URL substituída e da URL final.
-- Não há subscriptions, timers nem listeners manuais no código da aplicação que exijam limpeza adicional.
-- A compilação de produção gerou um bundle inicial de aproximadamente 254 kB, abaixo do limite de erro de 1 MB configurado no Angular.
+- O único listener manual é o `keydown` da tela cheia; ele é removido em `ImageFullscreenViewer.ngOnDestroy`, junto com a restauração de `body.style.overflow` e do foco. Não há subscriptions nem timers pendentes.
+- A compilação de produção gerou um bundle inicial de aproximadamente **279,76 kB** (≈ 74,39 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular.
 
 ## Oportunidades restantes
 
