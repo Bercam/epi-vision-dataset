@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-13",
+  "source_csv": "makesense_annotations_reviewed_2026-11-12.csv",
+  "source_zip": "makesense_yolo_export_reviewed_2026-11-12.zip",
+  "derived_csv": "makesense_annotations_reviewed_2026-11-13.csv",
+  "derived_zip": "makesense_yolo_export_reviewed_2026-11-13.zip",
+  "change": {
+    "action": "remove_false_positive_annotation",
+    "csv_line": 258,
+    "image_name": "pexels-themightynelson-5667685.jpg",
+    "class": "colete",
+    "bbox": [
+      4274,
+      1983,
+      36,
+      7
+    ],
+    "image_dimensions": [
+      5432,
+      3592
+    ],
+    "reason": "Caixa de 36x7 px sobre uma faixa estreita da cena, sem colete delimitável. Removida a partir do arquivo YOLO revisado enviado pelo responsável; os quatro rótulos restantes da imagem foram preservados sem alteração.",
+    "provided_yolo_file": "pexels-themightynelson-5667685.txt",
+    "raw_exports_preserved": true,
+    "final_dataset_approval": "pending"
+  }
+}

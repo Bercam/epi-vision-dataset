@@ -3352,19 +3352,6 @@
     },
     {
       "id": 257,
-      "image_id": 29,
-      "category_id": 3,
-      "bbox": [
-        4274,
-        1983,
-        36,
-        7
-      ],
-      "area": 252,
-      "iscrowd": 0
-    },
-    {
-      "id": 258,
       "image_id": 30,
       "category_id": 2,
       "bbox": [
@@ -3377,7 +3364,7 @@
       "iscrowd": 0
     },
     {
-      "id": 259,
+      "id": 258,
       "image_id": 30,
       "category_id": 2,
       "bbox": [
@@ -3390,7 +3377,7 @@
       "iscrowd": 0
     },
     {
-      "id": 260,
+      "id": 259,
       "image_id": 30,
       "category_id": 2,
       "bbox": [
@@ -3403,7 +3390,7 @@
       "iscrowd": 0
     },
     {
-      "id": 261,
+      "id": 260,
       "image_id": 30,
       "category_id": 2,
       "bbox": [
@@ -3416,7 +3403,7 @@
       "iscrowd": 0
     },
     {
-      "id": 262,
+      "id": 261,
       "image_id": 30,
       "category_id": 3,
       "bbox": [
@@ -3429,7 +3416,7 @@
       "iscrowd": 0
     },
     {
-      "id": 263,
+      "id": 262,
       "image_id": 30,
       "category_id": 1,
       "bbox": [
@@ -3442,7 +3429,7 @@
       "iscrowd": 0
     },
     {
-      "id": 264,
+      "id": 263,
       "image_id": 30,
       "category_id": 1,
       "bbox": [
@@ -3455,7 +3442,7 @@
       "iscrowd": 0
     },
     {
-      "id": 265,
+      "id": 264,
       "image_id": 30,
       "category_id": 1,
       "bbox": [
@@ -3468,7 +3455,7 @@
       "iscrowd": 0
     },
     {
-      "id": 266,
+      "id": 265,
       "image_id": 30,
       "category_id": 1,
       "bbox": [
@@ -3481,7 +3468,7 @@
       "iscrowd": 0
     },
     {
-      "id": 267,
+      "id": 266,
       "image_id": 31,
       "category_id": 4,
       "bbox": [
@@ -3494,7 +3481,7 @@
       "iscrowd": 0
     },
     {
-      "id": 268,
+      "id": 267,
       "image_id": 31,
       "category_id": 4,
       "bbox": [
@@ -3507,7 +3494,7 @@
       "iscrowd": 0
     },
     {
-      "id": 269,
+      "id": 268,
       "image_id": 31,
       "category_id": 1,
       "bbox": [
@@ -3520,7 +3507,7 @@
       "iscrowd": 0
     },
     {
-      "id": 270,
+      "id": 269,
       "image_id": 31,
       "category_id": 1,
       "bbox": [
