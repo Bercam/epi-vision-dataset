@@ -11,13 +11,21 @@ import { DatasetLoaderService } from '../../../core/services/dataset-loader.serv
 import { DatasetImportPanel } from '../components/dataset-import-panel';
 import { DatasetGallery } from '../components/dataset-gallery';
 import { ImagePreview } from '../components/image-preview';
+import { ImageFullscreenViewer } from '../components/image-fullscreen-viewer';
 import { ClassFilter } from '../components/class-filter';
 import { DatasetStatistics } from '../components/dataset-statistics';
 import { filterAnnotationsByCategory } from '../../../core/utils/filter-annotations';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatasetImportPanel, DatasetGallery, ImagePreview, ClassFilter, DatasetStatistics],
+  imports: [
+    DatasetImportPanel,
+    DatasetGallery,
+    ImagePreview,
+    ImageFullscreenViewer,
+    ClassFilter,
+    DatasetStatistics,
+  ],
   selector: 'app-dataset-page',
   standalone: true,
   templateUrl: './dataset-page.html',
@@ -33,6 +41,9 @@ export class DatasetPage implements OnDestroy {
   protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly hasImageSelection = signal(false);
+  protected readonly isFullscreen = signal(false);
+  protected readonly datasetFileName = signal<string | null>(null);
+  protected readonly selectedImageCount = signal<number | null>(null);
 
   protected readonly annotationCounts = computed(() => {
     const counts = new Map<number, number>();
@@ -101,6 +112,12 @@ export class DatasetPage implements OnDestroy {
     return this.dataset()?.images.find((image) => image.id === id) ?? null;
   });
 
+  protected readonly fullscreenPosition = computed(() => {
+    const images = this.filteredImages();
+    const index = images.findIndex((image) => image.id === this.selectedImageId());
+    return index < 0 ? 0 : index + 1;
+  });
+
   protected readonly selectedImageUrl = computed(() => {
     const image = this.selectedImage();
     return image
@@ -118,6 +135,20 @@ export class DatasetPage implements OnDestroy {
     );
   });
 
+  protected readonly allAnnotationsForSelectedImage = computed(() => {
+    const id = this.selectedImageId();
+    return id === null ? [] : (this.annotationsByImage().get(id) ?? []);
+  });
+
+  protected readonly fullscreenInitialHiddenCategoryIds = computed(() => {
+    const selectedCategoryId = this.selectedCategoryId();
+    if (selectedCategoryId === null) return [];
+
+    return (this.dataset()?.categories ?? [])
+      .filter((category) => category.id !== selectedCategoryId)
+      .map((category) => category.id);
+  });
+
   protected readonly missingImageCount = computed(() => {
     const dataset = this.dataset();
     if (!dataset || !this.hasImageSelection()) return 0;
@@ -130,10 +161,13 @@ export class DatasetPage implements OnDestroy {
   protected async loadCocoFile(file: File): Promise<void> {
     this.isLoading.set(true);
     this.errorMessage.set(null);
+    this.isFullscreen.set(false);
+    this.datasetFileName.set(null);
 
     try {
       const dataset = await this.loader.loadJsonFile(file);
       this.dataset.set(dataset);
+      this.datasetFileName.set(file.name);
       this.selectedCategoryId.set(null);
       this.selectedImageId.set(dataset.images[0]?.id ?? null);
     } catch (error: unknown) {
@@ -151,12 +185,49 @@ export class DatasetPage implements OnDestroy {
   }
 
   protected registerImages(files: readonly File[]): void {
+    if (files.length === 0) return;
+
     this.hasImageSelection.set(true);
     this.imageUrls.set(this.loader.registerImageFiles(files));
+    this.selectedImageCount.set(files.length);
   }
 
   protected selectImage(image: CocoImage): void {
     this.selectedImageId.set(image.id);
+  }
+
+  protected openFullscreen(): void {
+    if (this.selectedImage()) {
+      this.isFullscreen.set(true);
+    }
+  }
+
+  protected openImageFullscreen(image: CocoImage): void {
+    if (!this.imageUrl(image)) return;
+
+    this.selectedImageId.set(image.id);
+    this.isFullscreen.set(true);
+  }
+
+  protected closeFullscreen(): void {
+    this.isFullscreen.set(false);
+  }
+
+  protected showPreviousImage(): void {
+    this.moveFullscreenSelection(-1);
+  }
+
+  protected showNextImage(): void {
+    this.moveFullscreenSelection(1);
+  }
+
+  private moveFullscreenSelection(step: number): void {
+    const images = this.filteredImages();
+    if (images.length === 0) return;
+
+    const currentIndex = images.findIndex((image) => image.id === this.selectedImageId());
+    const nextIndex = currentIndex < 0 ? 0 : (currentIndex + step + images.length) % images.length;
+    this.selectedImageId.set(images[nextIndex].id);
   }
 
   protected selectCategory(categoryId: number | null): void {

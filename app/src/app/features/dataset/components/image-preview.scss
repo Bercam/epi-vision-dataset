@@ -1,6 +1,11 @@
-.preview-panel {
+:host {
   position: sticky;
   top: 14px;
+  display: block;
+  min-width: 0;
+}
+
+.preview-panel {
   min-width: 0;
   padding: 19px;
   border: 1px solid #e2e9e3;
@@ -31,6 +36,13 @@ h2 {
   letter-spacing: -0.02em;
 }
 
+.preview-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
 .preview-counter {
   display: inline-flex;
   align-items: center;
@@ -44,6 +56,33 @@ h2 {
   font-size: 11px;
   font-weight: 750;
   white-space: nowrap;
+}
+
+.expand-button {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid #dde6df;
+  border-radius: 8px;
+  background: #f8faf8;
+  color: #37684f;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.expand-button:hover {
+  border-color: #b9d0c2;
+  background: #eef5f0;
+}
+
+.expand-button:focus-visible {
+  outline: 2px solid #4f9c76;
+  outline-offset: 2px;
 }
 
 .preview-canvas {
@@ -155,7 +194,7 @@ h2 {
 }
 
 @media (max-width: 1050px) {
-  .preview-panel {
+  :host {
     position: static;
   }
 

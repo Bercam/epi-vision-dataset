@@ -1,0 +1,131 @@
+<div class="viewer-backdrop">
+  <section
+    #dialog
+    class="viewer-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Visualização em tela cheia: ' + image().file_name"
+  >
+    <header class="viewer-header">
+      <div class="viewer-title">
+        <p class="eyebrow">VISUALIZAÇÃO EM TELA CHEIA</p>
+        <h2 [title]="image().file_name">{{ image().file_name }}</h2>
+      </div>
+      <div class="viewer-actions">
+        <span class="viewer-position" aria-live="polite"> {{ position() }} / {{ total() }} </span>
+        <button
+          #closeButton
+          type="button"
+          class="viewer-button"
+          aria-label="Fechar visualização em tela cheia"
+          title="Fechar (Esc)"
+          (click)="closed.emit()"
+        >
+          <span aria-hidden="true">✕</span>
+        </button>
+      </div>
+    </header>
+
+    @if (categoryFilters().length > 0) {
+      <div class="viewer-filters" role="group" aria-label="Classes visíveis nesta imagem">
+        <span class="filters-title">Classes</span>
+        <div class="filter-options">
+          @for (filter of categoryFilters(); track filter.category.id) {
+            <label class="filter-option">
+              <input
+                type="checkbox"
+                [checked]="filter.visible"
+                [attr.aria-label]="filter.label"
+                (change)="setCategoryVisibility(filter.category.id, $any($event.target).checked)"
+              />
+              <span
+                class="filter-swatch"
+                [style.backgroundColor]="categoryColor(filter.category.name)"
+                aria-hidden="true"
+              ></span>
+              <span class="filter-name">{{ filter.category.name }}</span>
+              <span class="filter-count">{{ filter.count }}</span>
+            </label>
+          }
+        </div>
+        <div class="filter-actions">
+          <button type="button" class="filter-action" (click)="showAllCategories()">
+            Marcar tudo
+          </button>
+          <button type="button" class="filter-action" (click)="hideAllCategories()">
+            Tirar tudo
+          </button>
+        </div>
+      </div>
+    }
+
+    <div class="viewer-stage">
+      @if (imageUrl(); as fullUrl) {
+        <svg
+          class="viewer-canvas"
+          [attr.viewBox]="'0 0 ' + image().width + ' ' + image().height"
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          [attr.aria-label]="
+            'Imagem em tela cheia com ' + visibleAnnotations().length + ' caixas de anotação'
+          "
+        >
+          <image
+            [attr.href]="fullUrl"
+            x="0"
+            y="0"
+            [attr.width]="image().width"
+            [attr.height]="image().height"
+            preserveAspectRatio="xMidYMid meet"
+          />
+          @for (annotation of visibleAnnotations(); track annotation.id) {
+            @if (categoryById().get(annotation.category_id); as category) {
+              <g [attr.aria-label]="category.name">
+                <title>{{ category.name }}</title>
+                <rect
+                  class="bounding-box"
+                  [attr.x]="annotation.bbox[0]"
+                  [attr.y]="annotation.bbox[1]"
+                  [attr.width]="annotation.bbox[2]"
+                  [attr.height]="annotation.bbox[3]"
+                  [attr.stroke]="categoryColor(category.name)"
+                  [attr.fill]="categoryColor(category.name)"
+                />
+              </g>
+            }
+          }
+        </svg>
+      } @else {
+        <div class="viewer-placeholder">
+          <span aria-hidden="true">▧</span>
+          <p>Carregue as imagens do dataset para visualizar esta cena em tela cheia.</p>
+        </div>
+      }
+
+      <button
+        type="button"
+        class="viewer-nav viewer-nav-previous"
+        aria-label="Imagem anterior"
+        title="Imagem anterior (←)"
+        (click)="previous.emit()"
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button
+        type="button"
+        class="viewer-nav viewer-nav-next"
+        aria-label="Próxima imagem"
+        title="Próxima imagem (→)"
+        (click)="next.emit()"
+      >
+        <span aria-hidden="true">›</span>
+      </button>
+    </div>
+
+    <footer class="viewer-footer">
+      <span>{{ image().width }} × {{ image().height }} px</span>
+      <span>{{ visibleAnnotations().length }} de {{ annotations().length }} anot.</span>
+      <span class="viewer-hint">Use ← → para navegar e Esc para fechar</span>
+    </footer>
+  </section>
+</div>

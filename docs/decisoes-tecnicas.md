@@ -72,6 +72,30 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 - **Segurança de dependências:** O audit identificou `minimatch` vulnerável nas árvores do ESLint e TypeScript-ESLint. O override está limitado a essas dependências e resolve para `minimatch` 11.0.8; `npm audit` fica sem vulnerabilidades. Build, lint e testes passaram com essa resolução.
 - **Evidência:** `eslint.config.js`, alvo `lint` em `angular.json`, `package.json` e `package-lock.json`.
 
+### ADR-011 — Visualização em tela cheia como overlay
+
+- **Status:** Implementada
+- **Contexto:** A pré-visualização compacta limita a inspeção das caixas; era necessário ampliar a imagem sem perder o contexto da página.
+- **Decisão:** Renderizar um overlay `position: fixed` com `role="dialog"`, `aria-modal`, foco inicial no botão de fechar, armadilha de foco por Tab, trava de rolagem do `body` e restauração do foco ao fechar. A abertura ocorre pelo botão da prévia, por duplo clique na imagem da prévia ou por duplo clique em um cartão da galeria. A navegação por ←/→ usa a ordem da galeria filtrada, com wrap-around; Esc fecha. Não foi usada a Fullscreen API do navegador.
+- **Consequências:** O comportamento é consistente entre navegadores, testável em jsdom e mantém o estado da página intacto atrás do overlay. Em telas largas, o host da pré-visualização usa `position: sticky` para acompanhar a rolagem enquanto a galeria estiver visível; abaixo de 1050 px, o layout vira uma coluna e a prévia fica estática.
+- **Evidência:** `ImageFullscreenViewer`, `ImagePreview`, `DatasetGallery`, `DatasetPage` (`openFullscreen`, `openImageFullscreen`, `moveFullscreenSelection`), `image-fullscreen-viewer.spec.ts` e `dataset-page.spec.ts`.
+
+### ADR-012 — Confirmação visual dos arquivos importados
+
+- **Status:** Implementada
+- **Contexto:** Após escolher os arquivos, o usuário não tinha retorno imediato sobre qual JSON foi aceito nem quantas imagens entraram na seleção; o seletor nativo não permanece visível depois do upload.
+- **Decisão:** Manter o estado da confirmação em `DatasetPage` (`datasetFileName` e `selectedImageCount`) e passá-lo ao `DatasetImportPanel` por inputs. O nome do JSON só é confirmado depois que o carregamento e a validação terminam com sucesso; uma nova tentativa limpa a confirmação anterior antes de validar. As imagens confirmam a quantidade selecionada, com rótulo no singular ou plural. Os cartões ganham a classe `.confirmed`, um ✓ verde com `role="status"` e o botão muda para "Trocar JSON" / "Trocar imagens".
+- **Consequências:** O feedback é imediato, acessível e reflete apenas dados validados pelo serviço; seleções inválidas não deixam confirmação enganosa. O estado é local à página e não é persistido entre recargas.
+- **Evidência:** `DatasetImportPanel` (`cocoFileName`, `selectedImageCount`, `imageCountLabel`), `DatasetPage` (`loadCocoFile`, `registerImages`), `dataset-import-panel.html`/`.scss` e testes em `dataset-page.spec.ts`.
+
+### ADR-013 — Visibilidade de classes na tela cheia
+
+- **Status:** Implementada
+- **Contexto:** A tela cheia exibia todas as caixas da imagem, sem permitir isolar classes para conferir uma anotação específica; o filtro da página é único e fica atrás do overlay.
+- **Decisão:** Adicionar ao `ImageFullscreenViewer` uma barra de classes com um checkbox por classe presente na imagem (nome, cor e contagem), além dos botões **Marcar tudo** e **Tirar tudo**. O viewer recebe todas as anotações da imagem e mantém um conjunto de classes ocultas, preservado ao navegar com ←/→. A página passa `initialHiddenCategoryIds` com todas as classes exceto a ativa quando há filtro de classe na página, mantendo a coerência com a pré-visualização; a legenda do rodapé foi substituída pela barra de filtros.
+- **Consequências:** O usuário isola classes sem sair da tela cheia e sem alterar o filtro da página. O estado é local ao viewer e reiniciado ao fechar. Os contadores do rodapé e o rótulo acessível do SVG passam a refletir apenas as caixas visíveis.
+- **Evidência:** `ImageFullscreenViewer` (`hiddenCategoryIds`, `categoryFilters`, `visibleAnnotations`, `setCategoryVisibility`, `showAllCategories`, `hideAllCategories`), `DatasetPage` (`allAnnotationsForSelectedImage`, `fullscreenInitialHiddenCategoryIds`), `image-fullscreen-viewer.spec.ts` e `dataset-page.spec.ts`.
+
 ## 3. Decisões pendentes
 
 | ID      | Assunto                  | Pendente                                                                                                       |
@@ -85,3 +109,6 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 | ---------- | ----------------------------------------------------------------------------------------------------------- |
 | 2026-11-12 | Decisões atuais documentadas após implementação do upload, validação, galeria e pré-visualização.           |
 | 2026-11-12 | ESLint flat config adicionado; os overrides de segurança foram verificados com audit, build, lint e testes. |
+| 2026-11-13 | Visualização em tela cheia (teclado, foco e duplo clique) e prévia sticky documentadas em ADR-011.          |
+| 2026-11-13 | Confirmação visual do JSON e da quantidade de imagens importados documentada em ADR-012.                     |
+| 2026-11-13 | Filtro de visibilidade por classe na tela cheia (checkboxes e marcar/tirar tudo) documentado em ADR-013.     |

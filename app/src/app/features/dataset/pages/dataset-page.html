@@ -24,6 +24,8 @@
     [isLoading]="isLoading()"
     [errorMessage]="errorMessage()"
     [missingImageCount]="missingImageCount()"
+    [cocoFileName]="datasetFileName()"
+    [selectedImageCount]="selectedImageCount()"
     (cocoSelected)="loadCocoFile($event)"
     (imagesSelected)="registerImages($event)"
   />
@@ -73,6 +75,7 @@
         [selectedImageId]="selectedImageId()"
         [emptyMessage]="galleryEmptyMessage()"
         (imageSelected)="selectImage($event)"
+        (imageOpened)="openImageFullscreen($event)"
       />
       <app-image-preview
         [image]="selectedImage()"
@@ -81,8 +84,26 @@
         [categories]="currentDataset.categories"
         [annotationCount]="selectedAnnotations().length"
         [datasetLoaded]="true"
+        (expand)="openFullscreen()"
       />
     </section>
+
+    @if (selectedImage(); as fullscreenImage) {
+      @if (isFullscreen()) {
+        <app-image-fullscreen-viewer
+          [image]="fullscreenImage"
+          [imageUrl]="selectedImageUrl()"
+          [annotations]="allAnnotationsForSelectedImage()"
+          [categories]="currentDataset.categories"
+          [initialHiddenCategoryIds]="fullscreenInitialHiddenCategoryIds()"
+          [position]="fullscreenPosition()"
+          [total]="filteredImages().length"
+          (closed)="closeFullscreen()"
+          (previous)="showPreviousImage()"
+          (next)="showNextImage()"
+        />
+      }
+    }
   } @else {
     <section class="empty-state" aria-live="polite">
       <span class="empty-state-icon" aria-hidden="true">＋</span>

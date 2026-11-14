@@ -8,13 +8,17 @@
   </div>
 
   <div class="import-options">
-    <label class="upload-card" for="coco-file">
+    <label class="upload-card" [class.confirmed]="cocoFileName()" for="coco-file">
       <span class="upload-icon json-icon" aria-hidden="true">&#123; &#125;</span>
       <span class="upload-copy">
         <strong>Arquivo de anotações</strong>
-        <span>Selecione o JSON COCO do dataset</span>
+        @if (cocoFileName(); as fileName) {
+          <span class="upload-confirmation" role="status">✓ {{ fileName }}</span>
+        } @else {
+          <span>Selecione o JSON COCO do dataset</span>
+        }
       </span>
-      <span class="upload-action">Escolher JSON</span>
+      <span class="upload-action">{{ cocoFileName() ? 'Trocar JSON' : 'Escolher JSON' }}</span>
       <input
         id="coco-file"
         type="file"
@@ -23,13 +27,19 @@
       />
     </label>
 
-    <label class="upload-card" for="image-files">
+    <label class="upload-card" [class.confirmed]="imageCountLabel()" for="image-files">
       <span class="upload-icon image-icon" aria-hidden="true">▧</span>
       <span class="upload-copy">
         <strong>Imagens do dataset</strong>
-        <span>Selecione os JPGs correspondentes</span>
+        @if (imageCountLabel(); as countLabel) {
+          <span class="upload-confirmation" role="status">✓ {{ countLabel }}</span>
+        } @else {
+          <span>Selecione os JPGs correspondentes</span>
+        }
       </span>
-      <span class="upload-action secondary-action">Escolher imagens</span>
+      <span class="upload-action secondary-action">
+        {{ imageCountLabel() ? 'Trocar imagens' : 'Escolher imagens' }}
+      </span>
       <input
         id="image-files"
         type="file"

@@ -6,7 +6,7 @@
         Imagens <span class="count-badge">{{ images().length }}</span>
       </h2>
     </div>
-    <span class="gallery-help">Selecione uma imagem para visualizar</span>
+    <span class="gallery-help">Clique para ver · duplo clique: tela cheia</span>
   </div>
 
   @if (images().length > 0) {
@@ -17,6 +17,7 @@
           [class.selected]="selectedImageId() === image.id"
           [attr.aria-pressed]="selectedImageId() === image.id"
           (click)="imageSelected.emit(image)"
+          (dblclick)="imageOpened.emit(image)"
         >
           <span class="thumbnail">
             @if (imageUrl(image); as thumbnailUrl) {

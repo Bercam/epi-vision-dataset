@@ -5,9 +5,22 @@
         <p class="eyebrow">PRÉ-VISUALIZAÇÃO</p>
         <h2>Imagem selecionada</h2>
       </div>
-      <span class="preview-counter">{{ annotationCount() }} anot.</span>
+      <div class="preview-actions">
+        <span class="preview-counter">{{ annotationCount() }} anot.</span>
+        @if (imageUrl()) {
+          <button
+            type="button"
+            class="expand-button"
+            aria-label="Abrir imagem em tela cheia"
+            title="Tela cheia"
+            (click)="expand.emit()"
+          >
+            <span aria-hidden="true">⛶</span>
+          </button>
+        }
+      </div>
     </div>
-    <div class="preview-canvas">
+    <div class="preview-canvas" (dblclick)="requestExpand()">
       @if (imageUrl(); as previewUrl) {
         <svg
           class="annotation-layer"
@@ -66,7 +79,10 @@
         }
       </div>
     }
-    <p class="preview-footnote">Caixas e cores correspondem às classes do arquivo COCO.</p>
+    <p class="preview-footnote">
+      Caixas e cores correspondem às classes do arquivo COCO. Dê dois cliques na imagem para abrir
+      em tela cheia.
+    </p>
   } @else {
     <div class="empty-preview">
       <span aria-hidden="true">▧</span>

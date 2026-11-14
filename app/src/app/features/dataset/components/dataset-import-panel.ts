@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,8 +11,17 @@ export class DatasetImportPanel {
   readonly isLoading = input(false);
   readonly errorMessage = input<string | null>(null);
   readonly missingImageCount = input(0);
+  readonly cocoFileName = input<string | null>(null);
+  readonly selectedImageCount = input<number | null>(null);
   readonly cocoSelected = output<File>();
   readonly imagesSelected = output<readonly File[]>();
+
+  protected readonly imageCountLabel = computed(() => {
+    const count = this.selectedImageCount();
+    if (count === null) return null;
+
+    return count === 1 ? '1 imagem selecionada' : `${count} imagens selecionadas`;
+  });
 
   onCocoSelected(event: Event): void {
     const inputElement = event.currentTarget;

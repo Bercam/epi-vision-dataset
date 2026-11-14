@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { CocoAnnotation, CocoCategory, CocoImage } from '../../../core/models/coco-dataset.model';
 import { categoryColor } from '../../../core/utils/category-colors';
 
@@ -16,6 +16,7 @@ export class ImagePreview {
   readonly categories = input<readonly CocoCategory[]>([]);
   readonly annotationCount = input(0);
   readonly datasetLoaded = input(false);
+  readonly expand = output<void>();
 
   protected readonly categoryById = computed(
     () => new Map(this.categories().map((category) => [category.id, category])),
@@ -28,5 +29,11 @@ export class ImagePreview {
 
   protected categoryColor(name: string): string {
     return categoryColor(name);
+  }
+
+  protected requestExpand(): void {
+    if (this.imageUrl()) {
+      this.expand.emit();
+    }
   }
 }

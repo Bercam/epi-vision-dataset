@@ -15,6 +15,7 @@ export class DatasetGallery {
   readonly selectedImageId = input<number | null>(null);
   readonly emptyMessage = input('Nenhuma imagem disponível para este filtro.');
   readonly imageSelected = output<CocoImage>();
+  readonly imageOpened = output<CocoImage>();
 
   imageUrl(image: CocoImage): string | null {
     return this.imageUrls().get(this.normalizeFileName(image.file_name)) ?? null;
