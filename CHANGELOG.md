@@ -11,7 +11,11 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 - Visualização em tela cheia (`ImageFullscreenViewer`) com abertura por botão, duplo clique na prévia ou em um cartão da galeria, navegação por ←/→ com wrap-around dentro do filtro ativo, fechamento por Esc, foco preso ao diálogo e restauração do foco e da rolagem (ADR-011).
 - Filtro de visibilidade por classe na tela cheia: checkbox por classe presente na imagem, contagem, cor e rótulo acessível, além de **Marcar tudo** / **Tirar tudo**; a seleção é mantida ao navegar entre imagens (ADR-013).
 - Confirmação visual do JSON validado e da quantidade de imagens selecionadas nos cartões de importação, com ✓, `role="status"` e botões **Trocar JSON** / **Trocar imagens** (ADR-012).
-- Cinco testes novos da tela cheia e do filtro por classe; a suíte Angular passou de 30 para **35 testes em 5 arquivos**.
+- Cinco testes novos da tela cheia e do filtro por classe.
+- Suíte E2E com Playwright 1.65 + Chromium: 9 testes contra o dataset real, cobrindo estado vazio, JSON inválido, totais, estatísticas, aviso de imagens ausentes, miniaturas, filtro por classe, cores das caixas, tela cheia, navegação por teclado e galeria vazia.
+- Capturas de tela reproduzíveis em `docs/screenshots/` (4 estados desktop, 1 viewport mobile e `demo.gif`), geradas por `npm run screenshots`.
+- `tools/dataset/audit_annotations.py`: auditoria geométrica read-only que separa erros objetivos de avisos para inspeção humana.
+- `core/utils/file-name.ts`: normalização de nome base extraída e reutilizada pelo serviço, pela página e pela galeria.
 
 ### Alterado
 
@@ -21,13 +25,15 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 - `CONTRIBUTING.md` e `app/README.md` ampliados com setup, gates de qualidade e política de dados.
 - `README-documentacao.md` convertido em ponteiro para o índice de documentação.
 - Guia de desenvolvimento renomeado para `docs/guia-de-desenvolvimento.md` e links corrigidos.
-- Fichas de avaliação atualizadas com os números atuais (35 testes e bundle de ≈ 279,76 kB).
+- Fichas de avaliação atualizadas com os números atuais (39 testes, 9 E2E e bundle de 279,23 kB).
+- A contagem de imagens selecionadas agora usa apenas arquivos de imagem aceitos, em vez do total de arquivos escolhidos.
 
 ### Corrigido
 
 - Removidas duas caixas `sem_capacete` com altura zero (46×0 e 2×0 px) em `acton-crawford-A4xwAcZOAyo-unsplash.jpg` no derivado de 2026-11-16, registradas em `corrections_2026-11-16.json`.
-- Removida uma caixa falso-positiva da classe `colete` na imagem 5, identificada na revisão visual; o dataset passou de 270 para **269 anotações**.
-- Par derivado do MakeSense regerado pelo pipeline CSV/ZIP → validador → importador (`corrections_2026-11-13.json`, `makesense_annotations_reviewed_2026-11-13.csv`, `makesense_yolo_export_reviewed_2026-11-13.zip`).
+- Removida uma caixa falso-positiva da classe `colete` na imagem 5 na revisão de 2026-11-13, registrada em `corrections_2026-11-13.json`.
+- Estendido o topo de duas caixas `pessoa` que cortavam a cabeça `sem_capacete` anotada: `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg` (10 px) e `jose-megias-7Qxn3y2CQcM-unsplash.jpg` (26 px). O bloco `geometry_review` de `corrections_2026-11-16.json` registra a decisão.
+- Par derivado do MakeSense regerado pelo pipeline CSV/ZIP → validador → importador; o vigente é `makesense_annotations_reviewed_2026-11-16.csv` e `makesense_yolo_export_reviewed_2026-11-16.zip`.
 
 ### Segurança
 

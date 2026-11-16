@@ -2,7 +2,7 @@
 
 ## Resultado atual
 
-**Atende aos requisitos funcionais identificados; compilação de produção, suíte Angular, upload pelos inputs e inicialização local foram verificadas.** Testes de integração acionam os inputs reais do componente com arquivos sintéticos nas duas ordens; `npm start` serviu a página com HTTP 200 e o elemento raiz Angular. O filtro atual também foi verificado na página Angular.
+**Atende aos requisitos funcionais identificados; compilação de produção, suíte Angular, testes E2E com o dataset real, upload pelos inputs e inicialização local foram verificadas.** Testes de integração acionam os inputs reais do componente com arquivos sintéticos nas duas ordens; os E2E repetem o fluxo com o COCO e as 31 imagens reais no Chromium. `npm start` serviu a página com HTTP 200 e o elemento raiz Angular. O filtro atual também foi verificado na página Angular.
 
 ## Conferência requisito por requisito
 
@@ -28,11 +28,11 @@ O filtro de classe já limitava as imagens da galeria, porém a prévia ainda mo
 
 ## Limitações e validações pendentes
 
-- O fluxo dos inputs foi verificado com arquivos sintéticos em teste; ainda falta uma conferência manual no navegador selecionando o COCO e as imagens reais do dataset. A resposta HTTP confirma a inicialização, não essa conferência manual.
+- O fluxo dos inputs foi verificado com arquivos sintéticos nos testes unitários e com o COCO e as 31 imagens reais nos testes E2E em Chromium. A conferência **manual** do mesmo fluxo em um navegador, por uma pessoa, ainda não foi registrada.
 - A aplicação exige selecionar o COCO e os arquivos de imagem separadamente; essa limitação está documentada nas decisões técnicas e na interface.
 - A associação por nome base pode ser ambígua em caso de arquivos homônimos; decisão futura registrada em `docs/decisoes-tecnicas.md`.
-- O teste das estatísticas cobre uma fixture de integração pequena; ainda não existe uma conferência manual das estatísticas com os 31 registros do dataset real.
+- As estatísticas agora são verificadas contra o dataset real no E2E, que deriva os totais do próprio COCO em vez de usar valores fixos.
 
 ## Estimativa de pontuação
 
-Pela cobertura dos requisitos, compilação de produção, conferência manual anterior do fluxo principal e teste de integração do filtro/caixas, a estimativa deste critério é **85–90% dos 25 pontos**. A carga dos arquivos do dataset no navegador ainda aguarda autorização. Não é uma nota oficial do avaliador.
+Pela cobertura dos requisitos, compilação de produção, testes unitários, testes E2E com o dataset real e conferência manual anterior do fluxo principal, a estimativa deste critério é **90–95% dos 25 pontos**. A conferência visual humana das anotações e em dispositivos físicos segue pendente. Não é uma nota oficial do avaliador.

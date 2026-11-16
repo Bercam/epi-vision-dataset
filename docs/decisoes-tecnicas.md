@@ -37,7 +37,7 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 - **Decisão:** Associar usando o nome base do arquivo, ignorando diferenças entre maiúsculas e minúsculas e removendo diretórios do caminho COCO.
 - **Consequências:** A seleção funciona mesmo quando o COCO contém caminho relativo. Arquivos com nomes diferentes não são associados automaticamente; a interface informa imagens ausentes.
 - **Limitação conhecida:** Nomes base iguais em diretórios diferentes podem ser ambíguos, pois o caminho é descartado.
-- **Evidência:** `DatasetLoaderService.normalizeFileName` e registro de imagens selecionadas.
+- **Evidência:** `normalizeFileName` em `core/utils/file-name.ts`, usado por `DatasetLoaderService`, `DatasetPage` e `DatasetGallery`.
 
 ### ADR-005 — URLs temporárias para imagens selecionadas
 
@@ -62,6 +62,14 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 - **Decisão:** Usar Signals para estado da página e `computed` para contagens, filtro, seleção e estatísticas; componentes usam `OnPush`.
 - **Consequências:** Os valores são recalculados quando o estado relacionado muda, sem executar agregações em métodos chamados pelo template.
 - **Evidência:** `DatasetPage` e componentes standalone do recurso dataset.
+
+### ADR-008 — Testes E2E com Playwright
+
+- **Status:** Implementada
+- **Contexto:** A suíte unitária usa jsdom e não exercita upload de arquivos, object URLs, layout real nem foco do navegador. Os fluxos essenciais precisavam de cobertura em navegador real sem duplicar a suíte unitária.
+- **Decisão:** Usar Playwright 1.65 com Chromium e o dev server iniciado automaticamente na porta 4300. Os testes ficam em `app/e2e/`, leem o COCO e as 31 imagens reais e derivam os valores esperados do próprio JSON, em vez de fixar números frágeis. `npm run e2e` executa os fluxos essenciais; `npm run screenshots` executa apenas os testes marcados com `@screenshots` e grava as capturas em `docs/screenshots/`.
+- **Consequências:** Os fluxos principais são validados em navegador real e as capturas do README são reproduzíveis. O custo é um download de Chromium e alguns segundos por execução. Cross-browser e dispositivos físicos continuam fora do escopo.
+- **Evidência:** `app/playwright.config.ts`, `app/e2e/support/dataset.ts`, `app/e2e/dataset-explorer.spec.ts` e `app/e2e/screenshots.spec.ts`.
 
 ### ADR-010 — ESLint flat config e análise de templates
 
@@ -100,7 +108,6 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 
 | ID      | Assunto                  | Pendente                                                                                                       |
 | ------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| ADR-008 | Estratégia de testes E2E | Definir ferramenta e escopo, caso os testes E2E sejam implementados.                                           |
 | ADR-009 | Colisões de nomes        | Decidir se nomes base duplicados serão rejeitados ou se a resolução futura usará caminhos relativos completos. |
 
 ## 4. Histórico
@@ -112,3 +119,5 @@ Registrar decisões de arquitetura, implementação, organização e tratamento 
 | 2026-11-13 | Visualização em tela cheia (teclado, foco e duplo clique) e prévia sticky documentadas em ADR-011.          |
 | 2026-11-13 | Confirmação visual do JSON e da quantidade de imagens importados documentada em ADR-012.                     |
 | 2026-11-13 | Filtro de visibilidade por classe na tela cheia (checkboxes e marcar/tirar tudo) documentado em ADR-013.     |
+| 2026-11-16 | Testes E2E com Playwright e capturas reproduzíveis documentados em ADR-008; normalização de nomes centralizada. |
+| 2026-11-16 | Auditoria geométrica read-only e correção de duas caixas `pessoa` registradas no relatório de anotações.      |

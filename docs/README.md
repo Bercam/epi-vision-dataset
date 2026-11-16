@@ -15,7 +15,7 @@ Descrevem o estado atual e devem ser mantidos em sincronia com o código.
 | [`checklist-dataset.md`](checklist-dataset.md) | Checklist operacional de coleta, anotação, validação e revisão. |
 | [`estrutura-e-entregaveis.md`](estrutura-e-entregaveis.md) | Estrutura de pastas, entregáveis e rastreabilidade. |
 | [`../dataset/README.md`](../dataset/README.md) | Conteúdo do dataset, contagens, validação e pipeline MakeSense. |
-| [`../app/README.md`](../app/README.md) | Guia operacional da aplicação Angular. |
+| [`../app/README.md`](../app/README.md) | Guia operacional da aplicação Angular, testes e capturas. |
 | [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | Branches, commits, gates de qualidade e política de dados. |
 | [`../CHANGELOG.md`](../CHANGELOG.md) | Histórico de mudanças no formato Keep a Changelog. |
 
@@ -27,7 +27,7 @@ Registram inspeções e revisões com data. Podem ficar desatualizados em relaç
 | --------- | -------- | ---- |
 | [`relatorio-preparacao-dataset.md`](relatorio-preparacao-dataset.md) | Inspeção e preparação inicial do dataset. | 2026-11-12 |
 | [`relatorio-metadados-origens.md`](relatorio-metadados-origens.md) | Extração de metadados e limitações de licença. | 2026-11-12 |
-| [`relatorio-revisao-visual-anotacoes.md`](relatorio-revisao-visual-anotacoes.md) | Revisão visual, correções aplicadas e pendências. | 2026-11-13 |
+| [`relatorio-revisao-visual-anotacoes.md`](relatorio-revisao-visual-anotacoes.md) | Revisão visual, correções aplicadas, auditoria geométrica e pendências. | 2026-11-16 |
 | [`resultado-teste-lista-de-links.md`](resultado-teste-lista-de-links.md) | Teste da lista de links de origem. | 2026-11-11 |
 
 ## Avaliação do desafio

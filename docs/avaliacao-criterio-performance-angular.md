@@ -13,7 +13,8 @@
 - Imagens locais usam object URLs temporárias; a troca da seleção revoga URLs anteriores e `DatasetPage.ngOnDestroy` libera as URLs restantes.
 - Quando arquivos selecionados têm o mesmo nome normalizado, a URL substituída é revogada antes de atualizar o mapa. Um teste do serviço confirma a liberação da URL substituída e da URL final.
 - O único listener manual é o `keydown` da tela cheia; ele é removido em `ImageFullscreenViewer.ngOnDestroy`, junto com a restauração de `body.style.overflow` e do foco. Não há subscriptions nem timers pendentes.
-- A compilação de produção gerou um bundle inicial de aproximadamente **279,76 kB** (≈ 74,39 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular.
+- A compilação de produção gerou um bundle inicial de aproximadamente **279,23 kB** (≈ 73,99 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular.
+- Os testes E2E rodam em Chromium com `reducedMotion: 'reduce'` nas capturas e `fullyParallel` habilitado; o dev server é reutilizado fora de CI para evitar startups repetidos.
 
 ## Oportunidades restantes
 

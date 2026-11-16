@@ -31,7 +31,7 @@ flowchart TD
     subgraph Domínio
         Loader[DatasetLoaderService]
         Validator[coco-dataset.validator]
-        Utils[filter-annotations / category-colors]
+        Utils[filter-annotations / category-colors / file-name]
         Models[Modelos COCO tipados]
     end
 
@@ -122,7 +122,7 @@ Pontos importantes:
 
 - A confirmação do JSON só aparece **depois** da validação bem-sucedida; uma nova tentativa limpa o estado anterior (ADR-012).
 - Seleções vazias de imagens são ignoradas (`registerImages` retorna cedo).
-- A associação imagem ↔ anotação é feita pelo **nome base normalizado** (`normalizeFileName`: remove diretórios e aplica minúsculas), não pelo caminho completo.
+- A associação imagem ↔ anotação é feita pelo **nome base normalizado** (`normalizeFileName` em `core/utils/file-name.ts`: remove diretórios e aplica minúsculas), não pelo caminho completo. A mesma função é usada pelo serviço, pela página e pela galeria, evitando duplicação.
 
 ## 4. Estado da página
 
@@ -205,6 +205,7 @@ flowchart LR
 | Coleta  | `tools/image-collector` | Baixa, valida formato/dimensões/hash e registra origem. |
 | Validação | `python tools/dataset/validate_makesense_export.py --csv … --zip …` | Confere CSV e ZIP entre si e contra o COCO de referência; não escreve nada. |
 | Importação | `python tools/dataset/import_makesense_export.py --csv … --zip …` | Gera COCO e YOLO a partir do par validado. |
+| Auditoria | `python tools/dataset/audit_annotations.py` | Relata erros geométricos e avisos sem alterar arquivos. |
 | Correções | `dataset/annotations/makesense_source/corrections_*.json` | Registram ajustes pós-export para rastreabilidade. |
 
 O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` + `makesense_yolo_export_reviewed_2026-11-16.zip`. Detalhes em [`../dataset/README.md`](../dataset/README.md).
@@ -221,7 +222,7 @@ O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` + `mak
 | SVG com `viewBox` | Sem recálculo de coordenadas no resize. |
 | HTML/CSS nativo | Sem biblioteca de UI adicional. |
 
-Medição mais recente: build de produção com **279,76 kB** iniciais (≈ 74,39 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular. Não há medição automatizada de FPS, memória ou teste de carga; a suíte atual usa 31 imagens.
+Medição mais recente: build de produção com **279,23 kB** iniciais (≈ 73,99 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular. Não há medição automatizada de FPS, memória ou teste de carga; a suíte atual usa 31 imagens.
 
 ## 9. Acessibilidade
 
@@ -230,7 +231,7 @@ Medição mais recente: build de produção com **279,76 kB** iniciais (≈ 74,3
 - Foco inicial no diálogo e restauração ao fechar; `Esc` fecha.
 - Mensagens de erro em `role="alert"`; confirmação de importação em `role="status"`.
 - Controles principais operáveis por teclado, mouse e toque; texto com tamanho responsivo.
-- A conferência visual em navegador/dispositivo real **não foi registrada** nesta revisão.
+- Os E2E validam foco no diálogo, navegação por setas, fechamento por Esc, seleção de cartão por teclado e abertura da tela cheia pelo botão. A conferência visual em dispositivos físicos **não foi registrada**.
 
 ## 10. Segurança e privacidade
 
@@ -246,13 +247,18 @@ Medição mais recente: build de produção com **279,76 kB** iniciais (≈ 74,3
 | ---------------- | ---- |
 | `coco-dataset.validator.spec.ts` | Estrutura, campos obrigatórios, referências e mensagens. |
 | `dataset-loader.service.spec.ts` | Leitura, JSON inválido, object URLs e liberação. |
+| `file-name.spec.ts` | Normalização de caminhos e nomes de arquivo. |
 | `filter-annotations.spec.ts` | Filtro puro por categoria. |
 | `dataset-page.spec.ts` | Upload nas duas ordens, confirmação, erros, imagens ausentes, estatísticas, filtro e integração com a tela cheia. |
 | `image-fullscreen-viewer.spec.ts` | Diálogo, teclado, foco, rolagem, navegação, duplo clique e filtro por classe. |
 
-Total atual: **35 testes em 5 arquivos**, executados com Vitest via `@angular/build:unit-test`. Os testes usam arquivos sintéticos e **não escrevem no dataset real**.
+Total atual: **39 testes em 6 arquivos**, executados com Vitest via `@angular/build:unit-test`. Os testes unitários usam arquivos sintéticos e **não escrevem no dataset real**.
 
-Não executado: E2E em navegador real, teste multi-dispositivo e teste de carga. Nenhum resultado não executado é apresentado como aprovado.
+### Testes E2E
+
+`app/e2e/dataset-explorer.spec.ts` executa 9 testes no Chromium contra o dataset real, com o dev server iniciado pelo Playwright: estado vazio, JSON inválido, totais e estatísticas, aviso de imagens ausentes, miniaturas, filtro por classe, cores das caixas, tela cheia, navegação por teclado e galeria vazia. `app/e2e/screenshots.spec.ts` gera as capturas de `docs/screenshots/` em desktop e viewport mobile.
+
+Não executado: cross-browser, dispositivos físicos e teste de carga. Nenhum resultado não executado é apresentado como aprovado.
 
 ## 12. Estrutura de diretórios
 
@@ -266,6 +272,7 @@ app/src/app/
 │   ├── services/dataset-loader.service.ts
 │   ├── utils/category-colors.ts
 │   ├── utils/filter-annotations.ts
+│   ├── utils/file-name.ts
 │   └── validators/coco-dataset.validator.ts
 └── features/dataset/
     ├── pages/dataset-page.ts|html|scss
@@ -276,4 +283,9 @@ app/src/app/
         ├── dataset-statistics.*
         ├── image-preview.*
         └── image-fullscreen-viewer.*
+
+app/e2e/
+├── support/dataset.ts       # dataset real e helpers
+├── dataset-explorer.spec.ts # fluxos essenciais
+└── screenshots.spec.ts      # capturas de docs/screenshots/
 ```

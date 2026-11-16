@@ -6,7 +6,7 @@
 - `sources/image_sources.csv`: procedência das imagens.
 - `annotations_coco.json`: anotações no formato COCO, no caminho solicitado pelo desafio.
 - `annotations_yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`, no caminho solicitado pelo desafio.
-- `annotations/makesense_source/`: exports brutos e derivados do MakeSense preservados para rastreabilidade. Três correções pós-export foram registradas em `corrections_2026-11-12.json` (caixa degenerada), `corrections_2026-11-13.json` (caixa falsa de `colete`) e `corrections_2026-11-16.json` (duas caixas degeneradas de `sem_capacete`); os detalhes estão em `../docs/relatorio-revisao-visual-anotacoes.md`. O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` e `makesense_yolo_export_reviewed_2026-11-16.zip`.
+- `annotations/makesense_source/`: exports brutos e derivados do MakeSense preservados para rastreabilidade. Quatro revisões pós-export foram registradas em `corrections_2026-11-12.json` (caixa degenerada), `corrections_2026-11-13.json` (caixa falsa de `colete`), `corrections_2026-11-16.json` (duas caixas degeneradas de `sem_capacete`) e no bloco `geometry_review` do mesmo arquivo de 2026-11-16 (duas caixas `pessoa` estendidas até a cabeça anotada); os detalhes estão em `../docs/relatorio-revisao-visual-anotacoes.md`. O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` e `makesense_yolo_export_reviewed_2026-11-16.zip`.
 
 ## Classes e mapeamento YOLO
 
@@ -26,6 +26,7 @@ Os IDs de classe do ZIP foram mapeados comparando as caixas normalizadas com as 
 - As classes e coordenadas do CSV derivado correspondem às caixas YOLO; as 261 caixas foram correspondidas.
 - A caixa falsa de `colete` `[4274, 1983, 36, 7]` em `pexels-themightynelson-5667685.jpg` foi removida do par derivado em 2026-11-13 após revisão do responsável; a imagem ficou com 4 caixas (2 `pessoa` e 2 `sem_capacete`).
 - Em 2026-11-16, duas caixas `sem_capacete` com altura zero (46×0 e 2×0 px) em `acton-crawford-A4xwAcZOAyo-unsplash.jpg` foram removidas do par derivado; a imagem ficou com 39 caixas (14 `pessoa`, 12 `capacete` e 13 `colete`).
+- Na mesma revisão geométrica, o topo de duas caixas `pessoa` foi estendido até o topo da cabeça `sem_capacete` contida nelas: `emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg` (10 px) e `jose-megias-7Qxn3y2CQcM-unsplash.jpg` (26 px). Largura, base e demais anotações foram preservadas.
 - Bounding boxes têm largura/altura positivas e ficam dentro das dimensões indicadas no CSV.
 - Esta conferência verificou consistência estrutural e correspondência entre exports; não substitui a revisão visual final das anotações.
 
@@ -57,6 +58,16 @@ python tools/dataset/import_makesense_export.py --csv caminho/labels.csv --zip c
 ```
 
 O importador valida o par antes de atualizar COCO/YOLO e cancela sem gravar saídas se encontrar inconsistências.
+
+### Auditar a geometria das anotações
+
+Depois de qualquer importação, execute:
+
+```bash
+python tools/dataset/audit_annotations.py
+```
+
+O script é somente leitura e separa **erros objetivos** (caixas degeneradas, fora dos limites, duplicadas, cabeças/coletes órfãos) de **avisos** que exigem inspeção humana (recortes de cabeça, objetos minúsculos, caixas tocando a borda). Ele retorna código 1 apenas quando há erros objetivos.
 
 ## Critérios
 

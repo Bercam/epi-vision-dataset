@@ -12,7 +12,8 @@
 - O catálogo de fontes pode ser auditado com `npm run validate:manifest` em `tools/image-collector/`; a ferramenta não altera dados e distingue integridade estrutural de aprovação humana.
 - `CONTRIBUTING.md` documenta branches, Conventional Commits, ambiente, gates de qualidade, política do dataset e checklist de revisão; `.github/PULL_REQUEST_TEMPLATE.md` padroniza a descrição de PRs.
 - O histórico em `feat/angular-dataset-explorer` inclui commits separados como `feat(gallery)`, `feat(viewer)`, `feat(gallery): filter`, `feat(dataset)`, `docs(adr)` e `data(dataset)`, sem commits artificiais adicionados nesta revisão.
-- O README informa claramente que a revisão visual das anotações continua pendente. Também apresenta os comandos e o resultado registrado para build, ESLint, Prettier, **35 testes unitários** e auditoria de dependências; os detalhes estão em `docs/avaliacao-criterio-organizacao-codigo.md`.
+- O README informa claramente que a revisão visual das anotações continua pendente. Também apresenta os comandos e o resultado registrado para build, ESLint, Prettier, **39 testes unitários**, **9 testes E2E** e auditoria de dependências; os detalhes estão em `docs/avaliacao-criterio-organizacao-codigo.md`.
+- O README incorpora cinco capturas de tela geradas por Playwright e um GIF do fluxo principal em `docs/screenshots/`, todos reproduzíveis com `npm run screenshots`.
 - A ferramenta de coleta tem 85 testes aprovados; quatro casos cobrem o validador de procedência, incluindo divergência de hash/extensão e nome duplicado no COCO. A validação do catálogo encontrou 31 registros de origem correspondentes às imagens e ao COCO, mantendo todos os rótulos `in_review`.
 
 ## Pendência

@@ -2,7 +2,7 @@
 
 Dataset de detecção de Equipamentos de Proteção Individual (EPIs) em cenas de construção, indústria e ambientes similares, acompanhado de uma aplicação Angular standalone para carregar, visualizar, filtrar e analisar as anotações.
 
-> **Status:** aplicação funcional e validada por testes automatizados. A revisão visual final das anotações ainda está pendente; os 31 registros permanecem com `annotation_status=in_review`.
+> **Status:** aplicação funcional e validada por testes unitários e E2E em Chromium. A revisão visual final das anotações ainda está pendente; os 31 registros permanecem com `annotation_status=in_review`.
 
 ## Índice
 
@@ -41,6 +41,7 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 - Catálogo de origem com URL, autor, licença, dimensões, tamanho e SHA-256.
 - Exports brutos e derivados do MakeSense preservados para rastreabilidade.
 - Validadores read-only para o catálogo de fontes e para pares CSV/ZIP do MakeSense.
+- Auditoria geométrica read-only das 261 caixas (`tools/dataset/audit_annotations.py`), separando erros objetivos de avisos que exigem inspeção humana.
 
 ### Aplicação
 
@@ -57,6 +58,7 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 - Mensagens amigáveis para JSON inválido, falha de leitura e imagens ausentes.
 - Estados vazios para dataset vazio, galeria sem resultados e imagem não carregada.
 - Layout responsivo e suporte a teclado, mouse e toque nos controles principais.
+- Testes E2E com Playwright cobrindo dataset real, upload, galeria, filtros, estatísticas, erros, estados vazios e tela cheia.
 
 ## Stack
 
@@ -65,6 +67,7 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 | Frontend         | Angular 22.2 standalone, Signals, `OnPush`, templates estritos      |
 | Linguagem        | TypeScript 6 em modo `strict`                                       |
 | Testes do app    | Vitest 5 + jsdom via `@angular/build:unit-test`                     |
+| Testes E2E       | Playwright 1.65 + Chromium (desktop e viewport mobile)               |
 | Qualidade        | ESLint 10 + angular-eslint 22, Prettier 3                           |
 | Build            | Angular CLI 22 / `@angular/build`                                   |
 | Ferramenta local | Node.js 24 com `node:test` e servidor HTTP nativo                   |
@@ -79,17 +82,18 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 ├── app/                         # Aplicação Angular standalone
 │   ├── src/app/core/            # Modelos COCO, validador, loader e utilitários
 │   ├── src/app/features/dataset # Página e componentes de exploração
+│   ├── e2e/                     # Testes Playwright e capturas de tela
 │   └── README.md                # Guia operacional da aplicação
 ├── dataset/
 │   ├── images/                  # 31 imagens originais
 │   ├── annotations_coco.json    # Anotações COCO
 │   ├── annotations_yolo/        # Um .txt por imagem + classes.txt + dataset.yaml
 │   ├── annotations/             # Exports brutos e derivados do MakeSense
-│   ├── sources/                 # Catálogo de origem e sidecars de metadados
+│   ├── sources/                 # Catálogo de origem (sidecars opcionais)
 │   └── README.md                # Conteúdo, validação e pipeline de importação
-├── docs/                        # Arquitetura, critérios, decisões e relatórios
+├── docs/                        # Arquitetura, critérios, decisões, relatórios e capturas
 ├── tools/
-│   ├── dataset/                 # Validadores/importador MakeSense em Python
+│   ├── dataset/                 # Validadores, importador e auditoria em Python
 │   └── image-collector/         # Coleta e catálogo de imagens (Node.js)
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
@@ -131,18 +135,39 @@ A saída é gerada em `app/dist/app/`.
 4. Use o filtro de classe para restringir a galeria e as caixas da prévia; as estatísticas continuam considerando o dataset inteiro.
 5. Abra a tela cheia pelo botão ⛶, por duplo clique na prévia ou por duplo clique em um cartão. Navegue com ←/→, feche com Esc e use a barra **Classes** para mostrar ou esconder classes daquela imagem.
 
+## Capturas de tela e demonstração
+
+As imagens abaixo são geradas a partir do dataset real por `cd app && npm run screenshots` (Playwright em Chromium) e ficam em [`docs/screenshots/`](docs/screenshots/).
+
+| Estado inicial | Dataset e estatísticas |
+| --- | --- |
+| ![Estado inicial](docs/screenshots/01-estado-inicial.png) | ![Dataset carregado](docs/screenshots/02-dataset-carregado.png) |
+
+| Galeria e pré-visualização | Tela cheia |
+| --- | --- |
+| ![Galeria com caixas](docs/screenshots/03-galeria-e-preview.png) | ![Visualização em tela cheia](docs/screenshots/04-tela-cheia.png) |
+
+| Viewport mobile |
+| --- |
+| ![Galeria em viewport mobile](docs/screenshots/05-mobile-galeria.png) |
+
+Fluxo principal em GIF: [`docs/screenshots/demo.gif`](docs/screenshots/demo.gif).
+
 ## Scripts
 
 ### Aplicação (`app/`)
 
-| Comando                                                            | Descrição                                        |
-| ------------------------------------------------------------------ | ------------------------------------------------ |
-| `npm start`                                                        | Servidor de desenvolvimento em `localhost:4200`. |
-| `npm run build`                                                    | Build de produção em `dist/app/`.                |
-| `npm test`                                                         | Testes unitários/integrados com Vitest, sem watch. |
-| `npm run lint`                                                     | ESLint para TypeScript e templates Angular.      |
-| `npx prettier --check "src/**/*.{ts,html,scss}"`                   | Verifica a formatação.                           |
-| `npx prettier --write "src/**/*.{ts,html,scss}"`                   | Aplica a formatação.                             |
+| Comando | Descrição |
+| --- | --- |
+| `npm start` | Servidor de desenvolvimento em `localhost:4200`. |
+| `npm run build` | Build de produção em `dist/app/`. |
+| `npm test` | Testes unitários/integrados com Vitest, sem watch. |
+| `npm run e2e` | Testes E2E Playwright com o dataset real. |
+| `npm run e2e:headed` | E2E com navegador visível. |
+| `npm run screenshots` | Regenera as capturas em `docs/screenshots/`. |
+| `npm run lint` | ESLint para TypeScript e templates Angular. |
+| `npx prettier --check "src/**/*.{ts,html,scss}" "e2e/**/*.ts"` | Verifica a formatação. |
+| `npx prettier --write "src/**/*.{ts,html,scss}" "e2e/**/*.ts"` | Aplica a formatação. |
 
 ### Ferramenta de coleta (`tools/image-collector/`)
 
@@ -160,6 +185,9 @@ python tools/dataset/validate_makesense_export.py --csv caminho/labels.csv --zip
 
 # Importar após revisão humana e validação OK
 python tools/dataset/import_makesense_export.py --csv caminho/labels.csv --zip caminho/labels.zip
+
+# Auditar a geometria do COCO atual (somente leitura)
+python tools/dataset/audit_annotations.py
 ```
 
 Consulte [`dataset/README.md`](dataset/README.md) para o fluxo completo e as garantias de cada etapa.
@@ -180,7 +208,7 @@ Consulte [`dataset/README.md`](dataset/README.md) para o fluxo completo e as gar
 
 As imagens vieram de bancos públicos gratuitos e cada linha de [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv) registra URL, autor, licença declarada, dimensões, tamanho e SHA-256. A licença da plataforma não substitui a verificação de marcas, obras ou pessoas reconhecíveis nas fotos; as pendências estão em [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md).
 
-A revisão estrutural confirma que nomes, dimensões, hashes, caixas e mapeamento de classes são coerentes. Ela **não** aprova visualmente cada caixa. Uma caixa falsa de `colete` foi removida em 2026-11-13 e duas caixas degeneradas de `sem_capacete` foram removidas em 2026-11-16; o par derivado foi regerado pelo pipeline do MakeSense. A aprovação visual final e um ajuste pendente de `pessoa` continuam abertos em [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md).
+A revisão estrutural confirma que nomes, dimensões, hashes, caixas e mapeamento de classes são coerentes. Ela **não** aprova visualmente cada caixa. Uma caixa falsa de `colete` foi removida em 2026-11-13 e duas caixas degeneradas de `sem_capacete` foram removidas em 2026-11-16; o par derivado foi regerado pelo pipeline do MakeSense. Na mesma data, a auditoria geométrica estendeu o topo de duas caixas `pessoa` que cortavam a cabeça `sem_capacete` anotada (`emmanuel` e `jose-megias`). A auditoria atual não encontrou erros objetivos e mantém 38 avisos para inspeção humana. A aprovação visual final continua aberta em [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md).
 
 ## Arquitetura
 
@@ -190,22 +218,27 @@ O detalhamento de camadas, fluxo de dados, estado, decisões de performance, ace
 
 ## Qualidade e testes
 
-Resultados executados em 2026-11-13 neste ambiente e revalidados em 2026-11-16 para o dataset:
+Resultados executados em 2026-11-16 neste ambiente:
 
 | Verificação                          | Comando                                              | Resultado                          |
 | ------------------------------------ | ---------------------------------------------------- | ---------------------------------- |
-| Testes da aplicação                  | `cd app && npm test`                                 | **35 testes / 5 arquivos passando** |
+| Testes da aplicação                  | `cd app && npm test`                                 | **39 testes / 6 arquivos passando** |
+| Testes E2E                           | `cd app && npm run e2e`                              | **9 testes passando (Chromium)**    |
+| Capturas de tela                     | `cd app && npm run screenshots`                      | 5 PNGs em `docs/screenshots/`       |
 | Lint                                 | `cd app && npm run lint`                             | Sem erros                          |
-| Formatação                           | `cd app && npx prettier --check "src/**/*.{ts,html,scss}"` | Sem diferenças               |
+| Formatação                           | `cd app && npx prettier --check "src/**/*.{ts,html,scss}" "e2e/**/*.ts"` | Sem diferenças |
 | Build de produção                    | `cd app && npm run build`                            | Concluído                          |
 | Auditoria npm                        | `cd app && npm audit`                                | 0 vulnerabilidades                 |
 | Testes da ferramenta de coleta       | `cd tools/image-collector && npm test`               | 85 testes passando                 |
 | Catálogo de fontes                   | `cd tools/image-collector && npm run validate:manifest` | OK: 31/31 correspondem          |
 | Par derivado do MakeSense            | `python tools/dataset/validate_makesense_export.py ...` | OK: 261 anotações correspondem  |
+| Auditoria geométrica                 | `python tools/dataset/audit_annotations.py`          | 0 erros; 38 avisos                 |
 
-A suíte da aplicação cobre o validador COCO, leitura de JSON, ciclo de vida das object URLs, filtro puro, inputs de upload nas duas ordens, confirmação visual, erros amigáveis, imagens ausentes, estatísticas, filtro de classe na página, tela cheia (teclado, foco, rolagem, duplo clique, wrap-around) e visibilidade por classe.
+A suíte da aplicação cobre o validador COCO, leitura de JSON, ciclo de vida das object URLs, filtro puro, normalização de nomes, inputs de upload nas duas ordens, confirmação visual, erros amigáveis, imagens ausentes, estatísticas, filtro de classe na página, tela cheia (teclado, foco, rolagem, duplo clique, wrap-around) e visibilidade por classe.
 
-**Não executado:** testes E2E em navegador real, teste manual multi-cliente e conferência visual do layout em dispositivos físicos. A aprovação visual das anotações também segue pendente. Nenhum desses pontos é apresentado como concluído.
+Os testes E2E usam o dataset real (`dataset/annotations_coco.json` e as 31 imagens) e cobrem carregamento, estatísticas, upload, miniaturas, filtros, cores das caixas, tela cheia, navegação por teclado, erros e estados vazios.
+
+**Não executado:** teste manual multi-cliente, conferência visual em dispositivos físicos e medição automatizada de FPS/memória. A aprovação visual das anotações também segue pendente. Nenhum desses pontos é apresentado como concluído.
 
 ## Documentação
 
@@ -226,12 +259,12 @@ A suíte da aplicação cobre o validador COCO, leitura de JSON, ciclo de vida d
 
 ## Limitações e próximos passos
 
-- A revisão visual final das anotações e o ajuste pendente de uma caixa de `pessoa` na imagem 5 continuam abertos.
+- A revisão visual final das anotações continua aberta; a fila de avisos está documentada no relatório de revisão.
 - O upload exige selecionar COCO e imagens separadamente; arquivos homônimos podem ser ambíguos porque a associação usa o nome base.
 - Tudo roda no navegador: datasets muito maiores podem exigir thumbnails e paginação.
-- Não há testes E2E nem medição automatizada de performance.
-- A conferência visual do layout em navegadores/dispositivos reais ainda não foi registrada.
-- Próximos passos recomendados: concluir a revisão do dataset, adicionar E2E para os fluxos principais e evoluir a associação de imagens para caminhos relativos.
+- Os E2E rodam em Chromium; não há execução cross-browser nem em dispositivos físicos.
+- Não há medição automatizada de performance.
+- Próximos passos recomendados: concluir a aprovação humana das anotações, validar o layout em dispositivos reais e evoluir a associação de imagens para caminhos relativos.
 
 ## Direitos e uso
 

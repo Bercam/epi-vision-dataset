@@ -316,7 +316,7 @@ Executar:
 
 - Testes unitários.
 - Testes de integração.
-- Testes E2E, quando implementados.
+- Testes E2E dos fluxos essenciais.
 - ESLint.
 - Prettier.
 - Build de produção.

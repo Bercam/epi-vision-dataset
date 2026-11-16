@@ -69,10 +69,18 @@ Antes de abrir um Pull Request, execute e registre o resultado real:
 ```bash
 cd app
 npm test
+npm run e2e
 npm run lint
-npx prettier --check "src/**/*.{ts,html,scss}"
+npx prettier --check "src/**/*.{ts,html,scss}" "e2e/**/*.ts"
 npm run build
 npm audit
+```
+
+Se alterou a interface, regenere também as capturas:
+
+```bash
+cd app
+npm run screenshots
 ```
 
 Se alterou a ferramenta de coleta:
@@ -87,7 +95,11 @@ Se alterou anotações:
 
 ```bash
 python tools/dataset/validate_makesense_export.py --csv <arquivo.csv> --zip <arquivo.zip>
+python tools/dataset/import_makesense_export.py --csv <arquivo.csv> --zip <arquivo.zip>
+python tools/dataset/audit_annotations.py
 ```
+
+`audit_annotations.py` é somente leitura e retorna código 1 apenas quando há erros objetivos. Os avisos precisam ser triados por uma pessoa; não os trate como aprovados.
 
 Nenhum resultado deve ser declarado como aprovado sem ter sido executado. Use os estados: não executado, revisão estática, testes unitários, teste solo no navegador, teste multi-cliente ou teste em servidor publicado.
 
@@ -98,7 +110,7 @@ O dataset é a fonte de verdade do projeto e não deve ser editado manualmente.
 - **Não edite** `dataset/annotations_coco.json` nem `dataset/annotations_yolo/*.txt` à mão.
 - Alterações passam por: export derivado do MakeSense (CSV + ZIP) → `validate_makesense_export.py` → `import_makesense_export.py`.
 - Correções pontuais pós-export são registradas em `dataset/annotations/makesense_source/corrections_AAAA-MM-DD.json` e documentadas em `docs/relatorio-revisao-visual-anotacoes.md`.
-- Toda imagem nova precisa de linha em `dataset/sources/image_sources.csv` e sidecar em `dataset/sources/records/`.
+- Toda imagem nova precisa de linha em `dataset/sources/image_sources.csv`, que é o catálogo autoritativo de procedência. Os sidecars em `dataset/sources/records/` são complementares e opcionais: a ferramenta de coleta os cria quando usada, mas o diretório está vazio no dataset atual e a ausência deles não invalida o catálogo.
 - Não invente autor, licença, título ou URL. Campos desconhecidos permanecem vazios e sinalizados.
 - A licença da plataforma não substitui a verificação de direitos de terceiros visíveis na foto.
 - Testes automatizados não podem escrever no dataset real; use arquivos sintéticos e diretórios temporários.
@@ -132,9 +144,11 @@ Um PR é integrado após revisão e com os gates verdes. Mudanças de dados exig
 
 - [ ] A mudança tem escopo único e commits coesos.
 - [ ] Testes cobrem o comportamento novo ou corrigido.
+- [ ] Testes unitários e E2E foram executados quando o fluxo mudou.
 - [ ] Nenhum dado, licença, URL ou resultado foi inventado.
 - [ ] COCO/YOLO não foram editados manualmente.
 - [ ] Testes não escrevem no dataset real.
+- [ ] A auditoria geométrica foi executada e os avisos triados.
 - [ ] Documentação afetada foi atualizada.
 - [ ] Dependências novas têm licença e manutenção verificadas.
 - [ ] O que não foi testado está declarado.
