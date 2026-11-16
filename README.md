@@ -53,7 +53,7 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 - Pré-visualização sticky em telas largas, acompanhando a rolagem da galeria.
 - Visualização em tela cheia por botão, duplo clique na prévia ou duplo clique em um cartão.
 - Navegação em tela cheia com ←/→, wrap-around, Esc, foco preso ao diálogo e restauração do foco.
-- Filtro de visibilidade por classe na tela cheia, com checkbox por classe presente na imagem e ações **Marcar tudo** / **Tirar tudo**.
+- Filtro de visibilidade por classe na tela cheia, com checkbox por classe presente na imagem e ações **Marcar tudo** / **Tirar tudo** que valem para todas as classes do dataset, inclusive as ausentes na imagem.
 - Estatísticas gerais e por classe: imagens, anotações, média por imagem e distribuição.
 - Mensagens amigáveis para JSON inválido, falha de leitura e imagens ausentes.
 - Estados vazios para dataset vazio, galeria sem resultados e imagem não carregada.
@@ -222,7 +222,7 @@ Resultados executados em 2026-11-16 neste ambiente:
 
 | Verificação                          | Comando                                              | Resultado                          |
 | ------------------------------------ | ---------------------------------------------------- | ---------------------------------- |
-| Testes da aplicação                  | `cd app && npm test`                                 | **39 testes / 6 arquivos passando** |
+| Testes da aplicação                  | `cd app && npm test`                                 | **40 testes / 6 arquivos passando** |
 | Testes E2E                           | `cd app && npm run e2e`                              | **9 testes passando (Chromium)**    |
 | Capturas de tela                     | `cd app && npm run screenshots`                      | 5 PNGs em `docs/screenshots/`       |
 | Lint                                 | `cd app && npm run lint`                             | Sem erros                          |

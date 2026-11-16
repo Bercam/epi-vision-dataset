@@ -181,7 +181,7 @@ O `ImageFullscreenViewer` é um overlay `position: fixed` com `role="dialog"` e 
 - `hiddenCategoryIds` é um `linkedSignal` inicializado por `initialHiddenCategoryIds`.
 - `categoryFilters` lista só as classes **presentes na imagem**, com contagem e rótulo acessível (`nome (N anotações)`).
 - `visibleAnnotations` remove as classes ocultas; o SVG e o rodapé (`visíveis de total anot.`) refletem o resultado.
-- **Marcar tudo** remove as classes da imagem do conjunto oculto; **Tirar tudo** adiciona todas.
+- **Marcar tudo** limpa o conjunto oculto e **Tirar tudo** oculta todas as classes do dataset, inclusive as ausentes na imagem atual, para que a escolha continue válida ao navegar.
 - A seleção é preservada ao navegar entre imagens e reiniciada ao fechar o overlay.
 - Se a página tem filtro de classe ativo, `fullscreenInitialHiddenCategoryIds` oculta todas as outras classes ao abrir, mantendo coerência com a prévia.
 
@@ -222,7 +222,7 @@ O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` + `mak
 | SVG com `viewBox` | Sem recálculo de coordenadas no resize. |
 | HTML/CSS nativo | Sem biblioteca de UI adicional. |
 
-Medição mais recente: build de produção com **279,23 kB** iniciais (≈ 73,99 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular. Não há medição automatizada de FPS, memória ou teste de carga; a suíte atual usa 31 imagens.
+Medição mais recente: build de produção com **279,27 kB** iniciais (≈ 74,12 kB transferidos), abaixo do limite de erro de 1 MB configurado no Angular. Não há medição automatizada de FPS, memória ou teste de carga; a suíte atual usa 31 imagens.
 
 ## 9. Acessibilidade
 
@@ -252,7 +252,7 @@ Medição mais recente: build de produção com **279,23 kB** iniciais (≈ 73,9
 | `dataset-page.spec.ts` | Upload nas duas ordens, confirmação, erros, imagens ausentes, estatísticas, filtro e integração com a tela cheia. |
 | `image-fullscreen-viewer.spec.ts` | Diálogo, teclado, foco, rolagem, navegação, duplo clique e filtro por classe. |
 
-Total atual: **39 testes em 6 arquivos**, executados com Vitest via `@angular/build:unit-test`. Os testes unitários usam arquivos sintéticos e **não escrevem no dataset real**.
+Total atual: **40 testes em 6 arquivos**, executados com Vitest via `@angular/build:unit-test`. Os testes unitários usam arquivos sintéticos e **não escrevem no dataset real**.
 
 ### Testes E2E
 

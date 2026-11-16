@@ -9,9 +9,9 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 ### Adicionado
 
 - Visualização em tela cheia (`ImageFullscreenViewer`) com abertura por botão, duplo clique na prévia ou em um cartão da galeria, navegação por ←/→ com wrap-around dentro do filtro ativo, fechamento por Esc, foco preso ao diálogo e restauração do foco e da rolagem (ADR-011).
-- Filtro de visibilidade por classe na tela cheia: checkbox por classe presente na imagem, contagem, cor e rótulo acessível, além de **Marcar tudo** / **Tirar tudo**; a seleção é mantida ao navegar entre imagens (ADR-013).
+- Filtro de visibilidade por classe na tela cheia: checkbox por classe presente na imagem, contagem, cor e rótulo acessível, além de **Marcar tudo** / **Tirar tudo**; as ações em massa valem para todas as classes do dataset, inclusive as ausentes na imagem, e a seleção é mantida ao navegar entre imagens (ADR-013).
 - Confirmação visual do JSON validado e da quantidade de imagens selecionadas nos cartões de importação, com ✓, `role="status"` e botões **Trocar JSON** / **Trocar imagens** (ADR-012).
-- Cinco testes novos da tela cheia e do filtro por classe.
+- Seis testes novos da tela cheia e do filtro por classe.
 - Suíte E2E com Playwright 1.65 + Chromium: 9 testes contra o dataset real, cobrindo estado vazio, JSON inválido, totais, estatísticas, aviso de imagens ausentes, miniaturas, filtro por classe, cores das caixas, tela cheia, navegação por teclado e galeria vazia.
 - Capturas de tela reproduzíveis em `docs/screenshots/` (4 estados desktop, 1 viewport mobile e `demo.gif`), geradas por `npm run screenshots`.
 - `tools/dataset/audit_annotations.py`: auditoria geométrica read-only que separa erros objetivos de avisos para inspeção humana.
@@ -25,7 +25,7 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 - `CONTRIBUTING.md` e `app/README.md` ampliados com setup, gates de qualidade e política de dados.
 - `README-documentacao.md` convertido em ponteiro para o índice de documentação.
 - Guia de desenvolvimento renomeado para `docs/guia-de-desenvolvimento.md` e links corrigidos.
-- Fichas de avaliação atualizadas com os números atuais (39 testes, 9 E2E e bundle de 279,23 kB).
+- Fichas de avaliação atualizadas com os números atuais (40 testes, 9 E2E e bundle de 279,27 kB).
 - A contagem de imagens selecionadas agora usa apenas arquivos de imagem aceitos, em vez do total de arquivos escolhidos.
 
 ### Corrigido

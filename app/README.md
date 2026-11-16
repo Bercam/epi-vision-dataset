@@ -69,7 +69,7 @@ e2e/
 2. Selecione todas as imagens de `../dataset/images/`. O cartão confirma a quantidade selecionada e o botão passa a **Trocar imagens**.
 3. Selecione um cartão da galeria para abrir a pré-visualização. Em telas largas, a prévia acompanha a rolagem enquanto houver espaço ao lado da galeria.
 4. Abra a tela cheia pelo botão ⛶, por **duplo clique na prévia** ou por **duplo clique em um cartão**. Navegue com **←** / **→** (com wrap-around e respeitando o filtro de classe) e feche com **Esc**. Os botões ‹ e › fazem a mesma navegação por mouse ou toque.
-5. Na tela cheia, use as caixas da barra **Classes** para mostrar ou esconder cada classe presente na imagem, ou os botões **Marcar tudo** / **Tirar tudo**. A seleção é mantida ao navegar; ao abrir com um filtro de classe ativo na página, apenas essa classe começa visível.
+5. Na tela cheia, use as caixas da barra **Classes** para mostrar ou esconder cada classe presente na imagem, ou os botões **Marcar tudo** / **Tirar tudo**, que valem para todas as classes do dataset (inclusive as ausentes na imagem). A seleção é mantida ao navegar; ao abrir com um filtro de classe ativo na página, apenas essa classe começa visível.
 
 O filtro de classe restringe a galeria e as caixas da prévia; as estatísticas continuam considerando o dataset inteiro. Um COCO totalmente vazio é aceito e mostra estados vazios claros. JSON inválido, falha de leitura e imagens ausentes geram mensagens amigáveis.
 
@@ -77,7 +77,7 @@ O filtro de classe restringe a galeria e as caixas da prévia; as estatísticas 
 
 A suíte unitária cobre o validador COCO, a leitura do JSON, o ciclo de vida das object URLs, o filtro puro, a normalização de nomes, inputs de upload nas duas ordens, confirmação visual, erros, imagens ausentes, estatísticas, filtro de classe na página e a tela cheia (teclado, foco, rolagem, duplo clique, wrap-around e visibilidade por classe).
 
-**39 testes em 6 arquivos.** Os testes unitários usam arquivos sintéticos e não escrevem no dataset real.
+**40 testes em 6 arquivos.** Os testes unitários usam arquivos sintéticos e não escrevem no dataset real.
 
 Os testes E2E em `e2e/` usam o COCO e as 31 imagens reais. Cobrem carregamento, estatísticas, upload, miniaturas, filtro por classe, cores das caixas, tela cheia, navegação por teclado, erros e estados vazios. Execute com `npm run e2e`; o Playwright inicia o dev server automaticamente.
 
