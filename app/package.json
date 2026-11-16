@@ -7,7 +7,10 @@
     "build": "ng build",
     "lint": "ng lint",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --watch=false"
+    "test": "ng test --watch=false",
+    "e2e": "playwright test --grep-invert @screenshots",
+    "e2e:headed": "playwright test --grep-invert @screenshots --headed",
+    "screenshots": "playwright test --grep @screenshots"
   },
   "private": true,
   "packageManager": "npm@11.19.0",
@@ -26,6 +29,7 @@
     "@angular/cli": "^22.2.7",
     "@angular/compiler-cli": "^22.2.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
     "angular-eslint": "^22.6.0",
     "eslint": "^10.12.0",
     "jsdom": "^31.0.0",
