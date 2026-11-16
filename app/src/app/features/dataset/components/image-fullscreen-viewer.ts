@@ -107,17 +107,11 @@ export class ImageFullscreenViewer implements AfterViewInit, OnDestroy {
   }
 
   protected showAllCategories(): void {
-    const presentIds = new Set(this.annotations().map((annotation) => annotation.category_id));
-    this.hiddenCategoryIds.update((hidden) => {
-      const next = new Set(hidden);
-      for (const categoryId of presentIds) next.delete(categoryId);
-      return next;
-    });
+    this.hiddenCategoryIds.set(new Set());
   }
 
   protected hideAllCategories(): void {
-    const presentIds = this.annotations().map((annotation) => annotation.category_id);
-    this.hiddenCategoryIds.update((hidden) => new Set([...hidden, ...presentIds]));
+    this.hiddenCategoryIds.set(new Set(this.categories().map((category) => category.id)));
   }
 
   protected categoryColor(name: string): string {

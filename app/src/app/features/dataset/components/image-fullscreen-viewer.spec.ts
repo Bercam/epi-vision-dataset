@@ -117,6 +117,38 @@ describe('ImageFullscreenViewer', () => {
     expect(boxes(root)).toHaveLength(2);
   });
 
+  it('applies the bulk buttons to classes absent from the current image', () => {
+    const created = render();
+    const root = created.nativeElement as HTMLElement;
+    const actions = [...root.querySelectorAll<HTMLButtonElement>('.filter-action')];
+    const markAll = actions.find((button) => button.textContent?.includes('Marcar tudo'));
+    const clearAll = actions.find((button) => button.textContent?.includes('Tirar tudo'));
+    if (!markAll || !clearAll) throw new Error('Os botões de marcar/limpar tudo não apareceram.');
+
+    clearAll.click();
+    created.detectChanges();
+
+    // The next image only contains "colete", a class that is absent from the current image.
+    created.componentRef.setInput('image', { ...image, id: 2, file_name: 'scene-b.jpg' });
+    created.componentRef.setInput('annotations', [
+      { id: 3, image_id: 2, category_id: 3, bbox: [5, 5, 20, 20], area: 400, iscrowd: 0 },
+    ] satisfies CocoAnnotation[]);
+    created.detectChanges();
+
+    expect(boxes(root)).toHaveLength(0);
+    expect(
+      filterOptions(root).map((option) => option.querySelector<HTMLInputElement>('input')?.checked),
+    ).toEqual([false]);
+
+    markAll.click();
+    created.detectChanges();
+
+    expect(boxes(root)).toHaveLength(1);
+    expect(
+      filterOptions(root).map((option) => option.querySelector<HTMLInputElement>('input')?.checked),
+    ).toEqual([true]);
+  });
+
   it('starts with the classes hidden by the initial filter', () => {
     const root = render([1]).nativeElement as HTMLElement;
 

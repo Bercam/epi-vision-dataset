@@ -179,7 +179,7 @@ test.describe('EPI Vision dataset explorer', () => {
     await expect(page.locator('.expand-button')).toBeFocused();
   });
 
-  test('starts fullscreen filters from the active class and reveals all classes', async ({
+  test('keeps the bulk filter state across images, including classes absent from them', async ({
     page,
   }) => {
     await loadRealCoco(page);
@@ -210,6 +210,21 @@ test.describe('EPI Vision dataset explorer', () => {
 
     await page.getByRole('button', { name: 'Tirar tudo' }).click();
     await expect(visibleBoxes).toHaveCount(0);
+
+    await page.keyboard.press('ArrowRight');
+    const nextImageName = (await page.locator('.viewer-title h2').innerText()).trim();
+    expect(nextImageName).not.toBe(ALL_CLASSES_IMAGE);
+
+    // The next image may contain classes that were absent from the previous one.
+    await expect(visibleBoxes).toHaveCount(0);
+    await expect(page.locator('.viewer-filters input[type="checkbox"]:checked')).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Marcar tudo' }).click();
+    await expect(visibleBoxes).toHaveCount(annotationsForImage(nextImageName).length);
+    const filterCount = await page.locator('.viewer-filters input[type="checkbox"]').count();
+    await expect(page.locator('.viewer-filters input[type="checkbox"]:checked')).toHaveCount(
+      filterCount,
+    );
   });
 
   test('shows an empty gallery when a class has no images', async ({ page }) => {

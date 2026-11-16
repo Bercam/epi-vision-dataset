@@ -49,10 +49,20 @@
           }
         </div>
         <div class="filter-actions">
-          <button type="button" class="filter-action" (click)="showAllCategories()">
+          <button
+            type="button"
+            class="filter-action"
+            title="Marcar todas as classes, inclusive as ausentes nesta imagem"
+            (click)="showAllCategories()"
+          >
             Marcar tudo
           </button>
-          <button type="button" class="filter-action" (click)="hideAllCategories()">
+          <button
+            type="button"
+            class="filter-action"
+            title="Tirar todas as classes, inclusive as ausentes nesta imagem"
+            (click)="hideAllCategories()"
+          >
             Tirar tudo
           </button>
         </div>
