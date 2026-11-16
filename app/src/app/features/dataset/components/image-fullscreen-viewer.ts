@@ -99,6 +99,13 @@ export class ImageFullscreenViewer implements AfterViewInit, OnDestroy {
     });
   }
 
+  protected onCategoryVisibilityChange(categoryId: number, event: Event): void {
+    const input = event.currentTarget;
+    if (input instanceof HTMLInputElement) {
+      this.setCategoryVisibility(categoryId, input.checked);
+    }
+  }
+
   protected showAllCategories(): void {
     const presentIds = new Set(this.annotations().map((annotation) => annotation.category_id));
     this.hiddenCategoryIds.update((hidden) => {

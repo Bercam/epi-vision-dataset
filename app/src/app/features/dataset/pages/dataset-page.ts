@@ -15,6 +15,7 @@ import { ImageFullscreenViewer } from '../components/image-fullscreen-viewer';
 import { ClassFilter } from '../components/class-filter';
 import { DatasetStatistics } from '../components/dataset-statistics';
 import { filterAnnotationsByCategory } from '../../../core/utils/filter-annotations';
+import { normalizeFileName } from '../../../core/utils/file-name';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -120,9 +121,7 @@ export class DatasetPage implements OnDestroy {
 
   protected readonly selectedImageUrl = computed(() => {
     const image = this.selectedImage();
-    return image
-      ? (this.imageUrls().get(this.loader.normalizeFileName(image.file_name)) ?? null)
-      : null;
+    return image ? (this.imageUrls().get(normalizeFileName(image.file_name)) ?? null) : null;
   });
 
   protected readonly selectedAnnotations = computed(() => {
@@ -153,9 +152,7 @@ export class DatasetPage implements OnDestroy {
     const dataset = this.dataset();
     if (!dataset || !this.hasImageSelection()) return 0;
     const urls = this.imageUrls();
-    return dataset.images.filter(
-      (image) => !urls.has(this.loader.normalizeFileName(image.file_name)),
-    ).length;
+    return dataset.images.filter((image) => !urls.has(normalizeFileName(image.file_name))).length;
   });
 
   protected async loadCocoFile(file: File): Promise<void> {
@@ -187,9 +184,10 @@ export class DatasetPage implements OnDestroy {
   protected registerImages(files: readonly File[]): void {
     if (files.length === 0) return;
 
+    const imageUrls = this.loader.registerImageFiles(files);
     this.hasImageSelection.set(true);
-    this.imageUrls.set(this.loader.registerImageFiles(files));
-    this.selectedImageCount.set(files.length);
+    this.imageUrls.set(imageUrls);
+    this.selectedImageCount.set(imageUrls.size);
   }
 
   protected selectImage(image: CocoImage): void {
@@ -239,7 +237,7 @@ export class DatasetPage implements OnDestroy {
   }
 
   protected imageUrl(image: CocoImage): string | null {
-    return this.imageUrls().get(this.loader.normalizeFileName(image.file_name)) ?? null;
+    return this.imageUrls().get(normalizeFileName(image.file_name)) ?? null;
   }
 
   ngOnDestroy(): void {

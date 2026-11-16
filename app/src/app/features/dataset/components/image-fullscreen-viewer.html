@@ -36,7 +36,7 @@
                 type="checkbox"
                 [checked]="filter.visible"
                 [attr.aria-label]="filter.label"
-                (change)="setCategoryVisibility(filter.category.id, $any($event.target).checked)"
+                (change)="onCategoryVisibilityChange(filter.category.id, $event)"
               />
               <span
                 class="filter-swatch"

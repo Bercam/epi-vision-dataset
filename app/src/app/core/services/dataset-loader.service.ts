@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CocoDataset } from '../models/coco-dataset.model';
+import { normalizeFileName } from '../utils/file-name';
 import { validateCocoDataset } from '../validators/coco-dataset.validator';
 
 @Injectable({ providedIn: 'root' })
@@ -29,7 +30,7 @@ export class DatasetLoaderService {
     for (const file of files) {
       if (!file.type.startsWith('image/')) continue;
 
-      const key = this.normalizeFileName(file.name);
+      const key = normalizeFileName(file.name);
       const previousUrl = this.imageUrls.get(key);
       if (previousUrl) URL.revokeObjectURL(previousUrl);
       this.imageUrls.set(key, URL.createObjectURL(file));
@@ -41,9 +42,5 @@ export class DatasetLoaderService {
   releaseImageUrls(): void {
     this.imageUrls.forEach((url) => URL.revokeObjectURL(url));
     this.imageUrls.clear();
-  }
-
-  normalizeFileName(fileName: string): string {
-    return fileName.split(/[\\/]/).pop()?.toLocaleLowerCase() ?? fileName.toLocaleLowerCase();
   }
 }

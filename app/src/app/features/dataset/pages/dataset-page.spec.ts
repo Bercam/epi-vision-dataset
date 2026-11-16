@@ -411,6 +411,26 @@ describe('DatasetPage class filter', () => {
     );
   });
 
+  it('counts only selected files that are images', () => {
+    vi.stubGlobal('URL', {
+      createObjectURL: vi.fn((file: File) => `blob:${file.name}`),
+      revokeObjectURL: vi.fn(),
+    });
+
+    const root = fixture.nativeElement as HTMLElement;
+    const imageCard = root.querySelectorAll<HTMLElement>('.upload-card')[1];
+    if (!imageCard) throw new Error('O cartão de imagens não foi renderizado.');
+
+    uploadImages(root, [
+      new File(['a'], 'scene-a.jpg', { type: 'image/jpeg' }),
+      new File(['not an image'], 'notes.txt', { type: 'text/plain' }),
+    ]);
+
+    expect(imageCard.querySelector('.upload-confirmation')?.textContent).toContain(
+      '1 imagem selecionada',
+    );
+  });
+
   it('clears the JSON confirmation when the next file is invalid', async () => {
     const root = fixture.nativeElement as HTMLElement;
     const validJson = new File([JSON.stringify(dataset)], 'annotations.json', {

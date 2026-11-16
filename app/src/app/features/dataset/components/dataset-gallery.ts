@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CocoImage } from '../../../core/models/coco-dataset.model';
+import { normalizeFileName } from '../../../core/utils/file-name';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,10 +19,6 @@ export class DatasetGallery {
   readonly imageOpened = output<CocoImage>();
 
   imageUrl(image: CocoImage): string | null {
-    return this.imageUrls().get(this.normalizeFileName(image.file_name)) ?? null;
-  }
-
-  private normalizeFileName(fileName: string): string {
-    return fileName.split(/[\\/]/).pop()?.toLocaleLowerCase() ?? fileName.toLocaleLowerCase();
+    return this.imageUrls().get(normalizeFileName(image.file_name)) ?? null;
   }
 }
