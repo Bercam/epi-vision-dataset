@@ -45,5 +45,50 @@
     "reason": "Duas caixas sem_capacete tinham altura zero (46x0 e 2x0 px) na imagem acton-crawford-A4xwAcZOAyo-unsplash.jpg. Caixas degeneradas não delimitam objeto e são rejeitadas pelo validador; foram removidas do par derivado sem alterar as demais anotações.",
     "raw_exports_preserved": true,
     "final_dataset_approval": "pending"
+  },
+  "geometry_review": {
+    "action": "adjust_person_boxes_to_include_annotated_head",
+    "annotations": [
+      {
+        "csv_line": 67,
+        "image_name": "emmanuel-ikwuegbu-KHO_jvns5Xc-unsplash.jpg",
+        "class": "pessoa",
+        "from_bbox": [
+          117,
+          718,
+          2332,
+          3282
+        ],
+        "to_bbox": [
+          117,
+          708,
+          2332,
+          3292
+        ],
+        "related_head_annotation_id": 67,
+        "reason": "A caixa pessoa começava 10 px abaixo do topo da cabeça sem capacete anotada (id 67, bbox [820, 708, 545, 297]), cortando parte visível do cabelo. O topo foi estendido até o topo da cabeça; a base não mudou."
+      },
+      {
+        "csv_line": 88,
+        "image_name": "jose-megias-7Qxn3y2CQcM-unsplash.jpg",
+        "class": "pessoa",
+        "from_bbox": [
+          1472,
+          2718,
+          750,
+          1448
+        ],
+        "to_bbox": [
+          1472,
+          2692,
+          750,
+          1474
+        ],
+        "related_head_annotation_id": 86,
+        "reason": "A caixa pessoa começava 26 px abaixo do topo da cabeça sem capacete anotada (id 86, bbox [1757, 2692, 189, 130]), cortando 20% da cabeça visível. O topo foi estendido até o topo da cabeça; a base não mudou."
+      }
+    ],
+    "reason": "Revisão geométrica de 2026-11-16: nos dois casos a caixa pessoa começava abaixo do topo da caixa sem_capacete contida nela, cortando parte visível da cabeça. Apenas o topo foi estendido; largura, base e demais anotações foram preservadas.",
+    "final_dataset_approval": "pending"
   }
 }
