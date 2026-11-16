@@ -8,7 +8,7 @@ O projeto tem duas partes independentes:
 
 | Parte         | O que é                                                                     | Onde fica                     |
 | ------------- | --------------------------------------------------------------------------- | ----------------------------- |
-| Dataset       | 31 imagens com 269 anotações em COCO JSON e YOLO, com procedência por arquivo | `dataset/`                    |
+| Dataset       | 31 imagens com 261 anotações em COCO JSON e YOLO, com procedência por arquivo | `dataset/`                    |
 | Aplicação web | Explorador client-side que valida o COCO, associa imagens e desenha caixas   | `app/`                        |
 | Ferramentas   | Validadores/importador MakeSense e coletor de imagens                        | `tools/`                      |
 
@@ -207,7 +207,7 @@ flowchart LR
 | Importação | `python tools/dataset/import_makesense_export.py --csv … --zip …` | Gera COCO e YOLO a partir do par validado. |
 | Correções | `dataset/annotations/makesense_source/corrections_*.json` | Registram ajustes pós-export para rastreabilidade. |
 
-O par derivado vigente é `makesense_annotations_reviewed_2026-11-13.csv` + `makesense_yolo_export_reviewed_2026-11-13.zip`. Detalhes em [`../dataset/README.md`](../dataset/README.md).
+O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` + `makesense_yolo_export_reviewed_2026-11-16.zip`. Detalhes em [`../dataset/README.md`](../dataset/README.md).
 
 ## 8. Performance
 

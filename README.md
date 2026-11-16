@@ -36,7 +36,7 @@ O dataset e o código ficam separados: a aplicação não embute os dados e rece
 ### Dataset
 
 - 31 imagens de obras, indústrias e contextos equivalentes.
-- 269 anotações COCO/YOLO correspondentes entre si.
+- 261 anotações COCO/YOLO correspondentes entre si.
 - Quatro classes com mapeamento YOLO documentado.
 - Catálogo de origem com URL, autor, licença, dimensões, tamanho e SHA-256.
 - Exports brutos e derivados do MakeSense preservados para rastreabilidade.
@@ -169,18 +169,18 @@ Consulte [`dataset/README.md`](dataset/README.md) para o fluxo completo e as gar
 | Item               | Valor                                                                 |
 | ------------------ | --------------------------------------------------------------------- |
 | Imagens            | 31                                                                    |
-| Anotações          | 269                                                                   |
-| `pessoa`           | 107                                                                   |
-| `capacete`         | 70                                                                    |
-| `colete`           | 62                                                                    |
-| `sem_capacete`     | 30                                                                    |
+| Anotações          | 261                                                                   |
+| `pessoa`           | 104                                                                   |
+| `capacete`         | 67                                                                    |
+| `colete`           | 59                                                                    |
+| `sem_capacete`     | 31                                                                    |
 | Formatos           | COCO JSON e YOLO                                                      |
 | Origem             | Unsplash, Pexels e Wikimedia Commons, registrada por arquivo          |
 | Status das labels  | `in_review` em 31/31 registros                                        |
 
 As imagens vieram de bancos públicos gratuitos e cada linha de [`dataset/sources/image_sources.csv`](dataset/sources/image_sources.csv) registra URL, autor, licença declarada, dimensões, tamanho e SHA-256. A licença da plataforma não substitui a verificação de marcas, obras ou pessoas reconhecíveis nas fotos; as pendências estão em [`docs/relatorio-metadados-origens.md`](docs/relatorio-metadados-origens.md).
 
-A revisão estrutural confirma que nomes, dimensões, hashes, caixas e mapeamento de classes são coerentes. Ela **não** aprova visualmente cada caixa. Uma caixa falsa de `colete` foi removida em 2026-11-13 e o par derivado foi regerado pelo pipeline do MakeSense; a aprovação visual final e um ajuste pendente de `pessoa` continuam abertos em [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md).
+A revisão estrutural confirma que nomes, dimensões, hashes, caixas e mapeamento de classes são coerentes. Ela **não** aprova visualmente cada caixa. Uma caixa falsa de `colete` foi removida em 2026-11-13 e duas caixas degeneradas de `sem_capacete` foram removidas em 2026-11-16; o par derivado foi regerado pelo pipeline do MakeSense. A aprovação visual final e um ajuste pendente de `pessoa` continuam abertos em [`docs/relatorio-revisao-visual-anotacoes.md`](docs/relatorio-revisao-visual-anotacoes.md).
 
 ## Arquitetura
 
@@ -190,7 +190,7 @@ O detalhamento de camadas, fluxo de dados, estado, decisões de performance, ace
 
 ## Qualidade e testes
 
-Resultados executados em 2026-11-13 neste ambiente:
+Resultados executados em 2026-11-13 neste ambiente e revalidados em 2026-11-16 para o dataset:
 
 | Verificação                          | Comando                                              | Resultado                          |
 | ------------------------------------ | ---------------------------------------------------- | ---------------------------------- |
@@ -201,7 +201,7 @@ Resultados executados em 2026-11-13 neste ambiente:
 | Auditoria npm                        | `cd app && npm audit`                                | 0 vulnerabilidades                 |
 | Testes da ferramenta de coleta       | `cd tools/image-collector && npm test`               | 85 testes passando                 |
 | Catálogo de fontes                   | `cd tools/image-collector && npm run validate:manifest` | OK: 31/31 correspondem          |
-| Par derivado do MakeSense            | `python tools/dataset/validate_makesense_export.py ...` | OK: 269 anotações correspondem  |
+| Par derivado do MakeSense            | `python tools/dataset/validate_makesense_export.py ...` | OK: 261 anotações correspondem  |
 
 A suíte da aplicação cobre o validador COCO, leitura de JSON, ciclo de vida das object URLs, filtro puro, inputs de upload nas duas ordens, confirmação visual, erros amigáveis, imagens ausentes, estatísticas, filtro de classe na página, tela cheia (teclado, foco, rolagem, duplo clique, wrap-around) e visibilidade por classe.
 

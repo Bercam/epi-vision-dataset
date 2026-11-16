@@ -6,7 +6,7 @@
 - `sources/image_sources.csv`: procedência das imagens.
 - `annotations_coco.json`: anotações no formato COCO, no caminho solicitado pelo desafio.
 - `annotations_yolo/`: arquivos YOLO, um por imagem, `classes.txt` e `dataset.yaml`, no caminho solicitado pelo desafio.
-- `annotations/makesense_source/`: exports brutos e derivados do MakeSense preservados para rastreabilidade. Duas correções pós-export foram registradas em `corrections_2026-11-12.json` (caixa degenerada) e `corrections_2026-11-13.json` (caixa falsa de `colete`); os detalhes estão em `../docs/relatorio-revisao-visual-anotacoes.md`. O par derivado vigente é `makesense_annotations_reviewed_2026-11-13.csv` e `makesense_yolo_export_reviewed_2026-11-13.zip`.
+- `annotations/makesense_source/`: exports brutos e derivados do MakeSense preservados para rastreabilidade. Três correções pós-export foram registradas em `corrections_2026-11-12.json` (caixa degenerada), `corrections_2026-11-13.json` (caixa falsa de `colete`) e `corrections_2026-11-16.json` (duas caixas degeneradas de `sem_capacete`); os detalhes estão em `../docs/relatorio-revisao-visual-anotacoes.md`. O par derivado vigente é `makesense_annotations_reviewed_2026-11-16.csv` e `makesense_yolo_export_reviewed_2026-11-16.zip`.
 
 ## Classes e mapeamento YOLO
 
@@ -17,23 +17,24 @@
 | 2 | `colete` |
 | 3 | `sem_capacete` |
 
-Os IDs de classe do ZIP foram mapeados comparando as caixas normalizadas com as coordenadas e classes do CSV. O export derivado usado no dataset contém 269 caixas.
+Os IDs de classe do ZIP foram mapeados comparando as caixas normalizadas com as coordenadas e classes do CSV. O export derivado usado no dataset contém 261 caixas.
 
 ## Anotações recebidas
 
-- 269 caixas em 31 imagens.
-- `pessoa`: 107; `capacete`: 70; `colete`: 62; `sem_capacete`: 30.
-- As classes e coordenadas do CSV derivado correspondem às caixas YOLO; as 269 caixas foram correspondidas.
-- A caixa falsa de `colete` `[4274, 1983, 36, 7]` em `pexels-themightynelson-5667685.jpg` foi removida do par derivado após revisão do responsável; a imagem ficou com 4 caixas (2 `pessoa` e 2 `sem_capacete`).
+- 261 caixas em 31 imagens.
+- `pessoa`: 104; `capacete`: 67; `colete`: 59; `sem_capacete`: 31.
+- As classes e coordenadas do CSV derivado correspondem às caixas YOLO; as 261 caixas foram correspondidas.
+- A caixa falsa de `colete` `[4274, 1983, 36, 7]` em `pexels-themightynelson-5667685.jpg` foi removida do par derivado em 2026-11-13 após revisão do responsável; a imagem ficou com 4 caixas (2 `pessoa` e 2 `sem_capacete`).
+- Em 2026-11-16, duas caixas `sem_capacete` com altura zero (46×0 e 2×0 px) em `acton-crawford-A4xwAcZOAyo-unsplash.jpg` foram removidas do par derivado; a imagem ficou com 39 caixas (14 `pessoa`, 12 `capacete` e 13 `colete`).
 - Bounding boxes têm largura/altura positivas e ficam dentro das dimensões indicadas no CSV.
 - Esta conferência verificou consistência estrutural e correspondência entre exports; não substitui a revisão visual final das anotações.
 
 ## Validação técnica
 
-Revisão estrutural realizada em 2026-11-12 e atualizada em 2026-11-13:
+Revisão estrutural realizada em 2026-11-12, atualizada em 2026-11-13 e em 2026-11-16:
 
 - Os 31 nomes de imagem do COCO existem em `images/` e cada um possui um `.txt` YOLO correspondente.
-- As 269 anotações COCO correspondem às 269 linhas YOLO; as caixas foram comparadas com o CSV derivado. A diferença máxima por arredondamento na conversão para YOLO foi de 0,005728 px.
+- As 261 anotações COCO correspondem às 261 linhas YOLO; as caixas foram comparadas com o CSV derivado. A diferença máxima por arredondamento na conversão para YOLO foi de 0,00473 px.
 - Não foram encontrados referências de imagem inválidas, caixas fora dos limites, labels ausentes, labels extras ou valores YOLO fora de `[0, 1]`.
 - Os 31 hashes SHA-256 do catálogo de fontes correspondem aos arquivos em `images/`.
 

@@ -15,6 +15,7 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 
 ### Alterado
 
+- Dataset reimportado a partir do export revisado do MakeSense de 2026-11-16; as 31 imagens passaram a ter **261 anotações** (`pessoa` 104, `capacete` 67, `colete` 59, `sem_capacete` 31). O COCO e os 31 arquivos YOLO foram regerados pelo pipeline CSV/ZIP → validador → importador.
 - `README.md` reescrito como porta de entrada canônica do repositório.
 - Adicionados `docs/arquitetura.md`, `docs/README.md`, `CHANGELOG.md` e `.github/PULL_REQUEST_TEMPLATE.md`.
 - `CONTRIBUTING.md` e `app/README.md` ampliados com setup, gates de qualidade e política de dados.
@@ -24,6 +25,7 @@ O formato segue a estrutura de [Keep a Changelog](https://keepachangelog.com/pt-
 
 ### Corrigido
 
+- Removidas duas caixas `sem_capacete` com altura zero (46×0 e 2×0 px) em `acton-crawford-A4xwAcZOAyo-unsplash.jpg` no derivado de 2026-11-16, registradas em `corrections_2026-11-16.json`.
 - Removida uma caixa falso-positiva da classe `colete` na imagem 5, identificada na revisão visual; o dataset passou de 270 para **269 anotações**.
 - Par derivado do MakeSense regerado pelo pipeline CSV/ZIP → validador → importador (`corrections_2026-11-13.json`, `makesense_annotations_reviewed_2026-11-13.csv`, `makesense_yolo_export_reviewed_2026-11-13.zip`).
 

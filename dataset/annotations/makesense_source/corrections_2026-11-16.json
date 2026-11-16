@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-16",
+  "source_csv": "labels_my-project-name_2026-11-16-03-14-30.csv",
+  "source_zip": "labels_my-project-name_2026-11-16-03-14-19.zip",
+  "derived_csv": "makesense_annotations_reviewed_2026-11-16.csv",
+  "derived_zip": "makesense_yolo_export_reviewed_2026-11-16.zip",
+  "change": {
+    "action": "remove_invalid_annotations",
+    "annotations": [
+      {
+        "csv_line": 55,
+        "yolo_line": 40,
+        "image_name": "acton-crawford-A4xwAcZOAyo-unsplash.jpg",
+        "class": "sem_capacete",
+        "bbox": [
+          2901,
+          2391,
+          46,
+          0
+        ],
+        "image_dimensions": [
+          5054,
+          3368
+        ],
+        "yolo_line_content": "3 0.578519 0.710005 0.009116 0.000000"
+      },
+      {
+        "csv_line": 56,
+        "yolo_line": 41,
+        "image_name": "acton-crawford-A4xwAcZOAyo-unsplash.jpg",
+        "class": "sem_capacete",
+        "bbox": [
+          2936,
+          2935,
+          2,
+          0
+        ],
+        "image_dimensions": [
+          5054,
+          3368
+        ],
+        "yolo_line_content": "3 0.581123 0.871548 0.000434 0.000000"
+      }
+    ],
+    "reason": "Duas caixas sem_capacete tinham altura zero (46x0 e 2x0 px) na imagem acton-crawford-A4xwAcZOAyo-unsplash.jpg. Caixas degeneradas não delimitam objeto e são rejeitadas pelo validador; foram removidas do par derivado sem alterar as demais anotações.",
+    "raw_exports_preserved": true,
+    "final_dataset_approval": "pending"
+  }
+}
